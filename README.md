@@ -1,5 +1,3 @@
-![UTN Logo](http://www.frsr.utn.edu.ar/energias/images/UTN.png)
-
 # TSSI_SEMINARIO
 Trabajo práctico para materia "Seminario" de la carrera Tec.Sup. en Sistemas informáticos
 
@@ -16,7 +14,7 @@ Una vez que el build es exitoso, abrir la consola sobre el directorio raiz del r
 
 # Como trabajar con Git
 Para poder enviar cambios al repositorio se deberá:
-1 Crear un nuevo branch. `git checkout -b branch-name`
-1 Seleccionar los archivos que se quieren enviar. `git add .` para seleccionar todo o `git add path/del/archivo`para seleccionar uno en particular.
-1 Crear commit con los cambios. `git commit -m "Mensaje"`
-1 Enviar los cambios. `Git push origin branch-name`
+1. Crear un nuevo branch. `git checkout -b branch-name`
+2. Seleccionar los archivos que se quieren enviar. `git add .` para seleccionar todo o `git add path/del/archivo`para seleccionar uno en particular.
+3. Crear commit con los cambios. `git commit -m "Mensaje"`
+4. Enviar los cambios. `Git push origin branch-name`
