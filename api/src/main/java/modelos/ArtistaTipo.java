@@ -3,21 +3,21 @@ package modelos;
 import javax.persistence.*;
 
 @Entity
-@Table(name="UsuarioTipos")
-public class UsuarioTipo {
+@Table(name="ArtistaTipos")
+public class ArtistaTipo {
 
     @Id
-    @Column(name = "idUsuarioTipo")
+    @Column(name = "idArtistaTipo")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
     
-    public UsuarioTipo() {
+    public ArtistaTipo() {
      }
     
-    public UsuarioTipo(String descripcion) {
+    public ArtistaTipo(String descripcion) {
        // this.id = id;
         this.descripcion = descripcion;
     }

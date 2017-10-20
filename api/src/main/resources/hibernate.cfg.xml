@@ -8,8 +8,31 @@
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/DB_MusicApp?createDatabaseIfNotExist=true</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+  
   <property name="hbm2ddl.auto">update</property>
-  <mapping class="modelos.UsuarioTipo"/>
+  
+  <mapping class="modelos.AccionLikeCompartir"/>
+  <mapping class="modelos.Album"/>
+  <mapping class="modelos.Artista"/>
+  <mapping class="modelos.ArtistaTipo"/>
+  <mapping class="modelos.Cancion"/>
+  <mapping class="modelos.CancionDisco"/>
+  <mapping class="modelos.CancionLista"/>
+  <mapping class="modelos.Compartido"/>
+  <mapping class="modelos.Disco"/>
+  <mapping class="modelos.DiscoAlbum"/>
+  <mapping class="modelos.Evento"/>
+  <mapping class="modelos.Genero"/>
+  <mapping class="modelos.GeneroArtista"/>
+  <mapping class="modelos.GeneroCancion"/>
+  <mapping class="modelos.GeneroDisco"/>
+  <mapping class="modelos.IntegranteArtista"/>
+  <mapping class="modelos.IntegranteRol"/>
+  <mapping class="modelos.Like"/>
+  <mapping class="modelos.ListaReproduccion"/>
+  <mapping class="modelos.Publicacion"/>
+  <mapping class="modelos.Seguidos"/>
   <mapping class="modelos.Usuario"/>
+  <mapping class="modelos.UsuarioTipo"/>
  </session-factory>
 </hibernate-configuration>
