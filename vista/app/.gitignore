@@ -21,4 +21,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # SCSS outpu
-styles/*.css
+src/styles/*.css
