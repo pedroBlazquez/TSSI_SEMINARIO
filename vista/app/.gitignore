@@ -22,3 +22,6 @@ yarn-error.log*
 
 # SCSS outpu
 src/styles/*.css
+
+# vscode config
+.vscode/
