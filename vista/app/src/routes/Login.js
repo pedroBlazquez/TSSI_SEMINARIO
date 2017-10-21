@@ -5,9 +5,9 @@ import LoginLayout from '../views/LoginLayout';
 import LoginForm from '../components/LoginForm';
 
 const Login = () => (
-  
+  <LoginLayout>
     <LoginForm />
-  
+  </LoginLayout>
 );
 
 const LoginRoute = () => (

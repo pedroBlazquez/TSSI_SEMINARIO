@@ -1,13 +1,14 @@
 import React from 'react';
-import {Row, Col} from 'antd';
+import { Row, Col } from 'antd';
 
-const LoginLayout = ({header, footer, children}) => (
-    <Row type="flex">
-      <Col span={6} order={4}>1 col-order-4</Col>
-      <Col span={6} order={3}>2 col-order-3</Col>
-      <Col span={6} order={2}>3 col-order-2</Col>
-      <Col span={6} order={1}>4 col-order-1</Col>
-    </Row>
+import '../styles/LoginLayout.css';
+
+const LoginLayout = ({children}) => (
+  <Row className="login-layout" type="flex" justify="space-around" align="middle">
+    <Col span="8"></Col>
+    <Col span="8">{children}</Col>
+    <Col span="8"></Col>
+  </Row>
 );
 
 export default LoginLayout;
