@@ -1,16 +1,18 @@
 import React from 'react';
 import {
   BrowserRouter,
-  Route
+  Route,
+  Switch
 } from 'react-router-dom';
 
 import App from '../views/App';
+import LoginRoute from './Login';
 
 export default () => (
   <BrowserRouter>
-    <div>
+    <Switch>
       <Route path="/" exact component={App}/>
-      <Route path="/hola" component={() => <div>Saludos</div>}/>
-    </div>
+      <LoginRoute/>
+    </Switch>
   </BrowserRouter>
 ); 
