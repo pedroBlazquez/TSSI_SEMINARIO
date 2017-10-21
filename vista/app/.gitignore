@@ -25,4 +25,4 @@ src/styles/*.css
 
 # vscode config
 .vscode/
-vista/app/.vscode
+/vista/app/.vscode
