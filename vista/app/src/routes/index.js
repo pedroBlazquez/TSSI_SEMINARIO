@@ -12,7 +12,7 @@ const MainRoute = ({isLogged}) => (
   <BrowserRouter>
     <div>
       <Home authorized={isLogged} />  
-      <LoginRoute />
+      <LoginRoute isLoggedIn={isLogged} />
     </div>
   </BrowserRouter>
 );

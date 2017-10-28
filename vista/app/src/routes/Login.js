@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route} from 'react-router';
+import AuthRoute from './AuthRoute';
 import LoginLayout from '../views/LoginLayout';
 
 import LoginForm from '../containers/LoginContainer';
@@ -10,8 +10,8 @@ const Login = () => (
   </LoginLayout>
 );
 
-const LoginRoute = () => (
-  <Route component={Login} exact path="/login"/>
+const LoginRoute = ({isLoggedIn}) => (
+  <AuthRoute component={Login} authorized={!isLoggedIn} redirectTo="/" exact path="/login"/>
 ); 
 
 export default LoginRoute;
