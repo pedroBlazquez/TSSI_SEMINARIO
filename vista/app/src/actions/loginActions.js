@@ -1,5 +1,5 @@
-import {REQUEST_LOGIN} from './types';
+import {REQUEST_LOGIN, LOGIN} from './types';
 
-export const requestLogin = () => ({type: REQUEST_LOGIN, success: false, error: null});
-export const successLogin = () => ({type: REQUEST_LOGIN, success: true, error: null});
-export const errorLogin = (error) => ({type: REQUEST_LOGIN, success: false, error});
+export const requestLogin = (user, pass) => ({type: REQUEST_LOGIN, user, pass});
+export const successLogin = () => ({type: LOGIN, success: true, error: null});
+export const errorLogin = (error) => ({type: LOGIN, success: false, error});

@@ -1,9 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {
-  BrowserRouter,
-  Switch
-} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 
 import LoginRoute from './Login';
 import Home from './Home';
@@ -13,10 +10,10 @@ import Home from './Home';
 
 const MainRoute = ({isLogged}) => (
   <BrowserRouter>
-  <div>
-    <Home authorized={isLogged} />  
-    <LoginRoute />
-  </div>
+    <div>
+      <Home authorized={isLogged} />  
+      <LoginRoute />
+    </div>
   </BrowserRouter>
 );
 

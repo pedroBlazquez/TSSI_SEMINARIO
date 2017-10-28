@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import LoginForm from '../components/LoginForm';
 // Cambiar esto por el request verdadero
-import {errorLogin} from '../actions/loginActions';
+import {requestLogin} from '../actions/loginActions';
 
 class LoginContainer extends Component {
   constructor (props) {
@@ -24,8 +24,7 @@ class LoginContainer extends Component {
 
   onSubmit = ({usuario, password}) => {
     const {requestLogin} = this.props;
-    // requestLogin(usuario, password);
-    requestLogin('Usuario no existente o password incorrecta');
+    requestLogin(usuario, password);
   }
 
   render () {
@@ -49,7 +48,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestLogin: bindActionCreators(errorLogin, dispatch)
+  requestLogin: bindActionCreators(requestLogin, dispatch)
 });
 
 export default connect(
