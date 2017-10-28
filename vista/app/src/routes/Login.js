@@ -2,7 +2,7 @@ import React from 'react';
 import {Route} from 'react-router';
 import LoginLayout from '../views/LoginLayout';
 
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../containers/LoginContainer';
 
 const Login = () => (
   <LoginLayout>
