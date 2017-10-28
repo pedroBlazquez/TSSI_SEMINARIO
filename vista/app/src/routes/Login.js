@@ -11,7 +11,7 @@ const Login = () => (
 );
 
 const LoginRoute = () => (
-  <Route component={Login} path="/login"/>
+  <Route component={Login} exact path="/login"/>
 ); 
 
 export default LoginRoute;

@@ -53,7 +53,7 @@ class LoginForm extends Component {
     return(
       <div className="form-container">
         <h2 className="title">Ingrese su e-mail y contraseña</h2>
-        {error  && <div className="error-container">{'Verifique su mail y contraseña'}</div>}
+        {error  && <div className="error-container">{error}</div>}
         <Form layout="vertical" onSubmit={this.handleSubmit}>
           <FormItem
             validateStatus={fieldErrors.usuario ? 'error' : ''}

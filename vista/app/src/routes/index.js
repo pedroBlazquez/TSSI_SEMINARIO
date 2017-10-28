@@ -1,21 +1,29 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {
   BrowserRouter,
-  Route,
   Switch
 } from 'react-router-dom';
 
-import App from '../views/App';
 import LoginRoute from './Login';
+import Home from './Home';
 
 // TODO: Cambiar las rutas para un mejor approach
 // https://css-tricks.com/react-router-4/
 
-export default () => (
+const MainRoute = ({isLogged}) => (
   <BrowserRouter>
-    <Switch>
-      <Route path="/" exact component={App}/>
-      <LoginRoute/>
-    </Switch>
+  <div>
+    <Home authorized={isLogged} />  
+    <LoginRoute />
+  </div>
   </BrowserRouter>
-); 
+);
+
+const mapStateToProps = (state) => ({
+  isLogged: state.loginReducer.success
+}); 
+
+export default  connect(
+  mapStateToProps
+)(MainRoute);
