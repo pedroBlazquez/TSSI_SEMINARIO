@@ -2,15 +2,13 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
                                          "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
- <session-factory>
+ <session-factory name="">
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
   <property name="hibernate.connection.password">admin</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/DB_MusicApp?createDatabaseIfNotExist=true</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-  
   <property name="hbm2ddl.auto">update</property>
-  
   <mapping class="modelos.AccionLikeCompartir"/>
   <mapping class="modelos.Album"/>
   <mapping class="modelos.Artista"/>
@@ -34,5 +32,6 @@
   <mapping class="modelos.Seguidos"/>
   <mapping class="modelos.Usuario"/>
   <mapping class="modelos.UsuarioTipo"/>
+  <mapping class="aplicacion.autenticacion.ApplicationUser"/>
  </session-factory>
 </hibernate-configuration>
