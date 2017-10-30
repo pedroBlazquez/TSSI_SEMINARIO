@@ -3,8 +3,10 @@ package modelos;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name="Discos")
@@ -22,20 +24,24 @@ public class Disco {
     private Date fechaPublicacion;
     
     //FK
-    @ManyToOne(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch= FetchType.EAGER, cascade=CascadeType.ALL)
   	@JoinColumn (name="idArtista") 
   	private Artista artista;
     
     //Relaciones
+    @JsonIgnore
     @OneToMany(mappedBy = "idDiscoAlbum.disco", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<DiscoAlbum> albumsDisco = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "idGeneroDisco.disco", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<GeneroDisco> generosDisco = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "idCancionDisco.disco", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<CancionDisco> cancionesDisco = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "disco", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<AccionLikeCompartir> acciones = new ArrayList<>();
     

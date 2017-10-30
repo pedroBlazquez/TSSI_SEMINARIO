@@ -44,10 +44,10 @@ public class Conexion {
     	session.getTransaction().commit();
     	session.close();
 	}
-	public List<Object> getListQuery(String query){
+	public <T> List<T> getListQuery(String query){
 
    	 	Session session=sessionFactory.openSession();
-		List<Object> l = (List<Object>)session.createQuery(query).list();
+		List<T> l = (List<T>)session.createQuery(query).list();
     	session.close();
 		return l;
 	}

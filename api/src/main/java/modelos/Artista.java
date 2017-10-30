@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 @Entity
 @Table(name="Artistas")
 public class Artista {
@@ -25,36 +28,44 @@ public class Artista {
     private String descripcion;
     
     //FK
-    @OneToOne(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
+    @OneToOne(fetch= FetchType.EAGER, cascade=CascadeType.ALL)
   	@JoinColumn (name="idUsuario") 
   	private Usuario usuario;
 
-    @ManyToOne(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch= FetchType.EAGER, cascade=CascadeType.ALL)
   	@JoinColumn (name="idArtistaTipo") 
   	private ArtistaTipo artistaTipo;
     
     //Relaciones
+    @JsonIgnore
     @OneToMany(mappedBy = "artista", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<IntegranteArtista> integrantes = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "artista", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<Evento> eventos = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "artista", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<AccionLikeCompartir> acciones = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "artista", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<Publicacion> publicaciones = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "artista", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<Disco> discos = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "idGeneroArtista.artista", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<GeneroArtista> generos = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "artista", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<Cancion> canciones = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "artista", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<Album> albums = new ArrayList<>();
     

@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 @Entity
 @Table(name = "Usuarios")
 public class Usuario {
@@ -34,26 +37,32 @@ public class Usuario {
     private boolean estado;
 
     //FK
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUsuarioTipo")
     private UsuarioTipo usuarioTipo;
 
     //Relaciones
+    @JsonIgnore
     @OneToMany(mappedBy = "idSeguidos.seguidor", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<Seguidos> seguidos = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "idSeguidos.seguido", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private List<Seguidos> seguidores = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToOne(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
    	private Artista artista;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
     private List<Compartido> compartidos = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
     private List<Like> likes = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
     private List<ListaReproduccion> listasreproduccion = new ArrayList<>();
     
