@@ -1,8 +1,11 @@
 package aplicacion.autenticacion;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,10 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static aplicacion.autenticacion.SecurityConstants.EXPIRATION_TIME;
-import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
-import static aplicacion.autenticacion.SecurityConstants.SECRET;
-import static aplicacion.autenticacion.SecurityConstants.TOKEN_PREFIX;
+import static aplicacion.autenticacion.SecurityConstants.*;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
@@ -34,7 +34,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
-                                                HttpServletResponse res) throws AuthenticationException {
+        HttpServletResponse res) throws AuthenticationException {
+
         try {
             ApplicationUser creds = new ObjectMapper()
                     .readValue(req.getInputStream(), ApplicationUser.class);
@@ -51,9 +52,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
+        HttpServletResponse res,
+        FilterChain chain,
+        Authentication auth) throws IOException, ServletException {
 
         String token = Jwts.builder()
                 .setSubject(((User) auth.getPrincipal()).getUsername())
@@ -62,11 +63,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .compact();
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }
-    
+
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request,
             HttpServletResponse response, AuthenticationException failed)
             throws IOException, ServletException {
-        System.out.println("error");
+
+        response.sendError(HttpStatus.BAD_REQUEST.value(), BAD_CREDENTIALS_MSG);
     }
 }

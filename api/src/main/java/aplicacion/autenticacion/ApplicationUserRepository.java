@@ -1,9 +1,25 @@
 package aplicacion.autenticacion;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
+import conexion.Conexion;
+
 @Repository
-public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Long> {
-    ApplicationUser findByUsername(String username);
+public class ApplicationUserRepository {
+    ApplicationUser findByUsername(String username) {
+        Conexion cn = new Conexion();
+
+        cn.abrirConexion();
+        List<Object> userObject = cn.getListQuery("From ApplicationUser WHERE username ='" + username + "'");
+        ApplicationUser user = null;
+
+        if (!userObject.isEmpty()) {
+            user = (ApplicationUser) userObject.get(0);
+        }
+
+        cn.cerrarConexion();
+        return user;
+    }
 }
