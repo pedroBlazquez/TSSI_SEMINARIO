@@ -5,18 +5,25 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import conexion.Conexion;
+import modelos.Usuario;
 
 @Repository
 public class ApplicationUserRepository {
-    ApplicationUser findByUsername(String username) {
+
+    Usuario findByUsername(String mail) {
         Conexion cn = new Conexion();
 
         cn.abrirConexion();
-        List<Object> userObject = cn.getListQuery("From ApplicationUser WHERE username ='" + username + "'");
-        ApplicationUser user = null;
+        List<Object> userRecord = cn.getListQuery("From Usuario WHERE mail ='" + mail + "'");
+        Usuario user = null;
 
-        if (!userObject.isEmpty()) {
-            user = (ApplicationUser) userObject.get(0);
+        if (!userRecord.isEmpty()) {
+            user = (Usuario) userRecord.get(0);
+        }
+
+        // Si el usuario está inactivo no queremos autenticarlo
+        if (!user.isEstado()) {
+            user = null;
         }
 
         cn.cerrarConexion();

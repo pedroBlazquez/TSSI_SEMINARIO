@@ -4,8 +4,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import modelos.Usuario;
 
 import static java.util.Collections.emptyList;
 
@@ -18,12 +19,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+        Usuario usuario = applicationUserRepository.findByUsername(mail);
 
-        if (applicationUser == null) {
-            throw new UsernameNotFoundException(username);
+        if (usuario == null) {
+            throw new UsernameNotFoundException(mail);
         }
-        return new User(applicationUser.getUsername(), applicationUser.getPassword(), emptyList());
+        return new User(usuario.getMail(), usuario.getPassword(), emptyList());
     }
 }

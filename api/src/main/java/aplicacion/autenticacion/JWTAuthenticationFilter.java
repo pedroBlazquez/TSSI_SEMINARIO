@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import modelos.Usuario;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,11 +37,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         HttpServletResponse res) throws AuthenticationException {
 
         try {
-            ApplicationUser creds = new ObjectMapper()
-                    .readValue(req.getInputStream(), ApplicationUser.class);
+            Usuario creds = new ObjectMapper()
+                    .readValue(req.getInputStream(), Usuario.class);
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            creds.getUsername(),
+                            creds.getMail(),
                             creds.getPassword(),
                             new ArrayList<>())
             );

@@ -32,6 +32,5 @@
   <mapping class="modelos.Seguidos"/>
   <mapping class="modelos.Usuario"/>
   <mapping class="modelos.UsuarioTipo"/>
-  <mapping class="aplicacion.autenticacion.ApplicationUser"/>
  </session-factory>
 </hibernate-configuration>
