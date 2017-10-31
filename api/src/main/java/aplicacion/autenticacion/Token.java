@@ -9,15 +9,16 @@ public class Token {
 
     // Metodo estatico para obtener el mail que está dentro del token.
     public static String getMailFromToken(String token) {
+        String mail = null;
         if (token != null) {
-            token = Jwts.parser()
+            mail = Jwts.parser()
                 .setSigningKey(SECRET.getBytes())
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                 .getBody()
                 .getSubject();
         }
         
-        return token;
+        return mail;
     }
     
 }
