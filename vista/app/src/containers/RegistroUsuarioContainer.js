@@ -5,6 +5,7 @@ import {withRouter} from 'react-router';
 import {TIPOS_USUARIO, USUARIO_MUSICO, USUARIO_OYENTE} from '../utils/constants';
 
 import RegistroUsuarioForm from '../components/RegistroUsuarioForm';
+import FormWrapper from '../components/FormWrapper';
 
 class RegistroUsuarioContainer extends Component {
   constructor (props) {
@@ -23,6 +24,9 @@ class RegistroUsuarioContainer extends Component {
       apellido: {
         value: ''
       },
+      fechaNacimiento: {
+        value: null
+      },
       tipoUsuario: USUARIO_OYENTE
     };
   }
@@ -36,14 +40,22 @@ class RegistroUsuarioContainer extends Component {
   }
 
   render () {
-    const {match, location, history} = this.props;
+    const {error} = this.props;
     return (
-      <RegistroUsuarioForm
-        onSubmit={this.onSubmit}
-        usuario={this.state.usuario}
-        password={this.state.password}
-        onChange={this.onFormChange}
-      />
+      <FormWrapper
+        error={error}
+        title={'Complete sus datos'}
+      >
+        <RegistroUsuarioForm
+          onSubmit={this.onSubmit}
+          usuario={this.state.usuario}
+          password={this.state.password}
+          fechaNacimiento={this.state.fechaNacimiento}
+          nombre={this.state.nombre}
+          apellido={this.state.apellido}
+          onChange={this.onFormChange}
+        />
+      </FormWrapper>
     );
   }
 }

@@ -1,34 +1,27 @@
 import React, {Component} from 'react';
-import { Form } from 'antd';
 
-export class ExtendedForm extends Component {
+export default function (FormElement) {
 
-  handleSubmit = (e) => {
-    const {onSubmit, onFormValidationFail, form} = this.props;
-    const {validateFields} = form;
-    e.preventDefault();
-    validateFields((errors, values) => {
-      if (!errors) {
-        onSubmit(values);
-      } else {
-        onFormValidationFail(errors);
-      }
-    })
+  return class ExtendedForm extends Component {
+
+    handleSubmit = (e) => {
+      const {onSubmit, onFormValidationFail, form} = this.props;
+      const {validateFields} = form;
+      e.preventDefault();
+      validateFields((errors, values) => {
+        if (!errors) {
+          onSubmit(values);
+        } else {
+          if (typeof onFormValidationFail === 'function') {
+            onFormValidationFail(errors);
+          }
+        }
+      })
+    }
+
+    render () {
+      return <FormElement {...this.props} onSubmit={this.handleSubmit}/> 
+    }
+    
   }
-
-  render () {
-    const {children, ...other} = this.props;
-    return(
-      <Form {...other} onSubmit={this.handleSubmit}>
-        {children}
-      </Form>
-    )
-  }
-  
-} 
-
-const ExtendedFormHoc = (createParameters) => Form.create(createParameters)(ExtendedForm);
-
-export const FormItem = Form.Item;
-
-export default ExtendedFormHoc;
+}

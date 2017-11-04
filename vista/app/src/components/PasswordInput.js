@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Input, Icon} from 'antd';
-import {REQUIRED} from '../utils/validators';
 
-const PasswordInput = ({getFieldDecorator}) => (
-  getFieldDecorator('password', {rules: [REQUIRED]})(
-    <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password"/>
-  )
-);
+class PasswordInput extends Component {
+  render () {
+    return (
+      <Input
+        prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
+        type="password"
+        placeholder="Password"
+        {...this.props}
+      />
+    );
+  }
+}
 
 export default PasswordInput;

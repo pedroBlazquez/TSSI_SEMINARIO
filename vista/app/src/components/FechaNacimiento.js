@@ -1,14 +1,18 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {  DatePicker } from 'antd';
 import moment from 'moment';
 
-export const FechaNacimiento = (props) => (
-  <DatePicker
-    {...props}
-    disabledDate={checkDisabledTime}
-    placeholder={'Fecha de nacimiento'}
-  />
-);
+class FechaNacimiento extends Component {
+  render () {
+    return (
+      <DatePicker
+        {...this.props}
+        disabledDate={checkDisabledTime}
+        placeholder={'Fecha de nacimiento'}
+      />
+    );
+  }
+}
 
 function checkDisabledTime (date) {
   return moment(date).isAfter(moment.now()); 

@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import LoginForm from '../components/LoginForm';
 // Cambiar esto por el request verdadero
 import {requestLogin} from '../actions/loginActions';
+
+import LoginForm from '../components/LoginForm';
+import FormWrapper from '../components/FormWrapper';
 
 class LoginContainer extends Component {
   constructor (props) {
@@ -31,13 +33,18 @@ class LoginContainer extends Component {
     const {error} = this.props;
     const {usuario, password} = this.state;
     return (
-      <LoginForm
-        usuario={usuario}
-        password={password}
-        onChange={this.onFormChange}
-        onSubmit={this.onSubmit}
+      <FormWrapper 
         error={error}
-      />
+        title={'Ingrese su mail y contraseña'}
+      >
+        <LoginForm
+          usuario={usuario}
+          password={password}
+          onChange={this.onFormChange}
+          onSubmit={this.onSubmit}
+          error={error}
+        />
+      </FormWrapper>
     );
   }
 

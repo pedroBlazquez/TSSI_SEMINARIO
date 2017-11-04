@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import { Form, Button, Input, Select, DatePicker} from 'antd';
 import es_ES from 'antd/lib/locale-provider/es_ES';
 
-import {REQUIRED} from '../utils/validators';
+import {PasswordValidator, DatosPersonalesValidator, MailValidator} from '../utils/validators';
 
 import '../styles/LoginForm.css';
-import FormWrapper from './FormWrapper';
+import ExtendedForm from './ExtendedForm';
 import MailInput from './MailInput';
-import PassInput from './PasswordInput';
+import PasswordInput from './PasswordInput';
 import FechaNacimiento from './FechaNacimiento';
 import TiposUsuario from './TiposUsuario';
 import InfoTooltip from './InfoTooltip';
@@ -15,57 +15,48 @@ import InputWithIcon from './InputWithIcon';
 
 const FormItem = Form.Item;
 
-const InputText = ({getFieldDecorator, mapTo, ...inputProps}) => (
-  getFieldDecorator(mapTo, {rules: [REQUIRED]})(
-    <Input {...inputProps}/>
-  )
-);
-
 class RegistroUsuarioForm extends Component {
-  constructor (props) {
-    super(props);
-    
-  }
-  
+
   render () {
-    const {form, onSubmit, error, onTipoUsuarioChange, onFechaNacimientoChange} = this.props;
+    const {form, onSubmit, onTipoUsuarioChange} = this.props;
     return (
-      <FormWrapper
-        error={error}
-        title={'Complete sus datos'}
-      >
-        <Form onSubmit={onSubmit}>
-          <FormItem>
-            <InputText getFieldDecorator={form.getFieldDecorator} type={'text'} placeholder={'Ingrese su Nombre'} mapTo={'nombre'}/>
-          </FormItem>
-          <FormItem>
-            <InputText getFieldDecorator={form.getFieldDecorator} type={'text'} placeholder={'Ingrese su Apellido'} mapTo={'apellido'}/>
-          </FormItem>
-          <FormItem required>
-            <FechaNacimiento
-              className={'full-width'}
-              onChange={onFechaNacimientoChange}
-            />
-          </FormItem>
-          <FormItem>
-            <MailInput getFieldDecorator={form.getFieldDecorator} mapTo={'usuario'} />
-          </FormItem>
-          <FormItem>
-            <PassInput getFieldDecorator={form.getFieldDecorator}/>
-          </FormItem>
-            <FormItem >
-              <InputWithIcon
-                input={(<TiposUsuario onChange={onTipoUsuarioChange}/>)}
-                icon={(<InfoTooltip title={'Estos son los tipos de usuarios que tenemos para vos!'}/>)}
-              />
-            </FormItem>
-          <FormItem >
-            <Button htmlType="submit" className={'green-button'}>
-              {'Seguir'}
-            </Button>
-          </FormItem>
-        </Form>
-      </FormWrapper>
+      <Form onSubmit={onSubmit}>
+        <FormItem>
+          {
+            DatosPersonalesValidator({form})('nombre')
+            (<Input type="text" palceholder="Ingrese su nombre" />)
+          }
+        </FormItem>
+        <FormItem>
+          {
+            DatosPersonalesValidator({form})('apellido')
+            (<Input type="text" palceholder="Ingrese su apellido" />)
+          }
+        </FormItem>
+        <FormItem required>
+          {
+            DatosPersonalesValidator({form})('fechaNacimiento')
+            (<FechaNacimiento className="full-width" />)
+          }
+        </FormItem>
+        <FormItem>
+          {MailValidator({form})('usuario')(<MailInput />)}
+        </FormItem>
+        <FormItem>
+          {PasswordValidator({form})('password')(<PasswordInput />)}  
+        </FormItem>
+        <FormItem >
+          <InputWithIcon
+            input={(<TiposUsuario onChange={onTipoUsuarioChange}/>)}
+            icon={(<InfoTooltip title={'Estos son los tipos de usuarios que tenemos para vos!'}/>)}
+          />
+        </FormItem>
+        <FormItem >
+          <Button htmlType="submit" className={'green-button'}>
+            {'Seguir'}
+          </Button>
+        </FormItem>
+      </Form>
     )
   }
 }
@@ -76,12 +67,9 @@ export default Form.create({
   },
   mapPropsToFields(props) {
     return {
-      usuario: {
-        value: props.usuario.value
-      },
-      password: {
-        value: props.password.value
-      }
+      usuario: {...props.usuario},
+      password: {...props.password},
+      fechaNacimiento: {...props.fechaNacimiento}
     };
   } 
-})(RegistroUsuarioForm);
+})(ExtendedForm(RegistroUsuarioForm));

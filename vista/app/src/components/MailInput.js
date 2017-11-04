@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Input, Icon} from 'antd';
-import { REQUIRED, MAIL} from '../utils/validators';
 
-const MailInput = ({getFieldDecorator, mapTo}) => (
-  getFieldDecorator(mapTo, {rules: [REQUIRED, MAIL]})(
-    <Input prefix={<Icon type="mail" style={{ fontSize: 13 }} />} placeholder="email@mail.com"/>
-  )
-);
+class MailInput extends Component {
+  render () {
+    return (
+      <Input
+        prefix={<Icon type="mail" style={{ fontSize: 13 }} />}
+        placeholder="email@mail.com"
+        {...this.props}
+      />
+    );
+  }
+}
 
 export default MailInput;
