@@ -2,6 +2,8 @@ package modelos;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Likes")
 public class Like {
@@ -12,10 +14,11 @@ public class Like {
     private int id;
 
     // FK
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idAccionLikeCompartir")
     private AccionLikeCompartir accion;
