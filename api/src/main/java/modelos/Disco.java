@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+
 
 @Entity
 @Table(name = "Discos")
@@ -38,7 +38,7 @@ public class Disco {
     private List<GeneroDisco> generosDisco = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idCancionDisco.disco", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idCancionDisco.disco", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CancionDisco> cancionesDisco = new ArrayList<>();
 
     @JsonIgnore

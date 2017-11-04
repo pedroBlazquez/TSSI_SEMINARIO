@@ -6,6 +6,11 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+//@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 @Entity
 @Table(name = "Canciones")
 public class Cancion {
@@ -25,20 +30,24 @@ public class Cancion {
     private Date fechaPublicacion;
 
     // FK
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
     // Relaciones
+    @JsonIgnore
     @OneToMany(mappedBy = "idCancionDisco.cancion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CancionDisco> discosCancion = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idGeneroCancion.cancion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<GeneroCancion> generosCancion = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idCancionLista.cancion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CancionLista> listasCancion = new ArrayList<>();
-
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "cancion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 

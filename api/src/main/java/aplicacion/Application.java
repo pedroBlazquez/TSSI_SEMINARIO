@@ -3,7 +3,7 @@ package aplicacion;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import aplicacion.*;
+
 import conexion.Conexion;
 
 @SpringBootApplication
