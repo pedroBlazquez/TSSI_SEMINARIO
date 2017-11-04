@@ -1,31 +1,15 @@
 @import 'variables';
+.login-button {
+  width: 100%;
+  color: white;
+  font-weight: 400;
+  border: none;
 
-.form-container {
-  padding: 25px;
-  border-radius: $border-radius;
-  border: $border-black;
-
-  .error-container {
-    margin-bottom: 5px;
+  &.ingresar {
+    background-color: $green;
   }
 
-  .title {
-    text-align: center;
-    font-weight: 700;
+  &.registrarse {
+    background-color: $orange;
   }
-
-  .login-button {
-    width: 100%;
-    color: white;
-    font-weight: 400;
-    border: none;
-
-    &.ingresar {
-      background-color: $green;
-    }
-
-    &.registrarse {
-      background-color: $orange;
-    }
-  } 
 }

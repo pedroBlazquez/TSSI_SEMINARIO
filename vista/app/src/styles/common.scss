@@ -1,0 +1,21 @@
+@import 'variables';
+
+.full-width {
+  width: 100%;
+}
+
+.custom-button {
+  color: white;
+  font-weight: 400;
+  border: none;
+}
+
+.green-button {
+  @extend .custom-button;
+  background-color: $green;
+}
+
+.orange-button {
+  @extend .custom-button;
+  background-color: $orange;
+}

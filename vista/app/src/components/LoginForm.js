@@ -1,22 +1,12 @@
 import React, {Component} from 'react';
 import '../styles/LoginForm.css';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Button } from 'antd';
 
-const requiredRule = {required: true, message: 'Complete este campo'};
+import FormWrapper from './FormWrapper';
+import MailInput from './MailInput';
+import PassInput from './PasswordInput';
 
 const FormItem = Form.Item;
-
-const UserInput = ({getFieldDecorator}) => (
-  getFieldDecorator('usuario', {rules: [requiredRule, {type: 'email', message: 'Formato no valido'}]})(
-    <Input prefix={<Icon type="mail" style={{ fontSize: 13 }} />} placeholder="email@mail.com"/>
-  )
-);
-
-const PassInput = ({getFieldDecorator}) => (
-  getFieldDecorator('password', {rules: [requiredRule]})(
-    <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password"/>
-  )
-);
 
 class LoginForm extends Component {
 
@@ -33,7 +23,7 @@ class LoginForm extends Component {
 
   handleSubmit = (e) => {
     const {onSubmit, form} = this.props;
-    const {validateFields, isFieldTouched, getFieldError} = form;
+    const {validateFields, getFieldError} = form;
     e.preventDefault();
     validateFields((errors, values) => {
       if (!errors) {
@@ -51,15 +41,16 @@ class LoginForm extends Component {
     const {fieldErrors} = this.state;
 
     return(
-      <div className="form-container">
-        <h2 className="title">Ingrese su e-mail y contraseña</h2>
-        {error  && <div className="error-container">{error}</div>}
+      <FormWrapper 
+        error={error}
+        title={'Ingrese su mail y contraseña'}
+      >
         <Form layout="vertical" onSubmit={this.handleSubmit}>
           <FormItem
             validateStatus={fieldErrors.usuario ? 'error' : ''}
             help={fieldErrors.usuario || ''}
           >
-            <UserInput {...form} />
+            <MailInput {...form} mapTo={'usuario'} />
           </FormItem>
           <FormItem
             validateStatus={fieldErrors.password ? 'error' : ''}
@@ -85,13 +76,11 @@ class LoginForm extends Component {
             </Button>
           </FormItem>
         </Form>
-      </div>
+      </FormWrapper>
     )
   }
   
 } 
-
-
 
 export default Form.create({
   onFieldsChange(props, changedFields) {
