@@ -10,6 +10,8 @@ import InfoTooltip from './InfoTooltip';
 import InputWithIcon from './InputWithIcon';
 import FechaNacimiento from './FechaNacimiento';
 import GenerosMusicales from './GenerosMusicales';
+import ListaIntegrantes from './ListaIntegrantes';
+import FormIntegranteBanda from './FormIntegranteBanda';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -17,7 +19,7 @@ const TextArea = Input.TextArea;
 class DatosArtistaForm extends Component {
 
   render () {
-    const {form, onSubmit, esBanda, onCancel} = this.props;
+    const {form, onSubmit, esBanda, onCancel, integrantes, agregarIntegrante, removerIntegrante} = this.props;
     return (
       <Form onSubmit={onSubmit}>
         <FormItem 
@@ -46,9 +48,13 @@ class DatosArtistaForm extends Component {
           }
         </FormItem>
         {esBanda && 
-          <FormItem>
-            {'Aca van los datos de los integrantes'}
-          </FormItem>
+          <div>
+            <ListaIntegrantes
+              integrantes={integrantes}
+              onDelete={removerIntegrante}
+            />
+            <FormIntegranteBanda onSubmit={agregarIntegrante}/>
+          </div>
         }
         <FormItem >
           <div className='flex flex-space-between'>

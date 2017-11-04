@@ -8,6 +8,7 @@ export default function (FormElement) {
       const {onSubmit, onFormValidationFail, form} = this.props;
       const {validateFields} = form;
       e.preventDefault();
+      e.stopPropagation();
       validateFields((errors, values) => {
         if (!errors) {
           onSubmit(e, values);

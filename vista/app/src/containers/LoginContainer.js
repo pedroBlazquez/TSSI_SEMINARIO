@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 // Cambiar esto por el request verdadero
 import {requestLogin} from '../actions/loginActions';
 
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/FormLogin';
 import FormWrapper from '../components/FormWrapper';
 
 class LoginContainer extends Component {

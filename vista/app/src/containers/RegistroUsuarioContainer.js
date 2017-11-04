@@ -5,9 +5,9 @@ import moment from 'moment';
 
 import {TIPOS_USUARIO, USUARIO_ARTISTA, USUARIO_OYENTE, USUARIO_BANDA} from '../utils/constants';
 
-import RegistroUsuarioForm from '../components/RegistroUsuarioForm';
+import RegistroUsuarioForm from '../components/FormRegistroUsuario';
 import FormWrapper from '../components/FormWrapper';
-import DatosArtistaForm from '../components/DatosArtistaForm';
+import DatosArtistaForm from '../components/FormDatosArtista';
 
 const initialUsuarioFields = {
   usuario: {
@@ -33,7 +33,17 @@ const initialUsuarioFields = {
 const initialArtistaFields = {
   generos: {
     value: []
-  }
+  },
+  fechaInicio: {
+    value: moment()
+  },
+  descripcion: {
+    value: ''
+  },
+  nombreFantasia: {
+    value: ''
+  },
+  integrantes: []
 };
 
 class RegistroUsuarioContainer extends Component {
@@ -42,7 +52,7 @@ class RegistroUsuarioContainer extends Component {
 
     this.state = {
       usuarioFields : initialUsuarioFields,
-      artistaFields: initialUsuarioFields,
+      artistaFields: initialArtistaFields,
       formType: USUARIO_OYENTE
     };
   }
@@ -54,7 +64,7 @@ class RegistroUsuarioContainer extends Component {
         return (
           <RegistroUsuarioForm
             onSubmit={this.onSubmit}
-            onChange={this.onFormChange}
+            onChange={this.onDatosUsuarioChange}
             {...this.state.usuarioFields}
           />
         );
@@ -63,9 +73,10 @@ class RegistroUsuarioContainer extends Component {
         return (
           <DatosArtistaForm
             onSubmit={this.onSubmit}
-            onChange={this.onFormChange}
+            onChange={this.onDatosArtistaChange}
             onCancel={this.onCancel}
             esBanda={formType === USUARIO_BANDA}
+            agregarIntegrante={this.agregarIntegrante}
             {...this.state.artistaFields}
           />
         );
@@ -79,9 +90,19 @@ class RegistroUsuarioContainer extends Component {
         break;
       case USUARIO_ARTISTA:
       case USUARIO_BANDA:
-        this.setState({artistaFields: {...this.state.artistaFields, ...changedFields}});
+        const artistaFields = this.state.artistaFields;
+        this.setState({artistaFields: {...artistaFields, ...changedFields}});
         break;
     }
+  }
+
+  onDatosUsuarioChange = (changedFields) => {
+    this.setState({usuarioFields: {...this.state.usuarioFields, ...changedFields}});
+  }
+
+  onDatosArtistaChange = (changedFields) => {
+    const artistaFields = this.state.artistaFields;
+    this.setState({artistaFields: {...artistaFields, ...changedFields}});
   }
 
   onSubmit = (e, values) => {
@@ -94,6 +115,15 @@ class RegistroUsuarioContainer extends Component {
 
   onCancel = () => {
     this.setState({formType: USUARIO_OYENTE, artistaFields: initialArtistaFields});
+  }
+
+  agregarIntegrante = (e, integrante) => {
+    const state = this.state;
+    const artistaFields = state.artistaFields;
+    const integrantes = [...artistaFields.integrantes];
+    const integranteNuevo = {...integrante, key: integrantes.length};
+    integrantes.push(integranteNuevo);
+    this.setState({artistaFields: Object.assign({}, artistaFields, {integrantes})});
   }
 
   render () {
