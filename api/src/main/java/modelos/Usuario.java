@@ -61,12 +61,19 @@ public class Usuario {
     public Usuario(){
     	
     }
+
+    // Este constructor va a ser usado para crear los usuarios de autenticación
+    public Usuario(String mail, String password, boolean estado){
+        this.mail = mail;
+        this.password = password;
+        this.estado = estado;
+    }
     
-	public Usuario(String mail, String contrasenia, String nombre, String apellido, Date fechaAlta, boolean estado,
+	public Usuario(String mail, String password, String nombre, String apellido, Date fechaAlta, boolean estado,
 			UsuarioTipo usuarioTipo) {
 		super();
 		this.mail = mail;
-		this.password = contrasenia;
+		this.password = password;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaAlta = fechaAlta;
@@ -82,11 +89,11 @@ public class Usuario {
 		this.mail = mail;
 	}
 
-	public String getContrasenia() {
+	public String getPassword() {
 		return password;
 	}
 
-	public void setContrasenia(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
@@ -181,5 +188,4 @@ public class Usuario {
 	public void setListasreproduccion(List<ListaReproduccion> listasreproduccion) {
 		this.listasreproduccion = listasreproduccion;
 	}
-
 }
