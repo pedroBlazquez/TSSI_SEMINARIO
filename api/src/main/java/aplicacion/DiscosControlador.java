@@ -11,25 +11,21 @@ import java.util.List;
 @RestController
 @RequestMapping("/discos")
 public class DiscosControlador {
-    
 
-   @RequestMapping(value = "/get/", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAll/", method = RequestMethod.GET)
     public ResponseEntity<List<Disco>> getDiscos() {
-	   try
-	   {
-		    Conexion cn = new Conexion();
-		    cn.abrirConexion();
-	        List<Disco> discos = cn.getListQuery("from modelos.Disco");
-	        cn.cerrarConexion();
-	        if (discos.isEmpty()) {
-	            return new ResponseEntity(HttpStatus.NO_CONTENT);
-	            // You many decide to return HttpStatus.NOT_FOUND
-	        }
-	        return new ResponseEntity<List<Disco>>(discos, HttpStatus.OK);
-	   }
-	   catch (Exception ex)
-	   {
-		   return new ResponseEntity(HttpStatus.METHOD_FAILURE);
-	   }
+        try {
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            List<Disco> discos = cn.getListQuery("from modelos.Disco");
+            cn.cerrarConexion();
+            if (discos.isEmpty()) {
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                // You many decide to return HttpStatus.NOT_FOUND
+            }
+            return new ResponseEntity<List<Disco>>(discos, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

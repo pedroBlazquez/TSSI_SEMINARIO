@@ -36,159 +36,158 @@ public class Usuario {
     @Column(name = "estado", nullable = false)
     private boolean estado;
 
-    //FK
+    // FK
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUsuarioTipo")
     private UsuarioTipo usuarioTipo;
 
-    //Relaciones
+    // Relaciones
     @JsonIgnore
-    @OneToMany(mappedBy = "idSeguidos.seguidor", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
-   	private List<Seguidos> seguidos = new ArrayList<>();
+    @OneToMany(mappedBy = "idSeguidos.seguidor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Seguidos> seguidos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idSeguidos.seguido", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
-   	private List<Seguidos> seguidores = new ArrayList<>();
+    @OneToMany(mappedBy = "idSeguidos.seguido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Seguidos> seguidores = new ArrayList<>();
 
     @JsonIgnore
-    @OneToOne(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
-   	private Artista artista;
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Artista artista;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Compartido> compartidos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ListaReproduccion> listasreproduccion = new ArrayList<>();
-    
-    
-    public Usuario(){
-    	
+
+    public Usuario() {
+
     }
-    
-	public Usuario(String mail, String contrasenia, String nombre, String apellido, Date fechaAlta, boolean estado,
-			UsuarioTipo usuarioTipo) {
-		super();
-		this.mail = mail;
-		this.password = contrasenia;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.fechaAlta = fechaAlta;
-		this.estado = estado;
-		this.usuarioTipo = usuarioTipo;
-	}
-    
-	public String getMail() {
-		return mail;
-	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
+    public Usuario(String mail, String contrasenia, String nombre, String apellido, Date fechaAlta, boolean estado,
+            UsuarioTipo usuarioTipo) {
+        super();
+        this.mail = mail;
+        this.password = contrasenia;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaAlta = fechaAlta;
+        this.estado = estado;
+        this.usuarioTipo = usuarioTipo;
+    }
 
-	public String getContrasenia() {
-		return password;
-	}
+    public String getMail() {
+        return mail;
+    }
 
-	public void setContrasenia(String password) {
-		this.password = password;
-	}
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public String getContrasenia() {
+        return password;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setContrasenia(String password) {
+        this.password = password;
+    }
 
-	public String getApellido() {
-		return apellido;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public Date getFechaAlta() {
-		return fechaAlta;
-	}
+    public String getApellido() {
+        return apellido;
+    }
 
-	public void setFechaAlta(Date fechaAlta) {
-		this.fechaAlta = fechaAlta;
-	}
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
 
-	public boolean isEstado() {
-		return estado;
-	}
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
 
-	public void setEstado(boolean estado) {
-		this.estado = estado;
-	}
+    public void setFechaAlta(Date fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
 
-	public UsuarioTipo getUsuarioTipo() {
-		return usuarioTipo;
-	}
+    public boolean isEstado() {
+        return estado;
+    }
 
-	public void setUsuarioTipo(UsuarioTipo usuarioTipo) {
-		this.usuarioTipo = usuarioTipo;
-	}
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public UsuarioTipo getUsuarioTipo() {
+        return usuarioTipo;
+    }
 
-	public List<Seguidos> getSeguidos() {
-		return seguidos;
-	}
+    public void setUsuarioTipo(UsuarioTipo usuarioTipo) {
+        this.usuarioTipo = usuarioTipo;
+    }
 
-	public void setSeguidos(List<Seguidos> seguidos) {
-		this.seguidos = seguidos;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public List<Seguidos> getSeguidores() {
-		return seguidores;
-	}
+    public List<Seguidos> getSeguidos() {
+        return seguidos;
+    }
 
-	public void setSeguidores(List<Seguidos> seguidores) {
-		this.seguidores = seguidores;
-	}
+    public void setSeguidos(List<Seguidos> seguidos) {
+        this.seguidos = seguidos;
+    }
 
-	public Artista getArtista() {
-		return artista;
-	}
+    public List<Seguidos> getSeguidores() {
+        return seguidores;
+    }
 
-	public void setArtista(Artista artista) {
-		this.artista = artista;
-	}
+    public void setSeguidores(List<Seguidos> seguidores) {
+        this.seguidores = seguidores;
+    }
 
-	public List<Compartido> getCompartidos() {
-		return compartidos;
-	}
+    public Artista getArtista() {
+        return artista;
+    }
 
-	public void setCompartidos(List<Compartido> compartidos) {
-		this.compartidos = compartidos;
-	}
+    public void setArtista(Artista artista) {
+        this.artista = artista;
+    }
 
-	public List<Like> getLikes() {
-		return likes;
-	}
+    public List<Compartido> getCompartidos() {
+        return compartidos;
+    }
 
-	public void setLikes(List<Like> likes) {
-		this.likes = likes;
-	}
+    public void setCompartidos(List<Compartido> compartidos) {
+        this.compartidos = compartidos;
+    }
 
-	public List<ListaReproduccion> getListasreproduccion() {
-		return listasreproduccion;
-	}
+    public List<Like> getLikes() {
+        return likes;
+    }
 
-	public void setListasreproduccion(List<ListaReproduccion> listasreproduccion) {
-		this.listasreproduccion = listasreproduccion;
-	}
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public List<ListaReproduccion> getListasreproduccion() {
+        return listasreproduccion;
+    }
+
+    public void setListasreproduccion(List<ListaReproduccion> listasreproduccion) {
+        this.listasreproduccion = listasreproduccion;
+    }
 
 }

@@ -7,87 +7,73 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name="Publicaciones")
+@Table(name = "Publicaciones")
 public class Publicacion {
 
     @Id
     @Column(name = "idPublicacion")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(name = "texto", nullable = false)
     private String texto;
 
     @Column(name = "fechaPublicacion", nullable = false)
     private Date fechaPublicacion;
-    
-    //FK
-    @ManyToOne(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
-  	@JoinColumn (name="idArtista") 
-  	private Artista artista;
-    
-    //Relaciones
-    @OneToMany(mappedBy = "publicacion", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
-   	private List<AccionLikeCompartir> acciones = new ArrayList<>();
-    
-    
+
+    // FK
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "idArtista")
+    private Artista artista;
+
+    // Relaciones
+    @OneToMany(mappedBy = "publicacion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AccionLikeCompartir> acciones = new ArrayList<>();
+
     public Publicacion() {
-     }
+    }
 
+    public Publicacion(String texto, Date fechaPublicacion, Artista artista) {
+        super();
+        this.texto = texto;
+        this.fechaPublicacion = fechaPublicacion;
+        this.artista = artista;
+    }
 
-	public Publicacion(String texto, Date fechaPublicacion, Artista artista) {
-		super();
-		this.texto = texto;
-		this.fechaPublicacion = fechaPublicacion;
-		this.artista = artista;
-	}
+    public String getTexto() {
+        return texto;
+    }
 
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
 
-	public String getTexto() {
-		return texto;
-	}
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
 
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
 
-	public void setTexto(String texto) {
-		this.texto = texto;
-	}
+    public Artista getArtista() {
+        return artista;
+    }
 
+    public void setArtista(Artista artista) {
+        this.artista = artista;
+    }
 
-	public Date getFechaPublicacion() {
-		return fechaPublicacion;
-	}
+    public List<AccionLikeCompartir> getAcciones() {
+        return acciones;
+    }
 
+    public void setAcciones(List<AccionLikeCompartir> acciones) {
+        this.acciones = acciones;
+    }
 
-	public void setFechaPublicacion(Date fechaPublicacion) {
-		this.fechaPublicacion = fechaPublicacion;
-	}
+    public int getId() {
+        return id;
+    }
 
-
-	public Artista getArtista() {
-		return artista;
-	}
-
-
-	public void setArtista(Artista artista) {
-		this.artista = artista;
-	}
-
-
-	public List<AccionLikeCompartir> getAcciones() {
-		return acciones;
-	}
-
-
-	public void setAcciones(List<AccionLikeCompartir> acciones) {
-		this.acciones = acciones;
-	}
-
-
-	public int getId() {
-		return id;
-	}
-
-
-	
-    
 }

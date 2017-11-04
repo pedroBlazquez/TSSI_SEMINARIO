@@ -4,63 +4,61 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-
 @Entity
-@Table(name="GenerosCancion")
+@Table(name = "GenerosCancion")
 public class GeneroCancion {
 
-	@Embeddable
-	public static class embID_GeneroCancion implements Serializable { 
-		private static final long serialVersionUID = 1L;
+    @Embeddable
+    public static class embID_GeneroCancion implements Serializable {
+        private static final long serialVersionUID = 1L;
 
-		//FK
-		@ManyToOne(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
-		@JoinColumn (name="idGenero") 
-		private Genero genero;
-		
-		//FK
-		@ManyToOne(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
-		@JoinColumn (name="idCancion") 
-		private Cancion cancion;
+        // FK
+        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @JoinColumn(name = "idGenero")
+        private Genero genero;
 
-		public embID_GeneroCancion() {
-			super();
-		}
-	}
-	
-	@EmbeddedId
-	private embID_GeneroCancion idGeneroCancion =  new embID_GeneroCancion();
+        // FK
+        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @JoinColumn(name = "idCancion")
+        private Cancion cancion;
 
-	public GeneroCancion() {
-		super();
-	}
-	
-	public GeneroCancion(embID_GeneroCancion idGeneroCancion) {
-		super();
-		this.idGeneroCancion = idGeneroCancion;
-	}
-	
-	public GeneroCancion(Genero genero, Cancion cancion) {
-		super();
-		this.idGeneroCancion.genero = genero;
-		this.idGeneroCancion.cancion = cancion;
-	}
-	
-	public Genero getGenero() {
-		return idGeneroCancion.genero;
-	}
+        public embID_GeneroCancion() {
+            super();
+        }
+    }
 
-	public void setGenero(Genero genero) {
-		this.idGeneroCancion.genero = genero;
-	}
+    @EmbeddedId
+    private embID_GeneroCancion idGeneroCancion = new embID_GeneroCancion();
 
-	public Cancion getCancion() {
-		return idGeneroCancion.cancion;
-	}
+    public GeneroCancion() {
+        super();
+    }
 
-	public void setCancion(Cancion cancion) {
-		this.idGeneroCancion.cancion = cancion;
-	}
+    public GeneroCancion(embID_GeneroCancion idGeneroCancion) {
+        super();
+        this.idGeneroCancion = idGeneroCancion;
+    }
 
-	
+    public GeneroCancion(Genero genero, Cancion cancion) {
+        super();
+        this.idGeneroCancion.genero = genero;
+        this.idGeneroCancion.cancion = cancion;
+    }
+
+    public Genero getGenero() {
+        return idGeneroCancion.genero;
+    }
+
+    public void setGenero(Genero genero) {
+        this.idGeneroCancion.genero = genero;
+    }
+
+    public Cancion getCancion() {
+        return idGeneroCancion.cancion;
+    }
+
+    public void setCancion(Cancion cancion) {
+        this.idGeneroCancion.cancion = cancion;
+    }
+
 }

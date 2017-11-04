@@ -4,63 +4,61 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-
 @Entity
-@Table(name="CancionesDisco")
+@Table(name = "CancionesDisco")
 public class CancionDisco {
 
-	@Embeddable
-	public static class embID_CancionDisco implements Serializable { 
-		private static final long serialVersionUID = 1L;
+    @Embeddable
+    public static class embID_CancionDisco implements Serializable {
+        private static final long serialVersionUID = 1L;
 
-		//FK
-		@ManyToOne(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
-		@JoinColumn (name="idCancion") 
-		private Cancion cancion;
-		
-		//FK
-		@ManyToOne(fetch= FetchType.LAZY, cascade=CascadeType.ALL)
-		@JoinColumn (name="idDisco") 
-		private Disco disco;
+        // FK
+        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @JoinColumn(name = "idCancion")
+        private Cancion cancion;
 
-		public embID_CancionDisco() {
-			super();
-		}
-	}
-	
-	@EmbeddedId
-	private embID_CancionDisco idCancionDisco =  new embID_CancionDisco();
+        // FK
+        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @JoinColumn(name = "idDisco")
+        private Disco disco;
 
-	public CancionDisco() {
-		super();
-	}
-	
-	public CancionDisco(embID_CancionDisco idCancionDisco) {
-		super();
-		this.idCancionDisco = idCancionDisco;
-	}
-	
-	public CancionDisco(Cancion cancion, Disco disco) {
-		super();
-		this.idCancionDisco.cancion = cancion;
-		this.idCancionDisco.disco = disco;
-	}
-	
-	public Cancion getCancion() {
-		return idCancionDisco.cancion;
-	}
+        public embID_CancionDisco() {
+            super();
+        }
+    }
 
-	public void setCancion(Cancion cancion) {
-		this.idCancionDisco.cancion = cancion;
-	}
+    @EmbeddedId
+    private embID_CancionDisco idCancionDisco = new embID_CancionDisco();
 
-	public Disco getDisco() {
-		return idCancionDisco.disco;
-	}
+    public CancionDisco() {
+        super();
+    }
 
-	public void setDisco(Disco disco) {
-		this.idCancionDisco.disco = disco;
-	}
+    public CancionDisco(embID_CancionDisco idCancionDisco) {
+        super();
+        this.idCancionDisco = idCancionDisco;
+    }
 
-	
+    public CancionDisco(Cancion cancion, Disco disco) {
+        super();
+        this.idCancionDisco.cancion = cancion;
+        this.idCancionDisco.disco = disco;
+    }
+
+    public Cancion getCancion() {
+        return idCancionDisco.cancion;
+    }
+
+    public void setCancion(Cancion cancion) {
+        this.idCancionDisco.cancion = cancion;
+    }
+
+    public Disco getDisco() {
+        return idCancionDisco.disco;
+    }
+
+    public void setDisco(Disco disco) {
+        this.idCancionDisco.disco = disco;
+    }
+
 }
