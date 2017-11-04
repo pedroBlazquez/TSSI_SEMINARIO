@@ -8,9 +8,7 @@
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/DB_MusicApp?createDatabaseIfNotExist=true</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-  
   <property name="hbm2ddl.auto">update</property>
-  
   <mapping class="modelos.AccionLikeCompartir"/>
   <mapping class="modelos.Album"/>
   <mapping class="modelos.Artista"/>
