@@ -10,7 +10,7 @@ import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 @RestController
 public class InicioControlador {
-    
+
     @RequestMapping("/")
     public String inicio(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
