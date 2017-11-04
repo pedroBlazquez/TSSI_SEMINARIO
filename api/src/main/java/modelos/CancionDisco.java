@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "CancionesDisco")
@@ -47,19 +48,22 @@ public class CancionDisco {
         this.idCancionDisco.cancion = cancion;
         this.idCancionDisco.disco = disco;
     }
-
+    
+    
     public Cancion getCancion() {
         return idCancionDisco.cancion;
     }
 
+    
     public void setCancion(Cancion cancion) {
         this.idCancionDisco.cancion = cancion;
     }
-
+    
+    @JsonIgnore
     public Disco getDisco() {
         return idCancionDisco.disco;
     }
-
+    @JsonProperty
     public void setDisco(Disco disco) {
         this.idCancionDisco.disco = disco;
     }
