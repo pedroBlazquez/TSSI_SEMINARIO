@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 
+import {TIPOS_USUARIO, USUARIO_MUSICO, USUARIO_OYENTE} from '../utils/constants';
+
 import RegistroUsuarioForm from '../components/RegistroUsuarioForm';
 
 class RegistroUsuarioContainer extends Component {
@@ -14,7 +16,14 @@ class RegistroUsuarioContainer extends Component {
       },
       password: {
         value: ''
-      }
+      },
+      nombre: {
+        value: ''
+      },
+      apellido: {
+        value: ''
+      },
+      tipoUsuario: USUARIO_OYENTE
     };
   }
 
@@ -22,10 +31,15 @@ class RegistroUsuarioContainer extends Component {
     this.setState({...this.state, ...changedFields});
   }
 
+  onSubmit = (values) => {
+    console.log(values);
+  }
+
   render () {
     const {match, location, history} = this.props;
     return (
-      <RegistroUsuarioForm 
+      <RegistroUsuarioForm
+        onSubmit={this.onSubmit}
         usuario={this.state.usuario}
         password={this.state.password}
         onChange={this.onFormChange}
@@ -34,6 +48,6 @@ class RegistroUsuarioContainer extends Component {
   }
 }
 
-export default withRouter(connect(
+export default connect(
 
-)(RegistroUsuarioContainer))
+)(RegistroUsuarioContainer)

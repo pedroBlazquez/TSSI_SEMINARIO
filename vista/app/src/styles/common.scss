@@ -19,3 +19,9 @@
   @extend .custom-button;
   background-color: $orange;
 }
+
+
+// Flex
+.flex {display: flex;}
+.flex-row {flex-direction: row;}
+.flex-space-between {justify-content: space-between;}

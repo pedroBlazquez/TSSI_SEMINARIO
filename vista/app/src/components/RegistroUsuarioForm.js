@@ -8,9 +8,12 @@ import '../styles/LoginForm.css';
 import FormWrapper from './FormWrapper';
 import MailInput from './MailInput';
 import PassInput from './PasswordInput';
+import FechaNacimiento from './FechaNacimiento';
+import TiposUsuario from './TiposUsuario';
+import InfoTooltip from './InfoTooltip';
+import InputWithIcon from './InputWithIcon';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 const InputText = ({getFieldDecorator, mapTo, ...inputProps}) => (
   getFieldDecorator(mapTo, {rules: [REQUIRED]})(
@@ -31,34 +34,33 @@ class RegistroUsuarioForm extends Component {
         error={error}
         title={'Complete sus datos'}
       >
-        <Form >
+        <Form onSubmit={onSubmit}>
           <FormItem>
-            <InputText {...form} type={'text'} placeholder={'Ingrese su Nombre'} mapTo={'nombre'}/>
+            <InputText getFieldDecorator={form.getFieldDecorator} type={'text'} placeholder={'Ingrese su Nombre'} mapTo={'nombre'}/>
           </FormItem>
           <FormItem>
-            <InputText {...form} type={'text'} placeholder={'Ingrese su Apellido'} mapTo={'apellido'}/>
+            <InputText getFieldDecorator={form.getFieldDecorator} type={'text'} placeholder={'Ingrese su Apellido'} mapTo={'apellido'}/>
           </FormItem>
-          <FormItem>
-            <DatePicker
+          <FormItem required>
+            <FechaNacimiento
               className={'full-width'}
-              placeholder={'Fecha de nacimiento'}
               onChange={onFechaNacimientoChange}
             />
           </FormItem>
           <FormItem>
-            <MailInput {...form} mapTo={'usuario'} />
+            <MailInput getFieldDecorator={form.getFieldDecorator} mapTo={'usuario'} />
           </FormItem>
           <FormItem>
-            <PassInput {...form}/>
+            <PassInput getFieldDecorator={form.getFieldDecorator}/>
           </FormItem>
-          <FormItem>
-              <Select defaultValue={'oyente'} className={'full-width'} onChange={onTipoUsuarioChange}>
-                <Option value={'oyente'}>Oyente</Option>
-                <Option value={'artista'}>Artista</Option>
-              </Select>
-          </FormItem>
+            <FormItem >
+              <InputWithIcon
+                input={(<TiposUsuario onChange={onTipoUsuarioChange}/>)}
+                icon={(<InfoTooltip title={'Estos son los tipos de usuarios que tenemos para vos!'}/>)}
+              />
+            </FormItem>
           <FormItem >
-            <Button className={'green-button'}>
+            <Button htmlType="submit" className={'green-button'}>
               {'Seguir'}
             </Button>
           </FormItem>
