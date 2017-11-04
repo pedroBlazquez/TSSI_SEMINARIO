@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import { Form, Button, Input, Select, DatePicker} from 'antd';
+import moment from 'moment';
 import es_ES from 'antd/lib/locale-provider/es_ES';
 
-import {PasswordValidator, DatosPersonalesValidator, MailValidator} from '../utils/validators';
+import {PasswordValidator, DatosPersonalesValidator, MailValidator, FechaValidator} from '../utils/validators';
 
 import '../styles/LoginForm.css';
 import ExtendedForm from './ExtendedForm';
@@ -21,22 +22,22 @@ class RegistroUsuarioForm extends Component {
     const {form, onSubmit, onTipoUsuarioChange} = this.props;
     return (
       <Form onSubmit={onSubmit}>
-        <FormItem>
+        <FormItem label="Nombre">
           {
             DatosPersonalesValidator({form})('nombre')
             (<Input type="text" palceholder="Ingrese su nombre" />)
           }
         </FormItem>
-        <FormItem>
+        <FormItem label="Apellido">
           {
             DatosPersonalesValidator({form})('apellido')
-            (<Input type="text" palceholder="Ingrese su apellido" />)
+            (<Input palceholder={'Ingrese su apellido'} type="text"/>)
           }
         </FormItem>
-        <FormItem required>
+        <FormItem>
           {
-            DatosPersonalesValidator({form})('fechaNacimiento')
-            (<FechaNacimiento className="full-width" />)
+            FechaValidator({form})('fechaNacimiento')
+            (<FechaNacimiento className="full-width" palceholder="Ingrese su fecha de nacimiento"/>)
           }
         </FormItem>
         <FormItem>
@@ -47,7 +48,7 @@ class RegistroUsuarioForm extends Component {
         </FormItem>
         <FormItem >
           <InputWithIcon
-            input={(<TiposUsuario onChange={onTipoUsuarioChange}/>)}
+            input={form.getFieldDecorator('tipoUsuario')(<TiposUsuario/>)}
             icon={(<InfoTooltip title={'Estos son los tipos de usuarios que tenemos para vos!'}/>)}
           />
         </FormItem>
@@ -69,6 +70,9 @@ export default Form.create({
     return {
       usuario: {...props.usuario},
       password: {...props.password},
+      nombre: {...props.nombre},
+      apellido: {...props.apellido},
+      tipoUsuario: {...props.tipoUsuario},
       fechaNacimiento: {...props.fechaNacimiento}
     };
   } 

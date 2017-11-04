@@ -1,0 +1,27 @@
+@import 'variables';
+
+.custom-button {
+  color: white;
+  font-weight: 400;
+  border: none;
+}
+
+.custom-button-secondary {
+  font-weight: 400;
+  border: 1px solid $dark-gray;
+  color: $dark-gray;
+}
+
+.green-button {
+  @extend .custom-button;
+  background-color: $green;
+}
+
+.orange-button {
+  @extend .custom-button;
+  background-color: $orange;
+}
+
+.white-button {
+  @extend .custom-button-secondary;
+}

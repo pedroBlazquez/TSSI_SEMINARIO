@@ -16,6 +16,7 @@ import 'antd/dist/antd.css';
 import './styles/index.css';
 import './styles/errors.css';
 import './styles/common.css';
+import './styles/buttons.css';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), applyMiddleware(sagaMiddleware));

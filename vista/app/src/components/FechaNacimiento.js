@@ -8,7 +8,6 @@ class FechaNacimiento extends Component {
       <DatePicker
         {...this.props}
         disabledDate={checkDisabledTime}
-        placeholder={'Fecha de nacimiento'}
       />
     );
   }

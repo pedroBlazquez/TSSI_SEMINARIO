@@ -13,3 +13,5 @@ export const PasswordValidator = ruleValidator([REQUIRED]);
 export const MailValidator = ruleValidator([MAIL, REQUIRED_WHITE_SPACE]);
 
 export const DatosPersonalesValidator = ruleValidator([REQUIRED_WHITE_SPACE]);
+
+export const FechaValidator = ruleValidator([REQUIRED]);

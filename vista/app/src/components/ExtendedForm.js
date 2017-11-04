@@ -10,10 +10,10 @@ export default function (FormElement) {
       e.preventDefault();
       validateFields((errors, values) => {
         if (!errors) {
-          onSubmit(values);
+          onSubmit(e, values);
         } else {
           if (typeof onFormValidationFail === 'function') {
-            onFormValidationFail(errors);
+            onFormValidationFail(e, values, errors);
           }
         }
       })
