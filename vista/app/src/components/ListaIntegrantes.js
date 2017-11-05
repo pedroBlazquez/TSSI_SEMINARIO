@@ -19,6 +19,9 @@ class IntegrantesBanda extends Component {
         title: 'Fecha nacimiento',
         dataIndex: 'fechaNacimiento',
         key: 'fechaNacimiento',
+        render: (text, record) => {
+          return text.format('DD-MM-YYYY');
+        }
       },{
         title: 'Remover',
         dataIndex: 'remover',

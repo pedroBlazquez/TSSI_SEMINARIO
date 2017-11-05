@@ -10,21 +10,11 @@ import FormWrapper from '../components/FormWrapper';
 import DatosArtistaForm from '../components/FormDatosArtista';
 
 const initialUsuarioFields = {
-  usuario: {
-    value: ''
-  },
-  password: {
-    value: ''
-  },
-  nombre: {
-    value: ''
-  },
-  apellido: {
-    value: ''
-  },
-  fechaNacimiento: {
-    value: moment()
-  },
+  usuario: {},
+  password: {},
+  nombre: {},
+  apellido: {},
+  fechaNacimiento: {},
   tipoUsuario: {
     value: USUARIO_OYENTE
   }

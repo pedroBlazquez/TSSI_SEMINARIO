@@ -1,15 +1,4 @@
 @import 'variables';
 .login-button {
   width: 100%;
-  color: white;
-  font-weight: 400;
-  border: none;
-
-  &.ingresar {
-    background-color: $green;
-  }
-
-  &.registrarse {
-    background-color: $orange;
-  }
 }

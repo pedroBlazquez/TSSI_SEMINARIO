@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Form, Button, Input, Select, DatePicker} from 'antd';
 import es_ES from 'antd/lib/locale-provider/es_ES';
 
-import { DatosPersonalesValidator } from '../utils/validators';
+import { DatosPersonalesValidator, FechaValidator } from '../utils/validators';
 
 import '../styles/LoginForm.css';
 import ExtendedForm from './ExtendedForm';
@@ -37,18 +37,18 @@ class DatosArtistaForm extends Component {
       <div>
         <Form onSubmit={onSubmit}>
           <FormItem 
-            label="Nombre de fantasía"
             error={form.getFieldError('nombreFantasia')}
             validateStatus={form.getFieldError('nombreFantasia') ? 'error': ''}
+            help={form.getFieldError('nombreFantasia') ? form.getFieldError('nombreFantasia')[0] : ''}
           >
             <InputWithIcon
-              input={DatosPersonalesValidator({form})('nombreFantasia')(<Input type="text" />)}
+              input={DatosPersonalesValidator({form})('nombreFantasia')(<Input type="text" placeholder="Ingrese nombre de fantasía" />)}
               icon={(<InfoTooltip title={'Las personas podrán encontrarte a través de tu nombre de fantasía!'}/>)}
             />
           </FormItem>
           <FormItem>
             {
-              DatosPersonalesValidator({form})('fechaInicio')
+              FechaValidator({form})('fechaInicio')
               (<FechaNacimiento className="full-width"/>)
             }
           </FormItem>
@@ -62,15 +62,17 @@ class DatosArtistaForm extends Component {
             }
           </FormItem>
           {esBanda && 
-            <div>
-              <Button className={'green-button'} onClick={this.toggleModalIntegrantes}>
+            <FormItem>
+              <Button className={'green-button margin-5p'} onClick={this.toggleModalIntegrantes}>
                 {'Agregar nuevo integrante'}
               </Button>
-              <ListaIntegrantes
-                integrantes={integrantes}
-                onDelete={removerIntegrante}
-              />
-            </div>
+              <div>
+                <ListaIntegrantes
+                  integrantes={integrantes}
+                  onDelete={removerIntegrante}
+                />
+              </div>
+            </FormItem>
           }
           <FormItem >
             <div className='flex flex-space-between'>
@@ -83,11 +85,13 @@ class DatosArtistaForm extends Component {
             </div>
           </FormItem>
         </Form>
-        <ModalAltaIntegrante
-          visible={this.state.modalIntegrantes}
-          cerrarModal={this.toggleModalIntegrantes}
-          agregarIntegrante={agregarIntegrante}
-        />
+        {this.state.modalIntegrantes &&
+          <ModalAltaIntegrante
+            visible={this.state.modalIntegrantes}
+            cerrarModal={this.toggleModalIntegrantes}
+            agregarIntegrante={agregarIntegrante}
+          />
+        }
       </div>
     )
   }

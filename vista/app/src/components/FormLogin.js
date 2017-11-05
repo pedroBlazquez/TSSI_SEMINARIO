@@ -24,17 +24,16 @@ class LoginForm extends Component {
         </FormItem>
         <FormItem>
           <Button
-            type="primary"
             htmlType="submit"
             size="large"
-            className="login-button ingresar"
+            className="login-button green-button"
           >
             {'Ingresar'}
           </Button>
         </FormItem>
         <FormItem>
           <Button
-            className="login-button registrarse"
+            className="login-button orange-button"
           >
             <a href="/registrarse">{'Registrarse'}</a>
           </Button>

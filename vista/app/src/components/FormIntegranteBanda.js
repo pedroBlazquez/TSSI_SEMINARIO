@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Form, Button, Input} from 'antd';
 
 import ExtendedForm from './ExtendedForm';
+import FechaNacimiento from './FechaNacimiento';
+import RolesIntegrante from './RolesIntegrante';
 import {DatosPersonalesValidator, FechaValidator} from '../utils/validators';
 
 const FormItem = Form.Item;
@@ -19,12 +21,12 @@ class FormIntegranteBanda extends Component {
         </FormItem>
         <FormItem>
           {DatosPersonalesValidator({form})('rol')
-            (<Input type={'text'} placeholder='Ingrese el rol del integrante'/>)
+            (<RolesIntegrante />)
           }
         </FormItem>
         <FormItem>
-          {DatosPersonalesValidator({form})('fechaNacimiento')
-            (<Input type={'text'} placeholder='Ingrese la fecha de nacimiento del integrante'/>)
+          {FechaValidator({form})('fechaNacimiento')
+            (<FechaNacimiento className={'full-width'} placeholder='Ingrese la fecha de nacimiento del integrante'/>)
           }
         </FormItem>
         <FormItem>

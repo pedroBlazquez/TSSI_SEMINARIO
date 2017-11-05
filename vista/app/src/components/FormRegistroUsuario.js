@@ -22,22 +22,22 @@ class RegistroUsuarioForm extends Component {
     const {form, onSubmit, onTipoUsuarioChange} = this.props;
     return (
       <Form onSubmit={onSubmit}>
-        <FormItem label="Nombre">
+        <FormItem>
           {
             DatosPersonalesValidator({form})('nombre')
-            (<Input type="text" palceholder="Ingrese su nombre" />)
+            (<Input type="text" placeholder="Ingrese su nombre" />)
           }
         </FormItem>
-        <FormItem label="Apellido">
+        <FormItem>
           {
             DatosPersonalesValidator({form})('apellido')
-            (<Input palceholder={'Ingrese su apellido'} type="text"/>)
+            (<Input placeholder={'Ingrese su apellido'} type="text"/>)
           }
         </FormItem>
         <FormItem>
           {
             FechaValidator({form})('fechaNacimiento')
-            (<FechaNacimiento className="full-width" palceholder="Ingrese su fecha de nacimiento"/>)
+            (<FechaNacimiento className="full-width" placeholder={'Fecha de nacimiento'}/>)
           }
         </FormItem>
         <FormItem>

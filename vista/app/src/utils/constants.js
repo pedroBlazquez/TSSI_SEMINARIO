@@ -5,4 +5,7 @@ export const USUARIO_BANDA  = 'Banda';
 export const TIPOS_USUARIO = [USUARIO_OYENTE, USUARIO_ARTISTA, USUARIO_BANDA];
 
 // Generos
-export const GENEROS = ['Varios', 'Rock', 'Cumbia', 'Electronica', 'Reggaeton']; 
+export const GENEROS = ['Varios', 'Rock', 'Cumbia', 'Electronica', 'Reggaeton'];
+
+// Roles Integrantes Bandas
+export const ROLES_INTEGRANTES = ['Guitarra', 'Bajo', 'Voz', 'Percusion', 'Teclado'];

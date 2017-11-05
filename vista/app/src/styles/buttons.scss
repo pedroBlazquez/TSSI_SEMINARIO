@@ -1,5 +1,11 @@
 @import 'variables';
 
+@mixin hover-button ($color) {
+  background-color: white;
+  color: $color;
+  border: 1px solid $color;
+}
+
 .custom-button {
   color: white;
   font-weight: 400;
@@ -8,20 +14,31 @@
 
 .custom-button-secondary {
   font-weight: 400;
-  border: 1px solid $dark-gray;
+  border: $border-dark-gray;
   color: $dark-gray;
 }
 
 .green-button {
   @extend .custom-button;
   background-color: $green;
+  &:hover {
+    @include hover-button($green);
+  }
 }
 
 .orange-button {
   @extend .custom-button;
   background-color: $orange;
+  &:hover {
+    @include hover-button($orange);
+  }
 }
 
 .white-button {
   @extend .custom-button-secondary;
+  &:hover {
+    color: white;
+    background-color: $dark-gray;
+    border: none;
+  }
 }
