@@ -2,18 +2,21 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 
+import App from '../views/App';
 import LoginRoute from './Login';
 import Home from './Home';
+import Registro from './Registro';
 
 // TODO: Cambiar las rutas para un mejor approach
 // https://css-tricks.com/react-router-4/
 
 const MainRoute = ({isLogged}) => (
   <BrowserRouter>
-    <div>
+    <App>
       <Home authorized={isLogged} />  
       <LoginRoute isLoggedIn={isLogged} />
-    </div>
+      <Registro />
+    </App>
   </BrowserRouter>
 );
 

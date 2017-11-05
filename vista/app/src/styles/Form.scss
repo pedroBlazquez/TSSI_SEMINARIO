@@ -1,0 +1,16 @@
+@import 'variables';
+.form-container {
+  padding: 25px;
+  border-radius: $border-radius;
+  border: $border-black;
+  overflow: auto;
+
+  .error-container {
+    margin-bottom: 5px;
+  }
+
+  .title {
+    text-align: center;
+    font-weight: 700;
+  } 
+}

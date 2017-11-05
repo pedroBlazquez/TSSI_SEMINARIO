@@ -1,0 +1,13 @@
+@import 'variables';
+
+.full-width {
+  width: 100%;
+}
+
+// Flex
+.flex {display: flex;}
+.flex-row {flex-direction: row;}
+.flex-space-between {justify-content: space-between;}
+
+// Margins
+.margin-5p {margin: 5px;}

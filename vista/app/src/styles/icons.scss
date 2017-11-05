@@ -1,0 +1,10 @@
+@import 'variables';
+
+.icon-base {
+  font-size: large;
+}
+
+.icon-info {
+  @extend .icon-base;
+  color: $orange; 
+}
