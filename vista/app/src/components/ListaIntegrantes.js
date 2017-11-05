@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 
 import {Table, Icon} from 'antd';
 
-
-
 class IntegrantesBanda extends Component {
 
   constructor (props) {

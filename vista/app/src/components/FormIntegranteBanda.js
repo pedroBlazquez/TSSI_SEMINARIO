@@ -42,5 +42,11 @@ class FormIntegranteBanda extends Component {
   }
 }
 
-export default Form.create()(ExtendedForm(FormIntegranteBanda));
+export default Form.create({
+  onFieldsChange(props, changedFields) {
+    if (typeof props.onChange === 'function') {
+      props.onChange(changedFields);
+    }
+  },
+})(ExtendedForm(FormIntegranteBanda));
 

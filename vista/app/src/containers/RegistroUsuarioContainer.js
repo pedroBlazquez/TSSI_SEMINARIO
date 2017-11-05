@@ -77,6 +77,7 @@ class RegistroUsuarioContainer extends Component {
             onCancel={this.onCancel}
             esBanda={formType === USUARIO_BANDA}
             agregarIntegrante={this.agregarIntegrante}
+            removerIntegrante={this.removerIntegrante}
             {...this.state.artistaFields}
           />
         );
@@ -117,13 +118,18 @@ class RegistroUsuarioContainer extends Component {
     this.setState({formType: USUARIO_OYENTE, artistaFields: initialArtistaFields});
   }
 
-  agregarIntegrante = (e, integrante) => {
-    const state = this.state;
-    const artistaFields = state.artistaFields;
+  agregarIntegrante = (integrante) => {
+    const {artistaFields} = this.state;
     const integrantes = [...artistaFields.integrantes];
     const integranteNuevo = {...integrante, key: integrantes.length};
     integrantes.push(integranteNuevo);
     this.setState({artistaFields: Object.assign({}, artistaFields, {integrantes})});
+  }
+
+  removerIntegrante = (integrante) => {
+    const {artistaFields} = this.state;
+    const integrantes = [...artistaFields.integrantes].filter(i => i.key !== integrante.key);
+    this.setState({artistaFields: {...artistaFields, integrantes}});
   }
 
   render () {
