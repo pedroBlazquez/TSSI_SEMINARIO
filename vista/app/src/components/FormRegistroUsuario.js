@@ -19,7 +19,7 @@ const FormItem = Form.Item;
 class RegistroUsuarioForm extends Component {
 
   render () {
-    const {form, onSubmit, onTipoUsuarioChange} = this.props;
+    const {form, onSubmit, onCancel, onTipoUsuarioChange} = this.props;
     return (
       <Form onSubmit={onSubmit}>
         <FormItem>
@@ -53,9 +53,14 @@ class RegistroUsuarioForm extends Component {
           />
         </FormItem>
         <FormItem >
-          <Button htmlType="submit" className={'green-button'}>
-            {'Seguir'}
-          </Button>
+          <div className={'flex flex-space-between'}>
+            <Button onClick={onCancel} className={'white-button'}>
+              {'Cancelar'}
+            </Button>
+            <Button htmlType="submit" className={'green-button'}>
+              {'Seguir'}
+            </Button>
+          </div>
         </FormItem>
       </Form>
     )

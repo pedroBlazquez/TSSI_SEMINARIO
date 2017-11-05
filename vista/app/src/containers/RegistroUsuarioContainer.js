@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {withRouter} from 'react-router';
 import moment from 'moment';
 
@@ -8,6 +9,9 @@ import {TIPOS_USUARIO, USUARIO_ARTISTA, USUARIO_OYENTE, USUARIO_BANDA} from '../
 import RegistroUsuarioForm from '../components/FormRegistroUsuario';
 import FormWrapper from '../components/FormWrapper';
 import DatosArtistaForm from '../components/FormDatosArtista';
+
+// Actions
+import {requestRegister} from '../actions/registerActions';
 
 const initialUsuarioFields = {
   usuario: {},
@@ -55,6 +59,7 @@ class RegistroUsuarioContainer extends Component {
           <RegistroUsuarioForm
             onSubmit={this.onSubmit}
             onChange={this.onDatosUsuarioChange}
+            onCancel={this.onCancel}
             {...this.state.usuarioFields}
           />
         );
@@ -97,10 +102,11 @@ class RegistroUsuarioContainer extends Component {
   }
 
   onSubmit = (e, values) => {
+    const {registrarUsuario} = this.props;
     if (values.tipoUsuario !== USUARIO_OYENTE && this.state.formType === USUARIO_OYENTE) {
       this.setState({formType: values.tipoUsuario});
     } else {
-
+      registrarUsuario(values);
     }
   }
 
@@ -122,6 +128,11 @@ class RegistroUsuarioContainer extends Component {
     this.setState({artistaFields: {...artistaFields, integrantes}});
   }
 
+  onCancel = () => {
+    const {history} = this.props;
+    history.push('/login');
+  }
+
   render () {
     const {error} = this.props;
     return (
@@ -135,6 +146,16 @@ class RegistroUsuarioContainer extends Component {
   }
 }
 
-export default connect(
+const mapStateToProps = (state) => ({
+  error: state.altaUsuarioStatus.message
+});
+const mapDispatchToProps = (dispatch) => ({
+  registrarUsuario: bindActionCreators(requestRegister, dispatch)
+});
 
-)(RegistroUsuarioContainer)
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(RegistroUsuarioContainer)
+);
