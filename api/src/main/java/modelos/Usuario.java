@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -30,8 +31,13 @@ public class Usuario {
     @Column(name = "apellido", nullable = false)
     private String apellido;
 
+    @JsonFormat(pattern = "dd-MM-YY")
     @Column(name = "fechaAlta", nullable = false)
     private Date fechaAlta;
+
+    @JsonFormat(pattern = "dd-MM-YY")
+    @Column(name = "fechaNacimiento", nullable = false)
+    private Date fechaNacimiento;
 
     @Column(name = "estado", nullable = false)
     private boolean estado;
@@ -128,8 +134,16 @@ public class Usuario {
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
+	
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
 
-	public boolean isEstado() {
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+ public boolean isEstado() {
 		return estado;
 	}
 
