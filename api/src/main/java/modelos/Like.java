@@ -2,52 +2,54 @@ package modelos;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name="Likes")
+@Table(name = "Likes")
 public class Like {
 
     @Id
     @Column(name = "idLike")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
-    //FK
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    // FK
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
-    
+
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idAccionLikeCompartir")
     private AccionLikeCompartir accion;
-    
+
     public Like() {
-     }
+    }
 
-	public Like(Usuario usuario, AccionLikeCompartir accion) {
-		super();
-		this.usuario = usuario;
-		this.accion = accion;
-	}
+    public Like(Usuario usuario, AccionLikeCompartir accion) {
+        super();
+        this.usuario = usuario;
+        this.accion = accion;
+    }
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
-	public AccionLikeCompartir getAccion() {
-		return accion;
-	}
+    public AccionLikeCompartir getAccion() {
+        return accion;
+    }
 
-	public void setAcciones(AccionLikeCompartir accion) {
-		this.accion = accion;
-	}
+    public void setAcciones(AccionLikeCompartir accion) {
+        this.accion = accion;
+    }
 
-	public int getId() {
-		return id;
-	}
-    
-  
+    public int getId() {
+        return id;
+    }
+
 }

@@ -6,6 +6,10 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 @Entity
 @Table(name = "Usuarios")
 public class Usuario {
@@ -27,46 +31,63 @@ public class Usuario {
     @Column(name = "apellido", nullable = false)
     private String apellido;
 
+    @JsonFormat(pattern = "dd-MM-YY")
     @Column(name = "fechaAlta", nullable = false)
     private Date fechaAlta;
+
+    @JsonFormat(pattern = "dd-MM-YY")
+    @Column(name = "fechaNacimiento", nullable = false)
+    private Date fechaNacimiento;
 
     @Column(name = "estado", nullable = false)
     private boolean estado;
 
-    //FK
-    @ManyToOne(fetch = FetchType.LAZY)
+    // FK
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUsuarioTipo")
     private UsuarioTipo usuarioTipo;
 
-    //Relaciones
-    @OneToMany(mappedBy = "idSeguidos.seguidor", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
-   	private List<Seguidos> seguidos = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "idSeguidos.seguido", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
-   	private List<Seguidos> seguidores = new ArrayList<>();
-    
-    @OneToOne(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
-   	private Artista artista;
+    // Relaciones
+    @JsonIgnore
+    @OneToMany(mappedBy = "idSeguidos.seguidor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Seguidos> seguidos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
+    @JsonIgnore
+    @OneToMany(mappedBy = "idSeguidos.seguido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Seguidos> seguidores = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Artista artista;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Compartido> compartidos = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "usuario", fetch= FetchType.LAZY, cascade=CascadeType.ALL) 
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ListaReproduccion> listasreproduccion = new ArrayList<>();
-    
     
     public Usuario(){
     	
     }
+
+    // Este constructor va a ser usado para crear los usuarios de autenticación
+    public Usuario(String mail, String password, boolean estado){
+        this.mail = mail;
+        this.password = password;
+        this.estado = estado;
+    }
     
-	public Usuario(String mail, String contrasenia, String nombre, String apellido, Date fechaAlta, boolean estado,
+	public Usuario(String mail, String password, String nombre, String apellido, Date fechaAlta, boolean estado,
 			UsuarioTipo usuarioTipo) {
 		super();
 		this.mail = mail;
-		this.password = contrasenia;
+		this.password = password;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaAlta = fechaAlta;
@@ -82,11 +103,11 @@ public class Usuario {
 		this.mail = mail;
 	}
 
-	public String getContrasenia() {
+	public String getPassword() {
 		return password;
 	}
 
-	public void setContrasenia(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
@@ -113,8 +134,16 @@ public class Usuario {
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
+	
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
 
-	public boolean isEstado() {
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+ public boolean isEstado() {
 		return estado;
 	}
 
@@ -181,5 +210,4 @@ public class Usuario {
 	public void setListasreproduccion(List<ListaReproduccion> listasreproduccion) {
 		this.listasreproduccion = listasreproduccion;
 	}
-
 }
