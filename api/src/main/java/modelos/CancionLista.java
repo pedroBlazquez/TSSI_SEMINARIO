@@ -13,12 +13,12 @@ public class CancionLista {
         private static final long serialVersionUID = 1L;
 
         // FK
-        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "idCancion")
         private Cancion cancion;
 
         // FK
-        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "idLista")
         private ListaReproduccion lista;
 

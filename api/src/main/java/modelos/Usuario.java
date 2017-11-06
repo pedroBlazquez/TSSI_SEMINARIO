@@ -49,27 +49,27 @@ public class Usuario {
 
     // Relaciones
     @JsonIgnore
-    @OneToMany(mappedBy = "idSeguidos.seguidor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idSeguidos.seguidor", fetch = FetchType.LAZY)
     private List<Seguidos> seguidos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idSeguidos.seguido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idSeguidos.seguido", fetch = FetchType.LAZY)
     private List<Seguidos> seguidores = new ArrayList<>();
 
     @JsonIgnore
-    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
     private Artista artista;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Compartido> compartidos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Like> likes = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<ListaReproduccion> listasreproduccion = new ArrayList<>();
     
     public Usuario(){

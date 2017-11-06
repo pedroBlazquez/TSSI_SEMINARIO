@@ -22,12 +22,12 @@ public class Publicacion {
     private Date fechaPublicacion;
 
     // FK
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
     // Relaciones
-    @OneToMany(mappedBy = "publicacion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "publicacion", fetch = FetchType.LAZY)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     public Publicacion() {
