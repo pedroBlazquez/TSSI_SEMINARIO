@@ -13,12 +13,12 @@ public class DiscoAlbum {
         private static final long serialVersionUID = 1L;
 
         // FK
-        @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idAlbum")
         private Album album;
 
         // FK
-        @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idDisco")
         private Disco disco;
 

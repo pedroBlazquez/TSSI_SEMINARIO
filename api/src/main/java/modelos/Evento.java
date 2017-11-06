@@ -39,7 +39,7 @@ public class Evento {
     private Artista artista;
 
     // Relaciones
-    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     public Evento() {

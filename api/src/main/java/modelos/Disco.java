@@ -24,25 +24,25 @@ public class Disco {
     private Date fechaPublicacion;
 
     // FK
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
     // Relaciones
     @JsonIgnore
-    @OneToMany(mappedBy = "idDiscoAlbum.disco", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idDiscoAlbum.disco", fetch = FetchType.LAZY)
     private List<DiscoAlbum> albumsDisco = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idGeneroDisco.disco", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idGeneroDisco.disco", fetch = FetchType.LAZY)
     private List<GeneroDisco> generosDisco = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idCancionDisco.disco", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idCancionDisco.disco", fetch = FetchType.LAZY)
     private List<CancionDisco> cancionesDisco = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "disco", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "disco", fetch = FetchType.LAZY)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     public Disco() {

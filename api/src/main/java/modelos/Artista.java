@@ -28,45 +28,45 @@ public class Artista {
     private String descripcion;
 
     // FK
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idArtistaTipo")
     private ArtistaTipo artistaTipo;
 
     // Relaciones
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
     private List<IntegranteArtista> integrantes = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
     private List<Evento> eventos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
     private List<Publicacion> publicaciones = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
     private List<Disco> discos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idGeneroArtista.artista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idGeneroArtista.artista", fetch = FetchType.LAZY)
     private List<GeneroArtista> generos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
     private List<Cancion> canciones = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
     private List<Album> albums = new ArrayList<>();
 
     public Artista() {

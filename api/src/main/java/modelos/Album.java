@@ -18,15 +18,15 @@ public class Album {
     private String nombre;
 
     // FK
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
     // Relaciones
-    @OneToMany(mappedBy = "idDiscoAlbum.album", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idDiscoAlbum.album", fetch = FetchType.LAZY)
     private List<DiscoAlbum> discosAlbum = new ArrayList<>();
 
-    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     public Album() {

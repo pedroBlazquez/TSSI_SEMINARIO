@@ -15,13 +15,13 @@ public class GeneroDisco {
         private static final long serialVersionUID = 1L;
 
         // FK
-        @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idGenero")
         private Genero genero;
 
         // FK
         @JsonIgnore
-        @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idDisco")
         private Disco disco;
 

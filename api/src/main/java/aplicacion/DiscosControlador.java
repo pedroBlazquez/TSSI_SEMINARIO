@@ -7,14 +7,19 @@ import modelos.Artista;
 import modelos.Cancion;
 import modelos.CancionDisco;
 import modelos.Disco;
+import negocio.DiscoNegocio;
 import conexion.Conexion;
 
 import org.hibernate.Session;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/discos")
@@ -67,16 +73,8 @@ public class DiscosControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            //Disco d = (Disco) cn.ReadOne_simpleid(Disco.class, (int)iddisco);
             List<CancionDisco> cd = cn.getListQuery("from modelos.CancionDisco WHERE idCancionDisco.disco.id = "+(int)iddisco);
-            //List<CancionDisco> cd = d.getCancionesDisco();
-            
-            /*List<Cancion> canciones = null;
-            for(CancionDisco cd_item : cd)
-            {
-                canciones.add(cd_item.getCancion());
-            }
-            */
+           
             cn.cerrarConexion();
             if (cd.isEmpty()) {
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -91,57 +89,26 @@ public class DiscosControlador {
     // -------------------Create-------------------------------------------
     
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<?> crearDisco(HttpServletRequest request,
-            @RequestBody Object obj ) {
+    public ResponseEntity<?> createDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
-        HashMap<String,Object> result = (HashMap<String,Object>)obj;
-        
-        String nombre= (String)result.get("nombre");
-        
-        DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-        Date fechaPublicacion= format.parse((String)result.get("fechaPublicacion"));
-        
-        List<Integer> canciones = (ArrayList<Integer>)result.get("canciones");
-        
-        //convierte lista de canciones en query
-        String INcanciones = "";
-        if (!canciones.isEmpty()) {
-            StringBuilder cBuilder = new StringBuilder();
-            for (Integer c : canciones) {
-                cBuilder.append(c).append(",");
-            }
-            cBuilder.deleteCharAt(cBuilder.length() - 1);
-            INcanciones = cBuilder.toString();
-        }
-        
-        //busca mail de usuario
-        String token = request.getHeader(HEADER_STRING);
-        String user = "";
-        user = Token.getMailFromToken(token);
-        
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
-            //busca canciones para agregar al disco
-            List<Cancion> list_canciones = cn.getListQuery("from modelos.Cancion WHERE id IN ("+INcanciones+")");
-            //busca el artista correspondiente al usuario logueado
-            List<Artista> list_artistas = cn.getListQuery("from modelos.Artista WHERE usuario.mail = '"+user+"'");
-            //crea el nuevo disco
-            Disco new_Disco = new Disco(nombre,fechaPublicacion,list_artistas.get(0));
-            //crea la nueva conexion muchos a muchos CancionDisco
-            List<CancionDisco> new_CancionDisco = new ArrayList<CancionDisco>();
-            for(Cancion c : list_canciones)
-            {
-                new_CancionDisco.add(new CancionDisco(c, new_Disco));
-            }
+            //obtiene objeto json
+            JSONObject json = new JSONObject(httpEntity.getBody());    
+            //busca en json los atributos
+            String nombre= json.getString("nombre");
+            Date fechaPublicacion= Tools.DateFormatter(json.getString("fechaPublicacion"));
+            ArrayList<String> canciones = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("canciones"));
+            //busca mail de usuario
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            cn.add(new_Disco);
-            cn.addList(new_CancionDisco);
-        cn.cerrarConexion();
-        return new ResponseEntity(HttpStatus.CREATED);
+            if(DiscoNegocio.AltaDisco(nombre, fechaPublicacion, canciones, usermail))
+                return new ResponseEntity(HttpStatus.CREATED);
+            else
+                return new ResponseEntity(HttpStatus.NOT_MODIFIED);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
  
     // -------------------Update------------------------------------------------
  
