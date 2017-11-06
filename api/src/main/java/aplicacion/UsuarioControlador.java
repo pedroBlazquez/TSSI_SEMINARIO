@@ -1,15 +1,10 @@
 package aplicacion;
 
-import static aplicacion.autenticacion.SecurityConstants.BAD_CREDENTIALS_MSG;
-import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
@@ -17,18 +12,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import aplicacion.autenticacion.Token;
 import modelos.IntegranteArtista;
-import modelos.Usuario;
 import negocio.ArtistaNegocio;
-import negocio.DiscoNegocio;
 import negocio.IntegranteArtistaNegocio;
 import negocio.UsuarioNegocio;
 
@@ -100,21 +91,5 @@ public class UsuarioControlador {
         return usuarioNegocio.checkMail(json.getString("mail"));
     }
     
-    @RequestMapping(value = "/seguir", method = RequestMethod.POST)
-    public ResponseEntity<?> createDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
-        try {
-            //obtiene objeto json
-            JSONObject json = new JSONObject(httpEntity.getBody());    
-            //busca en json los atributos
-            String idUsuario= json.getString("idUsuario");
-            //busca mail de usuario
-            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            
-            return UsuarioNegocio.Seguir(idUsuario, usermail);
-            
-        } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
 }
