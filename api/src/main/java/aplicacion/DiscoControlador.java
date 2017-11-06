@@ -3,14 +3,12 @@ package aplicacion;
 import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
-import modelos.Artista;
 import modelos.Cancion;
 import modelos.CancionDisco;
 import modelos.Disco;
 import negocio.DiscoNegocio;
 import conexion.Conexion;
 
-import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -20,38 +18,34 @@ import org.springframework.http.ResponseEntity;
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/discos")
-public class DiscosControlador {
+public class DiscoControlador {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<?> getDiscos() {
+    @RequestMapping(value = "/{disco}", method = RequestMethod.GET)
+    public ResponseEntity<?> getCancion(@PathVariable("cancion") long iddisco) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Disco> discos = cn.getListQuery("from modelos.Disco");
+            List<Disco> discos = cn.getListQuery("from modelos.Disco WHERE id = "+iddisco);
             cn.cerrarConexion();
             if (discos.isEmpty()) {
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<Disco>>(discos, HttpStatus.OK);
+            return new ResponseEntity<Disco>(discos.get(0), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
-    @RequestMapping(value = "/{artista}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
     public ResponseEntity<?> getDiscoArtista(@PathVariable("artista") long idartista) {
         try {
             Conexion cn = new Conexion();
@@ -68,20 +62,21 @@ public class DiscosControlador {
         }
     }
     
-    @RequestMapping(value = "/canciones/{disco}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/getCanciones/{disco}", method = RequestMethod.GET)
     public ResponseEntity<?> getCancionesDisco(@PathVariable("disco") long iddisco) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<CancionDisco> cd = cn.getListQuery("from modelos.CancionDisco WHERE idCancionDisco.disco.id = "+(int)iddisco);
+            List<Cancion> cd = cn.getListQuery("select cd.idCancionDisco.cancion from modelos.CancionDisco cd WHERE cd.idCancionDisco.disco.id = "+(int)iddisco);
            
             cn.cerrarConexion();
             if (cd.isEmpty()) {
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<CancionDisco>>(cd, HttpStatus.OK);
+            return new ResponseEntity<List<Cancion>>(cd, HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -21,8 +21,7 @@ public class CancionDisco {
         private Cancion cancion;
 
         // FK
-        @JsonIgnore
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idDisco")
         private Disco disco;
 
@@ -59,11 +58,10 @@ public class CancionDisco {
         this.idCancionDisco.cancion = cancion;
     }
     
-    @JsonIgnore
     public Disco getDisco() {
         return idCancionDisco.disco;
     }
-    @JsonProperty
+    
     public void setDisco(Disco disco) {
         this.idCancionDisco.disco = disco;
     }
