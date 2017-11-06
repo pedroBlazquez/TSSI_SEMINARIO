@@ -1,16 +1,27 @@
 package negocio;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import aplicacion.Tools;
 import conexion.Conexion;
+import modelos.Artista;
+import modelos.Cancion;
+import modelos.CancionDisco;
+import modelos.Disco;
+import modelos.Genero;
+import modelos.GeneroDisco;
+import modelos.Seguidos;
 import modelos.Usuario;
 import modelos.UsuarioTipo;
 
@@ -82,6 +93,35 @@ public class UsuarioNegocio {
         }
 
         return true;
+    }
+    
+    public static ResponseEntity Seguir(String idSeguido, String usermail_seguidor)
+    {
+        try
+        {
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            
+            List<Usuario> usuarios_seguidor = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail_seguidor+"'");
+            Usuario seguidor = usuarios_seguidor.get(0);
+            List<Usuario> usuarios_seguido = cn.getListQuery("from modelos.Usuario WHERE id = "+idSeguido+"");
+            Usuario seguido = usuarios_seguido.get(0);
+            
+            Seguidos seguimiento = new Seguidos(seguidor, seguido);
+            
+            List<Seguidos> seguidos = cn.getListQuery("from modelos.Seguidos WHERE idSeguidos.seguidor.id = "+seguidor.getId()+" and idSeguidos.seguido.id = "+seguido.getId());
+            if(seguidos.isEmpty())//si no encuentra seguimiento, agrega uno
+                cn.add(seguimiento);
+            else //si encuentra seguimiento, lo borra
+                cn.delete(seguimiento);
+            
+            cn.cerrarConexion();
+            return new ResponseEntity(HttpStatus.OK);
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+        }
     }
     
 }
