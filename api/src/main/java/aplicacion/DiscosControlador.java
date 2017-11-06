@@ -2,21 +2,40 @@ package aplicacion;
 
 import org.springframework.web.bind.annotation.*;
 
+import aplicacion.autenticacion.Token;
+import modelos.Artista;
 import modelos.Cancion;
 import modelos.CancionDisco;
 import modelos.Disco;
+import negocio.DiscoNegocio;
 import conexion.Conexion;
 
+import org.hibernate.Session;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/discos")
 public class DiscosControlador {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<List<Disco>> getDiscos() {
+    public ResponseEntity<?> getDiscos() {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -33,7 +52,7 @@ public class DiscosControlador {
     }
     
     @RequestMapping(value = "/{artista}/", method = RequestMethod.GET)
-    public ResponseEntity<Disco> getDiscoArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getDiscoArtista(@PathVariable("artista") long idartista) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -50,18 +69,12 @@ public class DiscosControlador {
     }
     
     @RequestMapping(value = "/canciones/{disco}/", method = RequestMethod.GET)
-    public ResponseEntity<List<CancionDisco>> getCancionesDisco(@PathVariable("disco") long iddisco) {
+    public ResponseEntity<?> getCancionesDisco(@PathVariable("disco") long iddisco) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            Disco d = (Disco) cn.ReadOne_simpleid(Disco.class, (int)iddisco);
-            List<CancionDisco> cd = d.getCancionesDisco();
-            /*List<Cancion> canciones = null;
-            for(CancionDisco cd_item : cd)
-            {
-                canciones.add(cd_item.getCancion());
-            }
-            */
+            List<CancionDisco> cd = cn.getListQuery("from modelos.CancionDisco WHERE idCancionDisco.disco.id = "+(int)iddisco);
+           
             cn.cerrarConexion();
             if (cd.isEmpty()) {
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -73,5 +86,68 @@ public class DiscosControlador {
         }
     }
     
+    // -------------------Create-------------------------------------------
+    
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public ResponseEntity<?> createDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+        try {
+            //obtiene objeto json
+            JSONObject json = new JSONObject(httpEntity.getBody());    
+            //busca en json los atributos
+            String nombre= json.getString("nombre");
+            Date fechaPublicacion= Tools.DateFormatter(json.getString("fechaPublicacion"));
+            ArrayList<String> canciones = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("canciones"));
+            //busca mail de usuario
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            
+            if(DiscoNegocio.AltaDisco(nombre, fechaPublicacion, canciones, usermail))
+                return new ResponseEntity(HttpStatus.CREATED);
+            else
+                return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+        } catch (Exception ex) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+ 
+    // -------------------Update------------------------------------------------
+ 
+   /* @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody User user) {
+        logger.info("Updating User with id {}", id);
+ 
+        User currentUser = userService.findById(id);
+ 
+        if (currentUser == null) {
+            logger.error("Unable to update. User with id {} not found.", id);
+            return new ResponseEntity(new CustomErrorType("Unable to upate. User with id " + id + " not found."),
+                    HttpStatus.NOT_FOUND);
+        }
+ 
+        currentUser.setName(user.getName());
+        currentUser.setAge(user.getAge());
+        currentUser.setSalary(user.getSalary());
+ 
+        userService.updateUser(currentUser);
+        return new ResponseEntity<User>(currentUser, HttpStatus.OK);
+    }
+ 
+    // -------------------Delete-----------------------------------------
+ 
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
+        logger.info("Fetching & Deleting User with id {}", id);
+ 
+        User user = userService.findById(id);
+        if (user == null) {
+            logger.error("Unable to delete. User with id {} not found.", id);
+            return new ResponseEntity(new CustomErrorType("Unable to delete. User with id " + id + " not found."),
+                    HttpStatus.NOT_FOUND);
+        }
+        userService.deleteUserById(id);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
+    
+    */
    
 }

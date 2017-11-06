@@ -28,12 +28,12 @@ public class ListaReproduccion {
     private boolean privacidad = false; // false = publica
 
     // FK
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
     // Relaciones
-    @OneToMany(mappedBy = "idCancionLista.lista", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idCancionLista.lista", fetch = FetchType.LAZY)
     private List<CancionLista> cancionesLista = new ArrayList<>();
 
     public ListaReproduccion(String nombre, Date fechaAlta, boolean estado, boolean privacidad, Usuario usuario) {

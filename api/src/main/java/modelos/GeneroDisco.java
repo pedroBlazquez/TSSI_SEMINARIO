@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "GenerosDisco")
 public class GeneroDisco {
@@ -13,12 +15,13 @@ public class GeneroDisco {
         private static final long serialVersionUID = 1L;
 
         // FK
-        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idGenero")
         private Genero genero;
 
         // FK
-        @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @JsonIgnore
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idDisco")
         private Disco disco;
 

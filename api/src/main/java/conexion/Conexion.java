@@ -2,6 +2,7 @@ package conexion;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -10,7 +11,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
 
 public class Conexion {
 
-    SessionFactory sessionFactory;
+    public SessionFactory sessionFactory;
 
     public Conexion() {
     }
@@ -31,6 +32,16 @@ public class Conexion {
         session.close();
     }
 
+    public <T> void addList(List<T> obj_list) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        for(T obj : obj_list) {
+            session.save(obj);
+        }
+        session.getTransaction().commit();
+        session.close();
+    }
+    
     public void addSeveral(List<Object> objects) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -71,7 +82,7 @@ public class Conexion {
         session.close();
         return l;
     }
-
+    
     //Esta version nos permite determinar el limite de registros que queremos
     public <T> List<T> getListQuery(String query, int maxResults) {
 
@@ -88,6 +99,12 @@ public class Conexion {
         return obj;
     }
 
+    public void InitializeLAZY (Object objeto){
+        Session session = sessionFactory.openSession();
+        Hibernate.initialize(objeto);
+        session.close();
+    }
+    
     public void Refresh(Object obj) {
 
         Session session = sessionFactory.openSession();
