@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "IntegrantesArtista")
 public class IntegranteArtista {
@@ -19,6 +21,7 @@ public class IntegranteArtista {
     @Column(name = "apellido", nullable = false)
     private String apellido;
 
+    @JsonFormat(pattern = "dd-MM-YY")
     @Column(name = "fechaNacimiento", nullable = false)
     private Date fechaNacimiento;
 

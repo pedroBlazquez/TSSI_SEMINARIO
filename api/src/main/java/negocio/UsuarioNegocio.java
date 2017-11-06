@@ -26,7 +26,7 @@ public class UsuarioNegocio {
         
         return !usuarios.isEmpty();
     }
-    
+
     public boolean altaUsuario(JSONObject data) {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -35,19 +35,52 @@ public class UsuarioNegocio {
             int usuarioTipoId = data.getInt(USUARIO_TIPO_JSON_FIELD);
             data.remove(USUARIO_TIPO_JSON_FIELD);
             UsuarioTipo usuarioTipo = usuarioTipoNegocio.getUsuarioTipo(usuarioTipoId);
-            
+
             Usuario nuevoUsuario = new ObjectMapper()
                     .readValue(data.toString(), Usuario.class);
             nuevoUsuario.setFechaAlta(new Date());
             nuevoUsuario.setEstado(true);
             nuevoUsuario.setUsuarioTipo(usuarioTipo);
-            
+
             cn.add(nuevoUsuario);
+            cn.cerrarConexion();
+        } catch (Exception e) {
+            e.printStackTrace();
+            cn.cerrarConexion();
+            return false;
+        }
+        return true;
+    }
+
+    public Usuario getUsuarioByMail(String mail) {
+        Conexion cn = new Conexion();
+        Usuario u = null;
+        cn.abrirConexion();
+
+        List<Object> usuarioLista = cn.getListQuery("FROM Usuario WHERE mail = '" + mail + "'");
+
+        if (!usuarioLista.isEmpty()) {
+            u = (Usuario) usuarioLista.get(0);
+        }
+
+        return u;
+    }
+
+    //Esto no es una baja logica, es una eliminacion permanente del registro
+    public boolean eliminarUsuario(String mail){
+        Conexion cn = new Conexion();
+        Usuario u = this.getUsuarioByMail(mail);
+
+        try {
+            u.setMail(mail);
+            cn.abrirConexion();
+            cn.delete(u);
             cn.cerrarConexion();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
         return true;
     }
     
