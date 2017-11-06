@@ -31,6 +31,23 @@ public class Conexion {
         session.close();
     }
 
+    public void addSeveral(List<Object> objects) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        for (Object object : objects) {
+            try {
+                session.save(object);
+            } catch(Exception e) {
+                e.printStackTrace();
+                session.getTransaction().rollback();
+                session.close();
+                return;
+            }
+        }
+        session.getTransaction().commit();
+        session.close();
+    }
+
     public void update(Object obj) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -51,6 +68,15 @@ public class Conexion {
 
         Session session = sessionFactory.openSession();
         List<T> l = (List<T>) session.createQuery(query).list();
+        session.close();
+        return l;
+    }
+
+    //Esta version nos permite determinar el limite de registros que queremos
+    public <T> List<T> getListQuery(String query, int maxResults) {
+
+        Session session = sessionFactory.openSession();
+        List<T> l = (List<T>) session.createQuery(query).setMaxResults(maxResults).list();
         session.close();
         return l;
     }
