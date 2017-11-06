@@ -30,19 +30,19 @@ public class Disco {
 
     // Relaciones
     @JsonIgnore
-    @OneToMany(mappedBy = "idDiscoAlbum.disco", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idDiscoAlbum.disco", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<DiscoAlbum> albumsDisco = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idGeneroDisco.disco", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idGeneroDisco.disco", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<GeneroDisco> generosDisco = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idCancionDisco.disco", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idCancionDisco.disco", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<CancionDisco> cancionesDisco = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "disco", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "disco", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     public Disco() {

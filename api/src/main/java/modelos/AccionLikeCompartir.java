@@ -51,6 +51,15 @@ public class AccionLikeCompartir {
     @JoinColumn(name = "idEvento")
     private Evento evento;
     
+    //relaciones
+    @JsonIgnore
+    @OneToOne(mappedBy = "accion", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    private Like like;
+    
+    @JsonIgnore
+    @OneToOne(mappedBy = "accion", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    private Compartido compartido;
+    
     public AccionLikeCompartir() {
     }
 

@@ -95,21 +95,55 @@ public class DiscosControlador {
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
             String nombre= json.getString("nombre");
+            String genero= json.getString("genero");
             Date fechaPublicacion= Tools.DateFormatter(json.getString("fechaPublicacion"));
             ArrayList<String> canciones = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("canciones"));
             //busca mail de usuario
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            if(DiscoNegocio.AltaDisco(nombre, fechaPublicacion, canciones, usermail))
-                return new ResponseEntity(HttpStatus.CREATED);
-            else
-                return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return DiscoNegocio.CreateDisco(nombre,genero, fechaPublicacion, canciones, usermail);
+            
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
  
+    // -------------------Update-------------------------------------------
+    
+    @RequestMapping(value = "/update", method = RequestMethod.POST) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
+    public ResponseEntity<?> updateDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+        try {
+            //obtiene objeto json
+            JSONObject json = new JSONObject(httpEntity.getBody());    
+            //busca en json los atributos
+            String idDisco= json.getString("idDisco");
+            String nombre= json.getString("nombre");
+            String genero= json.getString("genero");
+            Date fechaPublicacion= Tools.DateFormatter(json.getString("fechaPublicacion"));
+            ArrayList<String> canciones = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("canciones"));
+            
+            return DiscoNegocio.UpdateDisco(idDisco,nombre,genero, fechaPublicacion, canciones);
+        } catch (Exception ex) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    // -------------------Delete-------------------------------------------
+    
+    @RequestMapping(value = "/delete", method = RequestMethod.POST) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
+    public ResponseEntity<?> deleteDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+        try {
+            //obtiene objeto json
+            JSONObject json = new JSONObject(httpEntity.getBody());    
+            //busca en json los atributos
+            String idDisco= json.getString("idDisco");
+            return DiscoNegocio.DeleteDisco(idDisco);
+        } catch (Exception ex) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     // -------------------Update------------------------------------------------
  
    /* @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)

@@ -74,6 +74,16 @@ public class Conexion {
         session.getTransaction().commit();
         session.close();
     }
+    
+    public <T> void deleteList(List<T> obj_list) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        for(T obj : obj_list) {
+            session.delete(obj);
+        }
+        session.getTransaction().commit();
+        session.close();
+    }
 
     public <T> List<T> getListQuery(String query) {
 
