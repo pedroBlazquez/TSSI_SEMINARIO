@@ -3,9 +3,9 @@ package aplicacion;
 import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
-import modelos.Cancion;
+import modelos.Album;
 import modelos.Disco;
-import negocio.CancionNegocio;
+import negocio.AlbumNegocio;
 import conexion.Conexion;
 
 import org.json.JSONException;
@@ -17,55 +17,56 @@ import org.springframework.http.ResponseEntity;
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/canciones")
-public class CancionControlador {
+@RequestMapping("/albums")
+public class AlbumControlador {
 
-    @RequestMapping(value = "/{cancion}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancion(@PathVariable("cancion") long idcancion) {
+    @RequestMapping(value = "/{album}", method = RequestMethod.GET)
+    public ResponseEntity<?> getAlbum(@PathVariable("album") long idalbum) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE id = "+idcancion);
+            List<Album> albums = cn.getListQuery("from modelos.Album WHERE id = "+idalbum);
             cn.cerrarConexion();
-            if (canciones.isEmpty()) {
+            if (albums.isEmpty()) {
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Cancion>(canciones.get(0), HttpStatus.OK);
+            return new ResponseEntity<Album>(albums.get(0), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancionesArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getAlbumArtista(@PathVariable("artista") long idartista) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE artista.id = "+idartista);
+            List<Album> albums = cn.getListQuery("from modelos.Album WHERE artista.id = "+idartista);
             cn.cerrarConexion();
-            if (canciones.isEmpty()) {
+            if (albums.isEmpty()) {
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<Cancion>>(canciones, HttpStatus.OK);
+            return new ResponseEntity<Album>(albums.get(0), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
-    @RequestMapping(value = "/getDiscos/{cancion}", method = RequestMethod.GET)
-    public ResponseEntity<?> getDiscosCancion(@PathVariable("cancion") long idCancion) {
+    @RequestMapping(value = "/getDiscos/{album}", method = RequestMethod.GET)
+    public ResponseEntity<?> getDiscosAlbum(@PathVariable("album") long idalbum) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Disco> cd = cn.getListQuery("select cd.idCancionDisco.disco from modelos.CancionDisco cd WHERE cd.idCancionDisco.cancion.id = "+(int)idCancion);
+            List<Disco> cd = cn.getListQuery("select cd.idDiscoAlbum.disco from modelos.DiscoAlbum cd WHERE cd.idDiscoAlbum.album.id = "+(int)idalbum);
            
             cn.cerrarConexion();
             if (cd.isEmpty()) {
@@ -74,6 +75,7 @@ public class CancionControlador {
             }
             return new ResponseEntity<List<Disco>>(cd, HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -81,19 +83,18 @@ public class CancionControlador {
     // -------------------Create-------------------------------------------
     
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<?> createCancion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<?> createAlbum(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
-            String archivo = "path_archivo";
             String nombre= json.getString("nombre");
-            String genero= json.getString("genero");
             Date fechaPublicacion= Tools.DateFormatter(json.getString("fechaPublicacion"));
+            ArrayList<String> discos = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("discos"));
             //busca mail de usuario
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            return CancionNegocio.CreateCancion(nombre,genero,archivo, fechaPublicacion, usermail);
+            return AlbumNegocio.CreateAlbum(nombre, fechaPublicacion, discos, usermail);
             
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -104,17 +105,17 @@ public class CancionControlador {
     // -------------------Update-------------------------------------------
     
     @RequestMapping(value = "/update", method = RequestMethod.POST) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
-    public ResponseEntity<?> updateCancion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<?> updateAlbum(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
-            String idDisco= json.getString("idCancion");
+            String idAlbum= json.getString("idAlbum");
             String nombre= json.getString("nombre");
-            String genero= json.getString("genero");
             Date fechaPublicacion= Tools.DateFormatter(json.getString("fechaPublicacion"));
+            ArrayList<String> discos = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("discos"));
             
-            return CancionNegocio.UpdateCancion(idDisco,nombre,genero, fechaPublicacion);
+            return AlbumNegocio.UpdateAlbum(idAlbum,nombre, fechaPublicacion, discos);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -123,16 +124,17 @@ public class CancionControlador {
     // -------------------Delete-------------------------------------------
     
     @RequestMapping(value = "/delete", method = RequestMethod.POST) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
-    public ResponseEntity<?> deleteCancion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<?> deleteAlbum(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
-            String idCancion= json.getString("idCancion");
-            return CancionNegocio.DeleteCancion(idCancion);
+            String idAlbum= json.getString("idAlbum");
+            return AlbumNegocio.DeleteAlbum(idAlbum);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+  
    
 }

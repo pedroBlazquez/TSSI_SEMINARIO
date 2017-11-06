@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
 import modelos.Cancion;
-import modelos.CancionDisco;
 import modelos.Disco;
 import negocio.DiscoNegocio;
 import conexion.Conexion;
@@ -29,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 public class DiscoControlador {
 
     @RequestMapping(value = "/{disco}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancion(@PathVariable("cancion") long iddisco) {
+    public ResponseEntity<?> getCancion(@PathVariable("disco") long iddisco) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();

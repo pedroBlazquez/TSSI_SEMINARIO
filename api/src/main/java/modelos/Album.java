@@ -1,9 +1,13 @@
 package modelos;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 
 @Entity
 @Table(name = "Albums")
@@ -17,24 +21,31 @@ public class Album {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
+    @Column(name = "fechaPublicacion", nullable = false)
+    private Date fechaPublicacion;
+
     // FK
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
-    // Relaciones
-    @OneToMany(mappedBy = "idDiscoAlbum.album", fetch = FetchType.LAZY)
+    //Relaciones
+    //@LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "idDiscoAlbum.album", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<DiscoAlbum> discosAlbum = new ArrayList<>();
-
-    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     public Album() {
     }
 
-    public Album(String nombre, Artista artista) {
+    public Album(String nombre,Date fechaPublicacion, Artista artista) {
         super();
         this.nombre = nombre;
+        this.fechaPublicacion = fechaPublicacion;
         this.artista = artista;
     }
 
@@ -46,6 +57,14 @@ public class Album {
         this.nombre = nombre;
     }
 
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
+
     public Artista getArtista() {
         return artista;
     }
@@ -54,11 +73,11 @@ public class Album {
         this.artista = artista;
     }
 
-    public List<DiscoAlbum> getDiscos() {
+    public List<DiscoAlbum> getDiscosAlbum() {
         return discosAlbum;
     }
 
-    public void setDiscos(List<DiscoAlbum> discosAlbum) {
+    public void setDiscosAlbum(List<DiscoAlbum> discosAlbum) {
         this.discosAlbum = discosAlbum;
     }
 
@@ -73,5 +92,7 @@ public class Album {
     public int getId() {
         return id;
     }
+
+    
 
 }
