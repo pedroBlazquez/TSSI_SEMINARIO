@@ -21,7 +21,7 @@ public class IntegranteArtista {
     @Column(name = "apellido", nullable = false)
     private String apellido;
 
-    @JsonFormat(pattern = "dd-MM-YY")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Buenos_Aires")
     @Column(name = "fechaNacimiento", nullable = false)
     private Date fechaNacimiento;
 
