@@ -7,6 +7,10 @@ import PerfilSideBar from '../components/PerfilSideBar';
 
 
 class PerfilContainer extends Component {
+  constructor (props) {
+    super(props);
+    
+  }
 
   render () {
     const {children} = this.props;

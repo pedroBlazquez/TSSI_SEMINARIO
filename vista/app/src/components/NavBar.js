@@ -14,7 +14,7 @@ class NavBar extends Component {
         mode={'horizontal'}
       >
         <MenuItem key={'home'}>
-          {'Home'}
+        <Link to={`/`}>{'Home'}</Link>
         </MenuItem>
         <MenuItem key={user.id}>
           <Link to={`/perfil/${user.id}`}>{user.mail}</Link>

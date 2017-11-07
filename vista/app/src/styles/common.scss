@@ -9,6 +9,10 @@
   background-color: $light-gray;
 }
 
+// Position
+.relative {position: relative};
+.absolute {position: absolute};
+
 // Flex
 .flex {display: flex;}
 .flex-row {flex-direction: row;}
@@ -16,7 +20,9 @@
 .flex-space-between {justify-content: space-between;}
 
 // Margins
+.autoalign {margin: 0 auto;}
 .margin-5p {margin: 5px;}
+.margin-5p-bottom {margin-bottom: 5px};
 .margin-10p {margin: 10px};
 
 

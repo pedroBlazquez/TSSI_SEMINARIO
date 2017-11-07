@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import '../styles/profile.css';
-import {withRouter} from 'react-router-dom';
+import {withRouter, NavLink} from 'react-router-dom';
+
+import {Button} from 'antd';
 
 import NoImage from '../assets/no-image-profile.png';
 import VerticalMenu from './VerticalMenu';
@@ -29,12 +31,29 @@ const getOptions = (profileId, esArtista) => {
 
 class PerfilSideBar extends Component {
   render () {
-    const {match, esArtista} = this.props;
+    const {match, esArtista = true, ownProfile = true} = this.props;
     return (
-      <div className={'side-bar-container margin-10p'}>
+      <div className={'side-bar-container margin-10p relative'}>
         <img className={'img-circle'} src={NoImage}/>
         <h3 className={'profile-title'}>{'Fulano Perez'}</h3>
-        <VerticalMenu options={getOptions(match.params.profileId, true)} />
+        <VerticalMenu options={getOptions(match.params.profileId, esArtista)} />
+        <div className={'margin-5p'}>
+          {ownProfile && 
+            <Button className={'green-button full-width margin-5p-bottom'}>
+              {'Editar Perfil'}
+            </Button>
+          }
+          {esArtista && ownProfile && 
+            <Button className={'green-button full-width'}>
+              <NavLink to={`/perfil/${match.params.profileId}/administrar`}>{'Administrar contenido'}</NavLink>
+            </Button>
+          }
+        </div>
+        <div className={'absolute'} style={{bottom: 5}}>
+          {ownProfile && 
+            <Button className={'green-button full-width'}>{'Eliminar Cuenta'}</Button>
+          }
+        </div>
       </div>
     );
   }

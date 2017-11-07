@@ -19,9 +19,6 @@ const Home = () => (
     <Route path="/" exact>
       <div>{'Hola Home'}</div>
     </Route>
-    <Route path="/profile" >
-      <div>{'Hola Profile'}</div>
-    </Route>
   </Switch>
 );
 
