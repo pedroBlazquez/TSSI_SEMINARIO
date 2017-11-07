@@ -35,7 +35,7 @@ public class Usuario {
     @Column(name = "fechaAlta", nullable = false)
     private Date fechaAlta;
 
-    @JsonFormat(pattern = "dd-MM-YY")
+    @JsonFormat(pattern = "YYYY-dd-mm")
     @Column(name = "fechaNacimiento", nullable = false)
     private Date fechaNacimiento;
 
