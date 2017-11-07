@@ -22,41 +22,39 @@ public class AccionLikeCompartir {
 
     // FK
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCancion")
     private Cancion cancion;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idDisco")
     private Disco disco;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idAlbum")
     private Album album;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idPublicacion")
     private Publicacion publicacion;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idEvento")
     private Evento evento;
     
     //relaciones
-    @JsonIgnore
     @OneToOne(mappedBy = "accion", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private Like like;
     
-    @JsonIgnore
     @OneToOne(mappedBy = "accion", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private Compartido compartido;
     
@@ -65,14 +63,6 @@ public class AccionLikeCompartir {
 
     public AccionLikeCompartir(Date fechaAccion) {
         super();
-        this.fechaAccion = fechaAccion;
-    }
-
-    public Date getfechaAccion() {
-        return fechaAccion;
-    }
-
-    public void setfechaAccion(Date fechaAccion) {
         this.fechaAccion = fechaAccion;
     }
 
@@ -126,6 +116,30 @@ public class AccionLikeCompartir {
 
     public int getId() {
         return id;
+    }
+
+    public Date getFechaAccion() {
+        return fechaAccion;
+    }
+
+    public void setFechaAccion(Date fechaAccion) {
+        this.fechaAccion = fechaAccion;
+    }
+
+    public Like getLike() {
+        return like;
+    }
+
+    public void setLike(Like like) {
+        this.like = like;
+    }
+
+    public Compartido getCompartido() {
+        return compartido;
+    }
+
+    public void setCompartido(Compartido compartido) {
+        this.compartido = compartido;
     }
 
 }

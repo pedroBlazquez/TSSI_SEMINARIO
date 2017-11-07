@@ -18,8 +18,8 @@ public class Like {
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
+    
+    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinColumn(name = "idAccionLikeCompartir")
     private AccionLikeCompartir accion;
 
