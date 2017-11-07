@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "AccionesLikeCompartir")
@@ -21,40 +22,36 @@ public class AccionLikeCompartir {
     private Date fechaAccion;
 
     // FK
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCancion")
     private Cancion cancion;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idDisco")
     private Disco disco;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idAlbum")
     private Album album;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idPublicacion")
     private Publicacion publicacion;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idEvento")
     private Evento evento;
     
     //relaciones
+    @JsonIgnore
     @OneToOne(mappedBy = "accion", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private Like like;
     
+    @JsonIgnore
     @OneToOne(mappedBy = "accion", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private Compartido compartido;
     
@@ -125,19 +122,20 @@ public class AccionLikeCompartir {
     public void setFechaAccion(Date fechaAccion) {
         this.fechaAccion = fechaAccion;
     }
-
+    @JsonIgnore
     public Like getLike() {
         return like;
     }
-
+    @JsonProperty
     public void setLike(Like like) {
         this.like = like;
     }
-
+    @JsonIgnore
     public Compartido getCompartido() {
         return compartido;
     }
 
+    @JsonProperty
     public void setCompartido(Compartido compartido) {
         this.compartido = compartido;
     }

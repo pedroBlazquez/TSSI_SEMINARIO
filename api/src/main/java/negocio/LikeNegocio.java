@@ -114,7 +114,24 @@ public class LikeNegocio {
         
     }
     
-    public static ResponseEntity getLikes(String Tipo,String id)
+    public static ResponseEntity getUserLikes(String usermail)
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        
+        List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
+        Usuario usuario = usuarios.get(0);
+        List<modelos.Like> list = cn.getListQuery("from modelos.Like WHERE usuario.id = "+usuario.getId());
+        
+        cn.cerrarConexion();
+        if(list.isEmpty())
+            return new ResponseEntity(list,HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity(list,HttpStatus.OK);
+        
+    }
+    
+    public static ResponseEntity getLikeCount(String Tipo,String id)
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
