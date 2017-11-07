@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 
-import App from '../views/App';
 import LoginRoute from './Login';
 import Home from './Home';
 import Registro from './Registro';
@@ -12,11 +11,11 @@ import Registro from './Registro';
 
 const MainRoute = ({isLogged}) => (
   <BrowserRouter>
-    <App>
+    <div>
       <Home authorized={isLogged} />  
       <LoginRoute isLoggedIn={isLogged} />
       <Registro />
-    </App>
+    </div>
   </BrowserRouter>
 );
 

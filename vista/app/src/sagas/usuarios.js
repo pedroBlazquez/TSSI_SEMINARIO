@@ -1,7 +1,8 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, takeEvery, call } from 'redux-saga/effects';
 
 import {post} from '../utils/api';
 import {USUARIO_ARTISTA, USUARIO_BANDA, USUARIO_OYENTE} from '../utils/constants';
+import {setAuthToken} from '../utils/storage';
 import {REQUEST_LOGIN, REGISTER_USER} from '../actions/types';
 import {errorLogin, successLogin} from '../actions/loginActions'; 
 import {failRegister, successRegister} from '../actions/registerActions'; 
@@ -10,13 +11,10 @@ import {failRegister, successRegister} from '../actions/registerActions';
 export function* requestLoginSaga(action) {
   try {
     // Here should be async request
-    if (action.user === 'mail@mail.com' && action.pass === '12345') {
-      yield put(successLogin());
-    } else {
-      throw new Error('Usuario o password incorrectos');
-    }
+    const token = yield call(post, '/login', {mail: action.user, password: action.pass});
+    yield put(successLogin());
   } catch (e) {
-    yield put(errorLogin(e.message));
+    yield put(errorLogin('Usuario o password incorrectos'));
   }
 }
 
