@@ -1,9 +1,19 @@
 @import 'variables';
 
-.error-container {
+.infor-message-container {
   width: 100%;
   padding: 5px;
   text-align: center;
+}
+
+.error-container {
+  @extend .infor-message-container;
   background-color: $error-background;
   color: $error-text;  
+}
+
+.success-container {
+  @extend .infor-message-container;
+  background-color: $success-background;
+  color: $success-text;  
 }

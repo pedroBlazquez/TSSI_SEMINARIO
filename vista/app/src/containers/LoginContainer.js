@@ -24,7 +24,7 @@ class LoginContainer extends Component {
     this.setState({...this.state, ...changedFields});
   }
 
-  onSubmit = ({usuario, password}) => {
+  onSubmit = (e, {usuario, password}) => {
     const {requestLogin} = this.props;
     requestLogin(usuario, password);
   }
@@ -42,7 +42,6 @@ class LoginContainer extends Component {
           password={password}
           onChange={this.onFormChange}
           onSubmit={this.onSubmit}
-          error={error}
         />
       </FormWrapper>
     );

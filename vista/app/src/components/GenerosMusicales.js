@@ -5,7 +5,7 @@ import {GENEROS} from '../utils/constants';
 
 const CheckboxGroup = Checkbox.Group;
 
-const checkboxOptions = GENEROS.map(g => ({label: g, value: g}));
+const checkboxOptions = GENEROS.map(g => ({label: g.value, value: g.id}));
 
 class GenerosMusicales extends Component {
  render () {

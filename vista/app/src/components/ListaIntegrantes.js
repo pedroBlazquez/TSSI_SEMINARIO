@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-
 import {Table, Icon} from 'antd';
+
+import {ROLES_INTEGRANTES} from '../utils/constants';
 
 class IntegrantesBanda extends Component {
 
@@ -15,6 +16,9 @@ class IntegrantesBanda extends Component {
         title: 'Rol',
         dataIndex: 'rol',
         key: 'rol',
+        render: (text) => {
+          return ROLES_INTEGRANTES.find(r => r.id.toString() === text.toString()).value
+        }
       }, {
         title: 'Fecha nacimiento',
         dataIndex: 'fechaNacimiento',
