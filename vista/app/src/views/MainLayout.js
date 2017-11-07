@@ -5,14 +5,14 @@ import { Layout } from 'antd';
 const { Header, Footer } = Layout;
 
 const MainLayout = ({header, footer, children}) => (
-  <Layout>
-    <Header>
+  <Layout >
+    <Header className={'bg-color-light-gray'}>
       {header}
     </Header>
-    <Layout>
+    <Layout className={'main-container'}>
         {children}
     </Layout>
-    <Footer>
+    <Footer className={'bg-color-light-gray'}>
       {footer}
     </Footer>
   </Layout>

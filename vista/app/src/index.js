@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga'
+import {BrowserRouter} from 'react-router-dom';
 
 import { LocaleProvider } from 'antd';
 import esES from 'antd/lib/locale-provider/es_ES';
@@ -26,7 +27,9 @@ sagaMiddleware.run(rootSaga);
 ReactDOM.render(
   <LocaleProvider locale={esES}>
     <Provider store={store}>
-      <Route />
+      <BrowserRouter>
+        <Route />
+      </BrowserRouter>
     </Provider>
   </LocaleProvider>, 
   document.getElementById('root')

@@ -4,10 +4,23 @@
   width: 100%;
 }
 
+.main-container {
+  height: calc(100vh - 120px);
+  background-color: $light-gray;
+}
+
 // Flex
 .flex {display: flex;}
 .flex-row {flex-direction: row;}
+.flex-col {flex-direction: column;}
 .flex-space-between {justify-content: space-between;}
 
 // Margins
 .margin-5p {margin: 5px;}
+.margin-10p {margin: 10px};
+
+
+// Backgrounds
+.bg-color-light-gray {
+  background-color: $light-gray;
+}

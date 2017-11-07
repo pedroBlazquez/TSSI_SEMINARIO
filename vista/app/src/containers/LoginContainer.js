@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
+import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 // Cambiar esto por el request verdadero
 import {requestLogin} from '../actions/loginActions';
@@ -8,38 +9,26 @@ import LoginForm from '../components/FormLogin';
 import FormWrapper from '../components/FormWrapper';
 
 class LoginContainer extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      usuario: {
-        value: ''
-      },
-      password: {
-        value: ''
-      }
-    }
-  }
-
-  onFormChange = (changedFields) => {
-    this.setState({...this.state, ...changedFields});
-  }
 
   onSubmit = (e, {usuario, password}) => {
     const {requestLogin} = this.props;
     requestLogin(usuario, password);
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.isLogged) {
+      this.props.history.push("/");
+    }
+  }
+
   render () {
     const {error} = this.props;
-    const {usuario, password} = this.state;
     return (
       <FormWrapper 
         error={error}
         title={'Ingrese su mail y contraseña'}
       >
         <LoginForm
-          usuario={usuario}
-          password={password}
           onChange={this.onFormChange}
           onSubmit={this.onSubmit}
         />
@@ -50,14 +39,16 @@ class LoginContainer extends Component {
 } 
 
 const mapStateToProps = (state) => ({
-  error: state.loginReducer.error
+  error: state.loginReducer.error,
+  isLogged: state.loginReducer.success
 });
 
 const mapDispatchToProps = (dispatch) => ({
   requestLogin: bindActionCreators(requestLogin, dispatch)
 });
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginContainer);
+)(LoginContainer));
+
