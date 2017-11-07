@@ -13,12 +13,12 @@ public class Seguidos {
         private static final long serialVersionUID = 1L;
 
         // FK
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idSeguidor")
         private Usuario seguidor;
 
         // FK
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idSeguido")
         private Usuario seguido;
 

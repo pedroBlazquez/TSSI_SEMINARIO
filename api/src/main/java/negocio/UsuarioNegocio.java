@@ -1,13 +1,9 @@
 package negocio;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import org.json.JSONObject;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import conexion.Conexion;
@@ -83,5 +79,7 @@ public class UsuarioNegocio {
 
         return true;
     }
+    
+  
     
 }

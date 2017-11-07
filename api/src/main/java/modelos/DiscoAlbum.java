@@ -39,7 +39,7 @@ public class DiscoAlbum {
         this.idDiscoAlbum = idDiscoAlbum;
     }
 
-    public DiscoAlbum(Album album, Disco disco) {
+    public DiscoAlbum( Disco disco,Album album) {
         super();
         this.idDiscoAlbum.album = album;
         this.idDiscoAlbum.disco = disco;

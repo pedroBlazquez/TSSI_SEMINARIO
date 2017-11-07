@@ -1,13 +1,10 @@
 package aplicacion;
 
-import static aplicacion.autenticacion.SecurityConstants.BAD_CREDENTIALS_MSG;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import modelos.IntegranteArtista;
-import modelos.Usuario;
 import negocio.ArtistaNegocio;
 import negocio.IntegranteArtistaNegocio;
 import negocio.UsuarioNegocio;
@@ -94,5 +90,6 @@ public class UsuarioControlador {
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         return usuarioNegocio.checkMail(json.getString("mail"));
     }
+    
 
 }
