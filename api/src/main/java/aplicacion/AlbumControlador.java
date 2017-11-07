@@ -89,12 +89,11 @@ public class AlbumControlador {
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
             String nombre= json.getString("nombre");
-            Date fechaPublicacion= Tools.DateFormatter(json.getString("fechaPublicacion"));
             ArrayList<String> discos = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("discos"));
             //busca mail de usuario
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            return AlbumNegocio.CreateAlbum(nombre, fechaPublicacion, discos, usermail);
+            return AlbumNegocio.CreateAlbum(nombre, discos, usermail);
             
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -112,10 +111,9 @@ public class AlbumControlador {
             //busca en json los atributos
             String idAlbum= json.getString("idAlbum");
             String nombre= json.getString("nombre");
-            Date fechaPublicacion= Tools.DateFormatter(json.getString("fechaPublicacion"));
             ArrayList<String> discos = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("discos"));
             
-            return AlbumNegocio.UpdateAlbum(idAlbum,nombre, fechaPublicacion, discos);
+            return AlbumNegocio.UpdateAlbum(idAlbum,nombre,discos);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }

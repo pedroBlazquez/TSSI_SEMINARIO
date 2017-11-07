@@ -18,7 +18,7 @@ import modelos.GeneroDisco;
 
 public class DiscoNegocio {
     
-    public static ResponseEntity CreateDisco(String nombre,String genero,Date fechaPublicacion,  ArrayList<String> canciones, String usermail)
+    public static ResponseEntity CreateDisco(String nombre,String genero, ArrayList<String> canciones, String usermail)
     {
         try
         {
@@ -33,7 +33,7 @@ public class DiscoNegocio {
             //busca el artista correspondiente al usuario logueado
             List<Artista> list_artistas = cn.getListQuery("from modelos.Artista WHERE usuario.mail = '"+usermail+"'");
             //crea el nuevo disco
-            Disco new_Disco = new Disco(nombre,fechaPublicacion,list_artistas.get(0));
+            Disco new_Disco = new Disco(nombre,new Date(),list_artistas.get(0));
             //crea la nueva conexion muchos a muchos CancionDisco
             List<CancionDisco> new_CancionDisco = new ArrayList<CancionDisco>();
             for(Cancion c : list_canciones)
@@ -60,7 +60,7 @@ public class DiscoNegocio {
             return new ResponseEntity(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity UpdateDisco(String idDisco,String nombre,String genero,Date fechaPublicacion,  ArrayList<String> canciones)
+    public static ResponseEntity UpdateDisco(String idDisco,String nombre,String genero,  ArrayList<String> canciones)
     {
         try
         {
@@ -84,7 +84,7 @@ public class DiscoNegocio {
                 new_GeneroDisco.add(new GeneroDisco(g,upd_Disco));
             
             upd_Disco.setNombre(nombre);
-            upd_Disco.setFechaPublicacion(fechaPublicacion);
+            upd_Disco.setFechaPublicacion(new Date());
             //agrego Generos y Canciones nuevas al objeto Disco
             upd_Disco.setGenerosDisco(new_GeneroDisco);
             upd_Disco.setCancionesDisco(new_CancionDisco);

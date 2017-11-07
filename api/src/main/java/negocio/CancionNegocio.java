@@ -19,7 +19,7 @@ import modelos.GeneroDisco;
 
 public class CancionNegocio {
     
-    public static ResponseEntity CreateCancion(String nombre,String genero,String archivo,Date fechaPublicacion,   String usermail)
+    public static ResponseEntity CreateCancion(String nombre,String genero,String archivo, String usermail)
     {
         try
         {
@@ -30,7 +30,7 @@ public class CancionNegocio {
             
             List<Artista> list_artistas = cn.getListQuery("from modelos.Artista WHERE usuario.mail = '"+usermail+"'");
             
-            Cancion new_Cancion = new Cancion(nombre,archivo,fechaPublicacion,list_artistas.get(0));
+            Cancion new_Cancion = new Cancion(nombre,archivo,new Date(),list_artistas.get(0));
             
             List<GeneroCancion> new_GeneroCancion = new ArrayList<GeneroCancion>();
             for(Genero g : list_generos)
@@ -48,7 +48,7 @@ public class CancionNegocio {
             return new ResponseEntity(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity UpdateCancion(String idCancion,String nombre,String genero,Date fechaPublicacion)
+    public static ResponseEntity UpdateCancion(String idCancion,String nombre,String genero)
     {
         try
         {
@@ -64,7 +64,7 @@ public class CancionNegocio {
                 new_GeneroCancion.add(new GeneroCancion(g,upd_Cancion));
             
             upd_Cancion.setNombre(nombre);
-            upd_Cancion.setFechaPublicacion(fechaPublicacion);
+            upd_Cancion.setFechaPublicacion(new Date());
             upd_Cancion.setGenerosCancion(new_GeneroCancion);
             
             cn.deleteList(cn.getListQuery("from modelos.GeneroCancion WHERE idGeneroCancion.cancion.id = "+idCancion));

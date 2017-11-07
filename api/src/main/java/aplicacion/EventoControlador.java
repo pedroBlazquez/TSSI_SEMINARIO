@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import aplicacion.autenticacion.Token;
 import modelos.Cancion;
 import modelos.Disco;
+import modelos.Evento;
 import negocio.CancionNegocio;
+import negocio.EventoNegocio;
 import conexion.Conexion;
 
 import org.json.JSONException;
@@ -23,56 +25,38 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/canciones")
-public class CancionControlador {
+@RequestMapping("/eventos")
+public class EventoControlador {
 
-    @RequestMapping(value = "/{cancion}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancion(@PathVariable("cancion") long idcancion) {
+    @RequestMapping(value = "/{evento}", method = RequestMethod.GET)
+    public ResponseEntity<?> getEvento(@PathVariable("evento") long idevento) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE id = "+idcancion);
+            List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE id = "+idevento);
             cn.cerrarConexion();
-            if (canciones.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            if (eventos.isEmpty()) {
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Cancion>(canciones.get(0), HttpStatus.OK);
+            return new ResponseEntity<Evento>(eventos.get(0), HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancionesArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getEventosArtista(@PathVariable("artista") long idartista) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE artista.id = "+idartista);
+            List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE artista.id = "+idartista);
             cn.cerrarConexion();
-            if (canciones.isEmpty()) {
+            if (eventos.isEmpty()) {
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<Cancion>>(canciones, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-    @RequestMapping(value = "/getDiscos/{cancion}", method = RequestMethod.GET)
-    public ResponseEntity<?> getDiscosCancion(@PathVariable("cancion") long idCancion) {
-        try {
-            Conexion cn = new Conexion();
-            cn.abrirConexion();
-            List<Disco> cd = cn.getListQuery("select cd.idCancionDisco.disco from modelos.CancionDisco cd WHERE cd.idCancionDisco.cancion.id = "+(int)idCancion);
-           
-            cn.cerrarConexion();
-            if (cd.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
-                // You many decide to return HttpStatus.NOT_FOUND
-            }
-            return new ResponseEntity<List<Disco>>(cd, HttpStatus.OK);
+            return new ResponseEntity<List<Evento>>(eventos, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -81,18 +65,21 @@ public class CancionControlador {
     // -------------------Create-------------------------------------------
     
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<?> createCancion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<?> createEvento(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
-            String archivo = "path_archivo";
             String nombre= json.getString("nombre");
-            String genero= json.getString("genero");
+            String descripcion= json.getString("descripcion");
+            String direccion= json.getString("direccion");
+            int costo = json.getInt("costo");
+            Date fechaEvento = Tools.DateFormatter(json.getString("fechaEvento"));
+           
             //busca mail de usuario
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            return CancionNegocio.CreateCancion(nombre,genero,archivo,usermail);
+            return EventoNegocio.CreateEvento(nombre,descripcion,direccion,fechaEvento,costo,usermail);
             
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -103,16 +90,19 @@ public class CancionControlador {
     // -------------------Update-------------------------------------------
     
     @RequestMapping(value = "/update", method = RequestMethod.POST) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
-    public ResponseEntity<?> updateCancion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<?> updateEvento(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
-            String idDisco= json.getString("idCancion");
+            String idEvento= json.getString("idEvento");
             String nombre= json.getString("nombre");
-            String genero= json.getString("genero");
+            String descripcion= json.getString("descripcion");
+            String direccion= json.getString("direccion");
+            int costo =  json.getInt("costo");
+            Date fechaEvento = Tools.DateFormatter(json.getString("fechaEvento"));
             
-            return CancionNegocio.UpdateCancion(idDisco,nombre,genero);
+            return EventoNegocio.UpdateEvento(idEvento,nombre,descripcion,direccion,fechaEvento,costo);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -121,13 +111,13 @@ public class CancionControlador {
     // -------------------Delete-------------------------------------------
     
     @RequestMapping(value = "/delete", method = RequestMethod.POST) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
-    public ResponseEntity<?> deleteCancion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<?> deleteEvento(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
-            String idCancion= json.getString("idCancion");
-            return CancionNegocio.DeleteCancion(idCancion);
+            String idEvento= json.getString("idEvento");
+            return EventoNegocio.DeleteEvento(idEvento);
         } catch (Exception ex) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
