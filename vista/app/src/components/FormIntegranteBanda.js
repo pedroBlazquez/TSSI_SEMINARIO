@@ -5,6 +5,7 @@ import ExtendedForm from './ExtendedForm';
 import FechaNacimiento from './FechaNacimiento';
 import RolesIntegrante from './RolesIntegrante';
 import {DatosPersonalesValidator, FechaValidator} from '../utils/validators';
+import {VOCALISTA} from '../utils/constants';
 
 const FormItem = Form.Item;
 
@@ -20,9 +21,7 @@ class FormIntegranteBanda extends Component {
           }
         </FormItem>
         <FormItem>
-          {DatosPersonalesValidator({form})('rol')
-            (<RolesIntegrante />)
-          }
+          {form.getFieldDecorator('rol')(<RolesIntegrante />)}
         </FormItem>
         <FormItem>
           {FechaValidator({form})('fechaNacimiento')
@@ -50,5 +49,10 @@ export default Form.create({
       props.onChange(changedFields);
     }
   },
+  mapPropsToFields(props) {
+    return {
+      rol: {...props.rol},
+    };
+  } 
 })(ExtendedForm(FormIntegranteBanda));
 

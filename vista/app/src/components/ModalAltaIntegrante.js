@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {isEmpty} from 'lodash';
 import {Modal} from 'antd';
 
+import {VOCALISTA} from '../utils/constants';
 import FormIntegrante from './FormIntegranteBanda';
 
 class ModalAltaIntegrante extends Component {

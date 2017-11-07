@@ -11,7 +11,10 @@ import FormWrapper from '../components/FormWrapper';
 import DatosArtistaForm from '../components/FormDatosArtista';
 
 // Actions
-import {requestRegister} from '../actions/registerActions';
+import {requestRegister, resetStatus} from '../actions/registerActions';
+
+// Selectores
+import {getAltaError, getAltaSuccess} from '../selectors/registro';
 
 const initialUsuarioFields = {
   usuario: {},
@@ -20,7 +23,7 @@ const initialUsuarioFields = {
   apellido: {},
   fechaNacimiento: {},
   tipoUsuario: {
-    value: USUARIO_OYENTE
+    value: USUARIO_OYENTE.id
   }
 };
 
@@ -47,14 +50,18 @@ class RegistroUsuarioContainer extends Component {
     this.state = {
       usuarioFields : initialUsuarioFields,
       artistaFields: initialArtistaFields,
-      formType: USUARIO_OYENTE
+      formType: USUARIO_OYENTE.id
     };
+  }
+
+  componentWillUnmount () {
+    this.props.resetStatus();
   }
 
   renderForm = () => {
     const {formType, usuarioFields} = this.state;
     switch (formType) {
-      case USUARIO_OYENTE :
+      case USUARIO_OYENTE.id :
         return (
           <RegistroUsuarioForm
             onSubmit={this.onSubmit}
@@ -63,32 +70,19 @@ class RegistroUsuarioContainer extends Component {
             {...this.state.usuarioFields}
           />
         );
-      case USUARIO_ARTISTA:
-      case USUARIO_BANDA:
+      case USUARIO_ARTISTA.id:
+      case USUARIO_BANDA.id:
         return (
           <DatosArtistaForm
             onSubmit={this.onSubmit}
             onChange={this.onDatosArtistaChange}
             onCancel={this.onCancel}
-            esBanda={formType === USUARIO_BANDA}
+            esBanda={formType === USUARIO_BANDA.id}
             agregarIntegrante={this.agregarIntegrante}
             removerIntegrante={this.removerIntegrante}
             {...this.state.artistaFields}
           />
         );
-    }
-  }
-
-  onFormChange = (changedFields) => {
-    switch (this.state.formType) {
-      case USUARIO_OYENTE:
-        this.setState({usuarioFields: {...this.state.usuarioFields, ...changedFields}});
-        break;
-      case USUARIO_ARTISTA:
-      case USUARIO_BANDA:
-        const artistaFields = this.state.artistaFields;
-        this.setState({artistaFields: {...artistaFields, ...changedFields}});
-        break;
     }
   }
 
@@ -103,15 +97,15 @@ class RegistroUsuarioContainer extends Component {
 
   onSubmit = (e, values) => {
     const {registrarUsuario} = this.props;
-    if (values.tipoUsuario !== USUARIO_OYENTE && this.state.formType === USUARIO_OYENTE) {
+    if (values.tipoUsuario !== USUARIO_OYENTE.id && this.state.formType === USUARIO_OYENTE.id) {
       this.setState({formType: values.tipoUsuario});
     } else {
-      registrarUsuario(values);
+      registrarUsuario(this.state);
     }
   }
 
   onCancel = () => {
-    this.setState({formType: USUARIO_OYENTE, artistaFields: initialArtistaFields});
+    this.setState({formType: USUARIO_OYENTE.id, artistaFields: initialArtistaFields});
   }
 
   agregarIntegrante = (integrante) => {
@@ -134,10 +128,11 @@ class RegistroUsuarioContainer extends Component {
   }
 
   render () {
-    const {error} = this.props;
+    const {error, success} = this.props;
     return (
       <FormWrapper
         error={error}
+        success={success}
         title={'Complete sus datos'}
       >
         {this.renderForm()}
@@ -147,10 +142,12 @@ class RegistroUsuarioContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  error: state.altaUsuarioStatus.message
+  error: getAltaError(state),
+  success: getAltaSuccess(state)
 });
 const mapDispatchToProps = (dispatch) => ({
-  registrarUsuario: bindActionCreators(requestRegister, dispatch)
+  registrarUsuario: bindActionCreators(requestRegister, dispatch),
+  resetStatus: bindActionCreators(resetStatus, dispatch)
 });
 
 export default withRouter(
