@@ -81,7 +81,7 @@ public class PublicacionControlador {
  
     // -------------------Update-------------------------------------------
     
-    @RequestMapping(value = "/update", method = RequestMethod.POST) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/update", method = RequestMethod.PUT) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> updatePublicacion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
@@ -98,7 +98,7 @@ public class PublicacionControlador {
     
     // -------------------Delete-------------------------------------------
     
-    @RequestMapping(value = "/delete", method = RequestMethod.POST) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> deletePublicacion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
