@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -209,5 +212,22 @@ public class Usuario {
 
 	public void setListasreproduccion(List<ListaReproduccion> listasreproduccion) {
 		this.listasreproduccion = listasreproduccion;
+	}
+
+	public JSONObject toJson() throws JSONException {
+	    JSONObject json = new JSONObject();
+
+	    json.put("id", this.id);
+	    json.put("mail", this.mail);
+	    json.put("nombre", this.nombre);
+	    json.put("apellido", this.apellido);
+	    json.put("usuarioTipoId", this.usuarioTipo.getId());
+	    json.put("usuarioTipoDescripcion", this.usuarioTipo.getDescripcion());
+
+	    if (this.usuarioTipo.getId() != 1) {
+	        json.put("nombreFantasia", this.artista.getNombreFantasia());
+	    }
+
+	    return json;
 	}
 }
