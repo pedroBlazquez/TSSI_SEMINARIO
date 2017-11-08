@@ -195,3 +195,17 @@ POST /like/ (crear/borrar like del usuario actual a un objeto especifico, si exi
 json:
 "id":"id_objeto",
 "tipo": "tipo_objeto" (Album/Artista/Cancion/Disco/Evento/Publicacion)
+
+### COMPARTIR
+
+GET /compartir/getCompartidos/{idUsuario} (Obtiene todos los objetos compartidos por el usuario, 0 = usuario actual)
+
+POST /compartir/getCompartidoUsuario (Comprueba compartir de un usuario a un objeto especifico)
+json:
+"id":"id_objeto",
+"tipo": "tipo_objeto" (Album/Artista/Cancion/Disco/Evento/Publicacion)
+
+POST /compartir/ (crear/borrar compartir del usuario actual a un objeto especifico, si existe lo borra, sino lo crea)
+json:
+"id":"id_objeto",
+"tipo": "tipo_objeto" (Album/Artista/Cancion/Disco/Evento/Publicacion)
