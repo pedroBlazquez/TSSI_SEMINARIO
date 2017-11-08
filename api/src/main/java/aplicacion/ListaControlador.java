@@ -125,7 +125,7 @@ public class ListaControlador {
  
     // -------------------Update-------------------------------------------
     
-    @RequestMapping(value = "/update", method = RequestMethod.PUT) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.PUT) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> updateListaReproduccion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
@@ -144,7 +144,7 @@ public class ListaControlador {
     
     // -------------------Delete-------------------------------------------
     
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.DELETE) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> deleteListaReproduccion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
