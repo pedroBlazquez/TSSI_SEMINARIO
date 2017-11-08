@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import conexion.Conexion;
 import modelos.Artista;
-import modelos.ArtistaTipo;
 import modelos.Usuario;
 
 public class ArtistaNegocio {
@@ -24,7 +23,6 @@ public class ArtistaNegocio {
         Conexion cn = new Conexion();
         JSONArray generosArray = data.getJSONArray("generos");
         List<Integer> generosLista = new ArrayList();
-        ArtistaTipoNegocio artistaTipoNegocio = new ArtistaTipoNegocio();
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         GeneroArtistaNegocio generoArtistaNegocio = new GeneroArtistaNegocio();
 
@@ -34,10 +32,8 @@ public class ArtistaNegocio {
 
             cn.abrirConexion();
 
-            ArtistaTipo artistaTipo = artistaTipoNegocio.getArtistaTipo(artistaTipoId - 1);
             Usuario usuario = usuarioNegocio.getUsuarioByMail(mail);
             artista.setUsuario(usuario);
-            artista.setArtistaTipo(artistaTipo);
             cn.add(artista);
 
             cn.cerrarConexion();
