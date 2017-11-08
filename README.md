@@ -24,91 +24,91 @@ Para poder enviar cambios al repositorio se deberá:
 ### ALBUMS
 
 #### Obtener 1 album por id
-GET /albums/{idalbum} 
+* GET /albums/{idalbum} 
 #### Obtener lista de albums de un artista
-GET /albums/getArtista/{idartista} 
+* GET /albums/getArtista/{idartista} 
 #### Obtiene discos de un album
-GET /albums/getDiscos/{idalbum}
+* GET /albums/getDiscos/{idalbum}
 #### Crear album
-POST /albums/ 
-json:
+* POST /albums/ 
+* json:
 "nombre":"nombre_Album",
 "discos":[idDisco1,idDisco2]
 #### Update album
-PUT /albums/
-json:
+* PUT /albums/
+* json:
 "idAlbum":"id_Album",
 "nombre":"nombre_Album",
 "discos":[idDisco1,idDisco2]
 #### Delete album
-DELETE /albums/
-json:
+* DELETE /albums/
+* json:
 "idAlbum":"id_Album"
 
 ### DISCOS
 #### Obtener 1 disco por id
-GET /discos/{iddisco}
+* GET /discos/{iddisco}
 #### Obtener lista de discos de un artista
-GET /discos/getArtista/{idartista}
+* GET /discos/getArtista/{idartista}
 #### Obtener canciones de un disco
-GET /discos/getCanciones/{iddisco}
+* GET /discos/getCanciones/{iddisco}
 #### Crear disco (falta imagen)
-POST /discos/
-json:
+* POST /discos/
+* json:
 "nombre":"nombre_disco",
 "genero":"genero_disco",
 "canciones":[idcancion1,idcancion2]
 #### Update disco (falta imagen)
-PUT /discos/
-json:
+* PUT /discos/
+* json:
 "idDisco":"id_Disco",
 "nombre":"nombre_disco",
 "genero":"genero_disco",
 "canciones":[idcancion1,idcancion2]
 #### Delete disco
-DELETE /discos/
-json:
+* DELETE /discos/
+* json:
 "idDisco":"id_Disco"
 
 ### CANCIONES
 #### Obtener cancion por id
-GET /canciones/{idcancion}
+* GET /canciones/{idcancion}
 #### Obtener lista de canciones de un artista
-GET /canciones/getArtista/{idartista}
+* GET /canciones/getArtista/{idartista}
 #### Obtener discos de una cancion
-GET /canciones/getDiscos/{idcancion}
+* GET /canciones/getDiscos/{idcancion}
 #### Crear cancion (falta audio e imagen)
-POST /canciones/
-json:
+* POST /canciones/
+* json:
 "nombre":"nombre_cancion",
 "genero":"genero_cancion"
 #### Update cancion (falta audio e imagen)
-PUT /canciones/
-json:
+* PUT /canciones/
+* json:
 "idCancion":"id_Cancion",
 "nombre":"nombre_cancion",
 "genero":"genero_cancion"
 #### Delete cancion
-DELETE /canciones/ (delete )
-json:
+* DELETE /canciones/ (delete )
+* json:
 "idCancion":"id_Cancion"
 
 ### EVENTOS
 #### Obtener evento por id
-GET /eventos/{idevento}
+* GET /eventos/{idevento}
 #### Obtener lista de eventos de un artista
-GET /eventos/getArtista/{idartista}
+* GET /eventos/getArtista/{idartista}
 #### Crear Evento (costo => int, definir formato de fecha)
-POST /eventos/
-json:
+* POST /eventos/
+* json:
 "nombre":"nombre_evento",
 "descripcion":"descripcion_evento",
 "direccion":"direccion_evento",
 "costo": costo_evento,
 "fechaEvento":"fechaEvento"
 #### Update Evento (costo => int, definir formato de fecha)
-PUT /eventos/ 
-json:
+* PUT /eventos/ 
+* json:
 "idEvento":"id_Evento",
 "nombre":"nombre_evento",
 "descripcion":"descripcion_evento",
@@ -116,87 +116,87 @@ json:
 "costo": costo_evento,
 "fechaEvento":"fechaEvento"
 #### Delete Evento
-DELETE /eventos/
-json:
+* DELETE /eventos/
+* json:
 "idEvento":"id_Evento"
 
 ### Publicaciones
 #### Obtener publicacion por id
-GET /publicaciones/{idpublicacion}
+* GET /publicaciones/{idpublicacion}
 #### Obtener publicaciones de un artista
-GET /publicaciones/getArtista/{idartista}
+* GET /publicaciones/getArtista/{idartista}
 #### Crear Publicacion
-POST /publicaciones/
-json:
+* POST /publicaciones/
+* json:
 "texto":"texto_publicacion"
 #### Update Publicacion
-PUT /publicaciones/
-json:
+* PUT /publicaciones/
+* json:
 "idPublicacion":"id_Publicacion",
 "texto":"texto_publicacion"
 #### Delete Publicacion
-DELETE /publicaciones/
-json:
+* DELETE /publicaciones/
+* json:
 "idPublicacion":"id_Publicacion"
 
 ### SEGUIDOS
 #### Obtener lista de seguidos por un usuario (0 = usuario actual)
-GET /usuario/getSeguidos/{idUsuario}
+* GET /usuario/getSeguidos/{idUsuario}
 #### Obtener lista de seguidores de un usuario (0 = usuario actual)
-GET /usuario/getSeguidores/{idUsuario}
+* GET /usuario/getSeguidores/{idUsuario}
 #### Comprobar si usuario actual sigue a un usuario especifico
-GET /usuario/getSeguimiento/{idUsuario}
+* GET /usuario/getSeguimiento/{idUsuario}
 #### Crear/Borrar seguimiento de usuario actual a otro especifico (si existe lo borra, sino lo crea)
-POST /usuario/seguir
-json:
+* POST /usuario/seguir
+* json:
 "idUsuario":"idUsuario_a_seguir"
 
 ### LISTAS DE REPRODUCCION
 #### Obtener lista de reproduccion por su id
-GET /listas/{idlista}
+* GET /listas/{idlista}
 #### Obtener listas de reproduccion (publicas y privadas) del usuario actual
-GET /listas/getUsuario
+* GET /listas/getUsuario
 #### Obtener listas de reproduccion (publicas) de un usuario especifico
-GET /listas/getUsuario/{idusuario}
+* GET /listas/getUsuario/{idusuario}
 #### Obtener canciones de una lista
-GET /listas/getCanciones/{idlista}
+* GET /listas/getCanciones/{idlista}
 #### Crear lista
-POST /listas/
-json:
+* POST /listas/
+* json:
 "nombre":"nombre_lista",
 "privacidad": true/false,
 "canciones":[idcancion1,idcancion2]
 #### Update lista
-PUT /listas/
-json:
+* PUT /listas/
+* json:
 "idListaReproduccion":"id_ListaReproduccion",
 "nombre":"nombre_lista",
 "privacidad": true/false,
 "canciones":[idcancion1,idcancion2]
 #### Delete lista
-DELETE /listas/
-json:
+* DELETE /listas/
+* json:
 "idListaReproduccion":"id_ListaReproduccion"
 
 ### LIKES
 #### Obtener todos los objetos con like del usuario actual
-GET /like/getUserLikes
+* GET /like/getUserLikes
 #### Comprobar like del usuario actual a un objeto especifico
 ##### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
-POST /like/getUserLike
-json:
+* POST /like/getUserLike
+* json:
 "id":"id_objeto",
 "tipo": "tipo_objeto" 
 #### Cantidad de likes de un objeto especifico
 ##### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
-POST /like/getLikeCount
-json:
+* POST /like/getLikeCount
+* json:
 "id":"id_objeto",
 "tipo": "tipo_objeto"
 #### Crear/Borrar like del usuario actual a un objeto especifico (si existe lo borra, sino lo crea) 
 ##### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
-POST /like/
-json:
+* POST /like/
+* json:
 "id":"id_objeto",
 "tipo": "tipo_objeto"
 
@@ -205,13 +205,13 @@ json:
 GET /compartir/getCompartidos/{idUsuario}
 #### Comprobar "compartir" del usuario actual a un objeto especifico 
 ##### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
-POST /compartir/getCompartidoUsuario
-json:
+* POST /compartir/getCompartidoUsuario
+* json:
 "id":"id_objeto",
 "tipo": "tipo_objeto
 #### Crear/Borrar "compartir" del usuario actual a un objeto especifico (si existe lo borra, sino lo crea) 
 ##### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
-POST /compartir/
-json:
+* POST /compartir/
+* json:
 "id":"id_objeto",
 "tipo": "tipo_objeto"
