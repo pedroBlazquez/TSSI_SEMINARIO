@@ -15,7 +15,7 @@ public class IntegranteArtistaNegocio {
         ArtistaNegocio artistaNegocio = new ArtistaNegocio();
         IntegranteRolNegocio integranteRolNegocio = new IntegranteRolNegocio();
         Artista art = artistaNegocio.getLastAdded();
-        List<Object> lista = new ArrayList();
+        List<Object> lista = new ArrayList<Object>();
         
         try {
             for (int i = 0; i < integrantesListaObjs.size(); i++) {

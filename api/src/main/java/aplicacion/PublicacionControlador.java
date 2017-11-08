@@ -3,12 +3,7 @@ package aplicacion;
 import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
-import modelos.Cancion;
-import modelos.Disco;
-import modelos.Evento;
 import modelos.Publicacion;
-import negocio.CancionNegocio;
-import negocio.EventoNegocio;
 import negocio.PublicacionNegocio;
 import conexion.Conexion;
 
@@ -21,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,12 +49,12 @@ public class PublicacionControlador {
             List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion WHERE artista.id = "+idartista);
             cn.cerrarConexion();
             if (publicaciones.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             return new ResponseEntity<List<Publicacion>>(publicaciones, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -80,7 +74,7 @@ public class PublicacionControlador {
             return PublicacionNegocio.CreatePublicacion(texto,usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -98,7 +92,7 @@ public class PublicacionControlador {
             
             return PublicacionNegocio.UpdatePublicacion(idPublicacion,texto);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -113,7 +107,7 @@ public class PublicacionControlador {
             String idPublicacion= json.getString("idPublicacion");
             return PublicacionNegocio.DeletePublicacion(idPublicacion);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
    

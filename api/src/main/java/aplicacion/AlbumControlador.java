@@ -18,7 +18,6 @@ import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,12 +34,12 @@ public class AlbumControlador {
             List<Album> albums = cn.getListQuery("from modelos.Album WHERE id = "+idalbum);
             cn.cerrarConexion();
             if (albums.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             return new ResponseEntity<Album>(albums.get(0), HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -52,12 +51,12 @@ public class AlbumControlador {
             List<Album> albums = cn.getListQuery("from modelos.Album WHERE artista.id = "+idartista);
             cn.cerrarConexion();
             if (albums.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Album>(albums.get(0), HttpStatus.OK);
+            return new ResponseEntity<Object>(albums, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -70,13 +69,13 @@ public class AlbumControlador {
            
             cn.cerrarConexion();
             if (cd.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             return new ResponseEntity<List<Disco>>(cd, HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -96,7 +95,7 @@ public class AlbumControlador {
             return AlbumNegocio.CreateAlbum(nombre, discos, usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -115,7 +114,7 @@ public class AlbumControlador {
             
             return AlbumNegocio.UpdateAlbum(idAlbum,nombre,discos);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -130,7 +129,7 @@ public class AlbumControlador {
             String idAlbum= json.getString("idAlbum");
             return AlbumNegocio.DeleteAlbum(idAlbum);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
   

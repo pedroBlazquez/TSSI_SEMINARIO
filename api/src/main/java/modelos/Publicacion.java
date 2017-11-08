@@ -29,7 +29,7 @@ public class Publicacion {
 
     // Relaciones
     @JsonIgnore
-    @OneToMany(mappedBy = "publicacion", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "publicacion", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     public Publicacion() {

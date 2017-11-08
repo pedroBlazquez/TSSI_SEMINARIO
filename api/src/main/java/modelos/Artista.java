@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "Artistas")
@@ -40,35 +39,35 @@ public class Artista {
 
     // Relaciones
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<IntegranteArtista> integrantes = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Evento> eventos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Publicacion> publicaciones = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Disco> discos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idGeneroArtista.artista", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idGeneroArtista.artista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<GeneroArtista> generos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Cancion> canciones = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Album> albums = new ArrayList<>();
 
     public Artista() {

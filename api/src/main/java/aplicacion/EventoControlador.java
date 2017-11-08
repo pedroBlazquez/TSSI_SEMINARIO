@@ -3,10 +3,7 @@ package aplicacion;
 import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
-import modelos.Cancion;
-import modelos.Disco;
 import modelos.Evento;
-import negocio.CancionNegocio;
 import negocio.EventoNegocio;
 import conexion.Conexion;
 
@@ -53,12 +50,12 @@ public class EventoControlador {
             List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE artista.id = "+idartista);
             cn.cerrarConexion();
             if (eventos.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             return new ResponseEntity<List<Evento>>(eventos, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -82,7 +79,7 @@ public class EventoControlador {
             return EventoNegocio.CreateEvento(nombre,descripcion,direccion,fechaEvento,costo,usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -104,7 +101,7 @@ public class EventoControlador {
             
             return EventoNegocio.UpdateEvento(idEvento,nombre,descripcion,direccion,fechaEvento,costo);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -119,7 +116,7 @@ public class EventoControlador {
             String idEvento= json.getString("idEvento");
             return EventoNegocio.DeleteEvento(idEvento);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
    

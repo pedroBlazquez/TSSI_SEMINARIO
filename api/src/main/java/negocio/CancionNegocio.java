@@ -7,19 +7,15 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Artista;
 import modelos.Cancion;
-import modelos.CancionDisco;
-import modelos.Disco;
 import modelos.Genero;
 import modelos.GeneroCancion;
-import modelos.GeneroDisco;
 
 public class CancionNegocio {
     
-    public static ResponseEntity CreateCancion(String nombre,String genero,String archivo, String usermail)
+    public static ResponseEntity<Object> CreateCancion(String nombre,String genero,String archivo, String usermail)
     {
         try
         {
@@ -41,14 +37,14 @@ public class CancionNegocio {
             cn.add(new_Cancion);
             
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.CREATED);
+            return new ResponseEntity<Object>(HttpStatus.CREATED);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity UpdateCancion(String idCancion,String nombre,String genero)
+    public static ResponseEntity<Object> UpdateCancion(String idCancion,String nombre,String genero)
     {
         try
         {
@@ -72,14 +68,14 @@ public class CancionNegocio {
             cn.update(upd_Cancion);
             
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.ACCEPTED);
+            return new ResponseEntity<Object>(HttpStatus.ACCEPTED);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity DeleteCancion(String idCancion)
+    public static ResponseEntity<Object> DeleteCancion(String idCancion)
     {
         try
         {
@@ -89,11 +85,11 @@ public class CancionNegocio {
             Cancion del_Cancion = (Cancion) cn.ReadOne_simpleid(Cancion.class, Integer.parseInt(idCancion));
             cn.delete(del_Cancion);
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<Object>(HttpStatus.OK);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
 }

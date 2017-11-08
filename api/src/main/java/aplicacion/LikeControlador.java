@@ -3,8 +3,6 @@ package aplicacion;
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,16 +11,13 @@ import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
 import aplicacion.autenticacion.Token;
-import modelos.Usuario;
 import negocio.LikeNegocio;
-import negocio.SeguidosNegocio;
 
 @RestController
 @RequestMapping("/like")
@@ -42,7 +37,7 @@ public class LikeControlador {
             
             return LikeNegocio.Like(tipo, id, usermail);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -54,7 +49,7 @@ public class LikeControlador {
             String tipo= json.getString("tipo");
             return LikeNegocio.getLikeCount(tipo,id);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -68,7 +63,7 @@ public class LikeControlador {
             return LikeNegocio.getUserLike(tipo,id,usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -79,7 +74,7 @@ public class LikeControlador {
             return LikeNegocio.getUserLikes(usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
   

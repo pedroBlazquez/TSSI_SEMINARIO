@@ -41,7 +41,7 @@ public class Evento {
 
     // Relaciones
     @JsonIgnore
-    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     public Evento() {

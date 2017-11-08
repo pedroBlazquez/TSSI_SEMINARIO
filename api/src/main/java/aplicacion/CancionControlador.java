@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,12 +33,12 @@ public class CancionControlador {
             List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE id = "+idcancion);
             cn.cerrarConexion();
             if (canciones.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             return new ResponseEntity<Cancion>(canciones.get(0), HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -51,12 +50,12 @@ public class CancionControlador {
             List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE artista.id = "+idartista);
             cn.cerrarConexion();
             if (canciones.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             return new ResponseEntity<List<Cancion>>(canciones, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -69,12 +68,12 @@ public class CancionControlador {
            
             cn.cerrarConexion();
             if (cd.isEmpty()) {
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             return new ResponseEntity<List<Disco>>(cd, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -95,7 +94,7 @@ public class CancionControlador {
             return CancionNegocio.CreateCancion(nombre,genero,archivo,usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -114,7 +113,7 @@ public class CancionControlador {
             
             return CancionNegocio.UpdateCancion(idDisco,nombre,genero);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -129,7 +128,7 @@ public class CancionControlador {
             String idCancion= json.getString("idCancion");
             return CancionNegocio.DeleteCancion(idCancion);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
    

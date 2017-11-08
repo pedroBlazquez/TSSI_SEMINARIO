@@ -12,7 +12,7 @@ import modelos.Usuario;
 public class SeguidosNegocio {
 
     
-    public static ResponseEntity Seguir(String idSeguido, String usermail_seguidor)
+    public static ResponseEntity<Object> Seguir(String idSeguido, String usermail_seguidor)
     {
         try
         {
@@ -33,15 +33,15 @@ public class SeguidosNegocio {
                 cn.delete(seguimiento);
             
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<Object>(HttpStatus.OK);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
     
-    public static ResponseEntity getSeguimiento(int idSeguido, String usermail_seguidor)
+    public static ResponseEntity<Object> getSeguimiento(int idSeguido, String usermail_seguidor)
     {
         try
         {
@@ -53,13 +53,13 @@ public class SeguidosNegocio {
             
             List<Seguidos> seguidos = cn.getListQuery("from modelos.Seguidos WHERE idSeguidos.seguidor.id = "+seguidor.getId()+" and idSeguidos.seguido.id = "+idSeguido);
             
-            ResponseEntity re;
+            ResponseEntity<Object> re;
             if(seguidos.isEmpty())
             {
-                re = new ResponseEntity(HttpStatus.NO_CONTENT);
+                re = new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
             }else 
             {
-                re = new ResponseEntity(HttpStatus.OK);
+                re = new ResponseEntity<Object>(HttpStatus.OK);
             }
             
             cn.cerrarConexion();
@@ -67,7 +67,7 @@ public class SeguidosNegocio {
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     

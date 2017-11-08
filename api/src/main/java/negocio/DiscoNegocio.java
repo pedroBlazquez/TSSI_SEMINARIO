@@ -18,7 +18,7 @@ import modelos.GeneroDisco;
 
 public class DiscoNegocio {
     
-    public static ResponseEntity CreateDisco(String nombre,String genero, ArrayList<String> canciones, String usermail)
+    public static ResponseEntity<Object> CreateDisco(String nombre,String genero, ArrayList<String> canciones, String usermail)
     {
         try
         {
@@ -53,14 +53,14 @@ public class DiscoNegocio {
             cn.add(new_Disco);
             
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.CREATED);
+            return new ResponseEntity<Object>(HttpStatus.CREATED);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity UpdateDisco(String idDisco,String nombre,String genero,  ArrayList<String> canciones)
+    public static ResponseEntity<Object> UpdateDisco(String idDisco,String nombre,String genero,  ArrayList<String> canciones)
     {
         try
         {
@@ -97,14 +97,14 @@ public class DiscoNegocio {
             cn.update(upd_Disco);
             
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.ACCEPTED);
+            return new ResponseEntity<Object>(HttpStatus.ACCEPTED);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity DeleteDisco(String idDisco)
+    public static ResponseEntity<Object> DeleteDisco(String idDisco)
     {
         try
         {
@@ -114,11 +114,11 @@ public class DiscoNegocio {
             Disco del_Disco = (Disco) cn.ReadOne_simpleid(Disco.class, Integer.parseInt(idDisco));
             cn.delete(del_Disco);
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<Object>(HttpStatus.OK);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
 }

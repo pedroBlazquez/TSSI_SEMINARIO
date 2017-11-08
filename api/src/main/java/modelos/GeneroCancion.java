@@ -13,12 +13,12 @@ public class GeneroCancion {
         private static final long serialVersionUID = 1L;
 
         // FK
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idGenero")
         private Genero genero;
 
         // FK
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "idCancion")
         private Cancion cancion;
 

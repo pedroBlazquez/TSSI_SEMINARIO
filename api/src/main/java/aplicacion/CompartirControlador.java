@@ -3,8 +3,6 @@ package aplicacion;
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,10 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import aplicacion.autenticacion.Token;
-import modelos.Usuario;
 import negocio.CompartirNegocio;
-import negocio.LikeNegocio;
-import negocio.SeguidosNegocio;
 
 @RestController
 @RequestMapping("/compartir")
@@ -31,7 +26,7 @@ public class CompartirControlador {
 
     
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<?> Compartir(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<Object> Compartir(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
@@ -43,7 +38,7 @@ public class CompartirControlador {
             
             return CompartirNegocio.Compartir(tipo, id, usermail);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -58,7 +53,7 @@ public class CompartirControlador {
             
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -72,7 +67,7 @@ public class CompartirControlador {
             return CompartirNegocio.getCompartidoUsuario(tipo,id,usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
   
