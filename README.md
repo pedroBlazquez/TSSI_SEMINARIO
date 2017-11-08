@@ -52,13 +52,13 @@ GET /discos/{iddisco}
 GET /discos/getArtista/{idartista}
 #### Obtener canciones de un disco
 GET /discos/getCanciones/{iddisco}
-#### Crear disco
+#### Crear disco (falta imagen)
 POST /discos/
 json:
 "nombre":"nombre_disco",
 "genero":"genero_disco",
 "canciones":[idcancion1,idcancion2]
-#### Update disco
+#### Update disco (falta imagen)
 PUT /discos/
 json:
 "idDisco":"id_Disco",
@@ -181,17 +181,20 @@ json:
 ### LIKES
 #### Obtener todos los objetos con like del usuario actual
 GET /like/getUserLikes
-#### Comprobar like del usuario actual a un objeto especifico (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
+#### Comprobar like del usuario actual a un objeto especifico
+#### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
 POST /like/getUserLike
 json:
 "id":"id_objeto",
 "tipo": "tipo_objeto" 
-#### Cantidad de likes de un objeto especifico (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
+#### Cantidad de likes de un objeto especifico
+#### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
 POST /like/getLikeCount
 json:
 "id":"id_objeto",
 "tipo": "tipo_objeto" (Album/Artista/Cancion/Disco/Evento/Publicacion)
-#### Crear/Borrar like del usuario actual a un objeto especifico (si existe lo borra, sino lo crea) (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
+#### Crear/Borrar like del usuario actual a un objeto especifico (si existe lo borra, sino lo crea) 
+#### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
 POST /like/
 json:
 "id":"id_objeto",
@@ -200,12 +203,14 @@ json:
 ### COMPARTIR
 #### Obtener todos los objetos compartidos por el usuario (0 = usuario actual)
 GET /compartir/getCompartidos/{idUsuario}
-#### Comprobar "compartir" del usuario actual a un objeto especifico (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
+#### Comprobar "compartir" del usuario actual a un objeto especifico 
+#### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
 POST /compartir/getCompartidoUsuario
 json:
 "id":"id_objeto",
 "tipo": "tipo_objeto
-#### Crear/Borrar "compartir" del usuario actual a un objeto especifico (si existe lo borra, sino lo crea) (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
+#### Crear/Borrar "compartir" del usuario actual a un objeto especifico (si existe lo borra, sino lo crea) 
+#### (tipo_objeto = Album/Artista/Cancion/Disco/Evento/Publicacion)
 POST /compartir/
 json:
 "id":"id_objeto",
