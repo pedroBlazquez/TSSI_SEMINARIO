@@ -32,6 +32,14 @@ class AdministrarContenido extends Component {
     this.toggleModal();
   }
 
+  openModalAndEdit = (id) => {
+    const {onEditar} = this.props.contenidoProps;
+    if (typeof onEditar === 'function') {
+      onEditar(id);
+    }
+    this.toggleModal();
+  }
+
   render () {
     const {modalOpen} = this.state;
     const {modalTitle, contenidoProps, FormElement, formElementProps} = this.props;
@@ -40,6 +48,7 @@ class AdministrarContenido extends Component {
         <Contenido
           {...contenidoProps}
           onAgregar={this.toggleModal}
+          onEditar={this.openModalAndEdit}
           agregar
           showOptions
         />
