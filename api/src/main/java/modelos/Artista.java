@@ -33,10 +33,6 @@ public class Artista {
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idArtistaTipo")
-    private ArtistaTipo artistaTipo;
-
     // Relaciones
     @JsonIgnore
     @OneToMany(mappedBy = "artista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
@@ -73,14 +69,12 @@ public class Artista {
     public Artista() {
     }
 
-    public Artista(String nombreFantasia, Date fechaInicio, String descripcion, Usuario usuario,
-            ArtistaTipo artistaTipo) {
+    public Artista(String nombreFantasia, Date fechaInicio, String descripcion, Usuario usuario) {
         super();
         this.nombreFantasia = nombreFantasia;
         this.fechaInicio = fechaInicio;
         this.descripcion = descripcion;
         this.usuario = usuario;
-        this.artistaTipo = artistaTipo;
     }
 
     public String getNombreFantasia() {
@@ -117,14 +111,6 @@ public class Artista {
 
     public int getId() {
         return id;
-    }
-
-    public ArtistaTipo getArtistaTipo() {
-        return artistaTipo;
-    }
-
-    public void setArtistaTipo(ArtistaTipo artistaTipo) {
-        this.artistaTipo = artistaTipo;
     }
 
     public List<IntegranteArtista> getIntegrantes() {

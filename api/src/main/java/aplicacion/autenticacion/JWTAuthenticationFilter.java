@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import modelos.Usuario;
+import negocio.UsuarioNegocio;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +30,7 @@ import static aplicacion.autenticacion.SecurityConstants.*;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
+    private Usuario creds;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -37,7 +41,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         HttpServletResponse res) throws AuthenticationException {
 
         try {
-            Usuario creds = new ObjectMapper()
+            creds = new ObjectMapper()
                     .readValue(req.getInputStream(), Usuario.class);
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -61,7 +65,19 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        JSONObject json = new JSONObject();
+        try {
+            UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+            Usuario usuario = usuarioNegocio.getUsuarioByMail(creds.getMail());
+            json.put("usuario", usuario.toJson());
+            json.put("token", token);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        res.getWriter().write(json.toString());
+        res.getWriter().flush();
+        res.getWriter().close();
+
     }
 
     @Override
