@@ -14,13 +14,14 @@ import modelos.Artista;
 import modelos.Cancion;
 import modelos.Disco;
 import modelos.Evento;
+import modelos.Like;
 import modelos.Publicacion;
 import modelos.Usuario;
 
 public class LikeNegocio {
 
     
-    public static ResponseEntity Like(String Tipo, String id, String usermail)
+    public static ResponseEntity<Object> Like(String Tipo, String id, String usermail)
     {
         try
         {
@@ -30,7 +31,7 @@ public class LikeNegocio {
             List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
             Usuario usuario = usuarios.get(0);
             
-            List<modelos.Like> list_exists = new ArrayList();
+            List<modelos.Like> list_exists = new ArrayList<Like>();
             
             //chequea existencia
             if(Tipo.equals("Album"))
@@ -76,22 +77,22 @@ public class LikeNegocio {
                 cn.delete(list_exists.get(0));
             
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<Object>(HttpStatus.OK);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
     
-    public static ResponseEntity getUserLike(String Tipo,String id,String usermail)
+    public static ResponseEntity<Object> getUserLike(String Tipo,String id,String usermail)
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
         
         List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
         Usuario usuario = usuarios.get(0);
-        List<modelos.Like> list_exists = new ArrayList();
+        List<modelos.Like> list_exists = new ArrayList<Like>();
         //chequea existencia
         if(Tipo.equals("Album"))
             list_exists = cn.getListQuery("from modelos.Like WHERE accion.album.id = "+id+" and usuario.id = "+usuario.getId());
@@ -108,18 +109,35 @@ public class LikeNegocio {
         
         cn.cerrarConexion();
         if(list_exists.isEmpty())
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<Object>(HttpStatus.OK);
         
     }
     
-    public static ResponseEntity getLikes(String Tipo,String id)
+    public static ResponseEntity<Object> getUserLikes(String usermail)
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
         
-        List<modelos.Like> list_exists = new ArrayList();
+        List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
+        Usuario usuario = usuarios.get(0);
+        List<modelos.Like> list = cn.getListQuery("from modelos.Like WHERE usuario.id = "+usuario.getId());
+        
+        cn.cerrarConexion();
+        if(list.isEmpty())
+            return new ResponseEntity<Object>(list,HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<Object>(list,HttpStatus.OK);
+        
+    }
+    
+    public static ResponseEntity<Object> getLikeCount(String Tipo,String id)
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        
+        List<modelos.Like> list_exists = new ArrayList<Like>();
         //chequea existencia
         if(Tipo.equals("Album"))
             list_exists = cn.getListQuery("from modelos.Like WHERE accion.album.id = "+id);
@@ -136,9 +154,9 @@ public class LikeNegocio {
         
         cn.cerrarConexion();
         if(list_exists.isEmpty())
-            return new ResponseEntity(list_exists.size(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>(list_exists.size(),HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity(list_exists.size(),HttpStatus.OK);
+            return new ResponseEntity<Object>(list_exists.size(),HttpStatus.OK);
         
     }
     

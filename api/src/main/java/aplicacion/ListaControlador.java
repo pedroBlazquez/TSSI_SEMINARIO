@@ -4,8 +4,9 @@ import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
 import modelos.Cancion;
-import modelos.Disco;
-import negocio.DiscoNegocio;
+import modelos.ListaReproduccion;
+import modelos.Usuario;
+import negocio.ListasNegocio;
 import conexion.Conexion;
 
 import org.json.JSONException;
@@ -23,49 +24,70 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/discos")
-public class DiscoControlador {
+@RequestMapping("/listas")
+public class ListaControlador {
 
-    @RequestMapping(value = "/{disco}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancion(@PathVariable("disco") long iddisco) {
+    @RequestMapping(value = "/{lista}", method = RequestMethod.GET) //obtener lista
+    public ResponseEntity<?> getCancion(@PathVariable("lista") long idlista) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Disco> discos = cn.getListQuery("from modelos.Disco WHERE id = "+iddisco);
+            List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE id = "+idlista);
             cn.cerrarConexion();
-            if (discos.isEmpty()) {
+            if (listas.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Disco>(discos.get(0), HttpStatus.OK);
+            return new ResponseEntity<ListaReproduccion>(listas.get(0), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
-    @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getDiscoArtista(@PathVariable("artista") long idartista) {
+    @RequestMapping(value = "/getUsuario", method = RequestMethod.GET) //obtener listas propias publicas y privadas
+    public ResponseEntity<?> getListaReproduccionArtista(HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Disco> discos = cn.getListQuery("from modelos.Disco WHERE artista.id = "+idartista);
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
+            Usuario usuario = usuarios.get(0);
+            
+            List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE usuario.id = "+usuario.getId());
             cn.cerrarConexion();
-            if (discos.isEmpty()) {
+            if (listas.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Object>(discos, HttpStatus.OK);
+            return new ResponseEntity<Object>(listas, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
-    @RequestMapping(value = "/getCanciones/{disco}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancionesDisco(@PathVariable("disco") long iddisco) {
+    @RequestMapping(value = "/getUsuario/{usuario}", method = RequestMethod.GET) //obtener listas publicas de un usuario especifico
+    public ResponseEntity<?> getListaReproduccionArtista(@PathVariable("usuario") long idusuario) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Cancion> cd = cn.getListQuery("select cd.idCancionDisco.cancion from modelos.CancionDisco cd WHERE cd.idCancionDisco.disco.id = "+(int)iddisco);
+            List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE privacidad = false and usuario.id = "+idusuario);
+            cn.cerrarConexion();
+            if (listas.isEmpty()) {
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+                // You many decide to return HttpStatus.NOT_FOUND
+            }
+            return new ResponseEntity<Object>(listas, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @RequestMapping(value = "/getCanciones/{lista}", method = RequestMethod.GET) //obtener canciones lista
+    public ResponseEntity<?> getCancionesListaReproduccion(@PathVariable("lista") long idlista) {
+        try {
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            List<Cancion> cd = cn.getListQuery("select cd.idCancionLista.cancion from modelos.CancionLista cd WHERE cd.idCancionLista.lista.id = "+(int)idlista);
            
             cn.cerrarConexion();
             if (cd.isEmpty()) {
@@ -82,21 +104,21 @@ public class DiscoControlador {
     // -------------------Create-------------------------------------------
     
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<?> createDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<?> createListaReproduccion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
             String nombre= json.getString("nombre");
-            String genero= json.getString("genero");
+            boolean privacidad= json.getBoolean("privacidad");
             ArrayList<String> canciones = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("canciones"));
-            //busca mail de usuario
+            //busca mail de usuario [] 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            return DiscoNegocio.CreateDisco(nombre,genero,  canciones, usermail);
+            return ListasNegocio.CreateListaReproduccion(nombre,privacidad,  canciones, usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -104,17 +126,17 @@ public class DiscoControlador {
     // -------------------Update-------------------------------------------
     
     @RequestMapping(value = "/update", method = RequestMethod.POST) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
-    public ResponseEntity<?> updateDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<?> updateListaReproduccion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
-            String idDisco= json.getString("idDisco");
+            String idListaReproduccion= json.getString("idListaReproduccion");
             String nombre= json.getString("nombre");
-            String genero= json.getString("genero");
+            boolean privacidad= json.getBoolean("privacidad");
             ArrayList<String> canciones = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("canciones"));
             
-            return DiscoNegocio.UpdateDisco(idDisco,nombre,genero,canciones);
+            return ListasNegocio.UpdateListaReproduccion(idListaReproduccion,nombre,privacidad,canciones);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -123,17 +145,16 @@ public class DiscoControlador {
     // -------------------Delete-------------------------------------------
     
     @RequestMapping(value = "/delete", method = RequestMethod.POST) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
-    public ResponseEntity<?> deleteDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+    public ResponseEntity<?> deleteListaReproduccion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
-            String idDisco= json.getString("idDisco");
-            return DiscoNegocio.DeleteDisco(idDisco);
+            String idListaReproduccion= json.getString("idListaReproduccion");
+            return ListasNegocio.DeleteListaReproduccion(idListaReproduccion);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
    
 }

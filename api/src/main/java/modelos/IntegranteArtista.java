@@ -26,11 +26,11 @@ public class IntegranteArtista {
     private Date fechaNacimiento;
 
     // FK
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idRol")
     private IntegranteRol rol;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
