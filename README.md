@@ -149,3 +149,30 @@ GET /usuario/getSeguimiento/{idUsuario} (Comprueba si el usuario actual sigue a 
 POST /usuario/seguir (crear/borrar seguimiento del usuario actual a otro especifico, si existe lo borra, sino lo crea)
 json:
 "idUsuario":"idUsuario_a_seguir"
+
+### LISTAS
+
+GET /listas/{idlista} (Obtiene 1 lista por id)
+
+GET /listas/getUsuario (Obtiene listas del usuario actual publicas y privadas)
+
+GET /listas/getUsuario/{idusuario} (Obtiene listas publicas de un usuario especifico)
+
+GET /listas/getCanciones/{idlista} (Obtiene canciones de un lista)
+
+POST /listas/ (crear )
+json:
+"nombre":"nombre_lista",
+"privacidad": true/false,
+"canciones":[idcancion1,idcancion2]
+
+PUT /listas/ (update )
+json:
+"idListaReproduccion":"id_ListaReproduccion",
+"nombre":"nombre_lista",
+"privacidad": true/false,
+"canciones":[idcancion1,idcancion2]
+
+DELETE /listas/ (delete )
+json:
+"idListaReproduccion":"id_ListaReproduccion"
