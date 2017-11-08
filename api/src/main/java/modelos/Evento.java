@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Eventos")
@@ -34,12 +35,13 @@ public class Evento {
     private Date fechaPublicacion;
 
     // FK
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
     // Relaciones
-    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "evento", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<AccionLikeCompartir> acciones = new ArrayList<>();
 
     public Evento() {

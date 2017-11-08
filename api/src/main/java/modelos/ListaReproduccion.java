@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "ListasReproduccion")
 public class ListaReproduccion {
@@ -22,18 +24,19 @@ public class ListaReproduccion {
     private Date fechaAlta;
 
     @Column(name = "estado", nullable = false)
-    private boolean estado;
+    private boolean estado = false;
 
     @Column(name = "privacidad", nullable = false)
     private boolean privacidad = false; // false = publica
 
     // FK
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 
     // Relaciones
-    @OneToMany(mappedBy = "idCancionLista.lista", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "idCancionLista.lista", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<CancionLista> cancionesLista = new ArrayList<>();
 
     public ListaReproduccion(String nombre, Date fechaAlta, boolean estado, boolean privacidad, Usuario usuario) {

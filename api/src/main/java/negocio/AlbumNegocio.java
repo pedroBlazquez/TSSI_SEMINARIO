@@ -11,16 +11,12 @@ import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Album;
 import modelos.Artista;
-import modelos.Cancion;
-import modelos.CancionDisco;
 import modelos.Disco;
 import modelos.DiscoAlbum;
-import modelos.Genero;
-import modelos.GeneroDisco;
 
 public class AlbumNegocio {
     
-    public static ResponseEntity CreateAlbum(String nombre,Date fechaPublicacion,  ArrayList<String> discos, String usermail)
+    public static ResponseEntity<Object> CreateAlbum(String nombre,  ArrayList<String> discos, String usermail)
     {
         try
         {
@@ -32,7 +28,7 @@ public class AlbumNegocio {
             
             List<Artista> list_artistas = cn.getListQuery("from modelos.Artista WHERE usuario.mail = '"+usermail+"'");
             
-            Album new_Album = new Album(nombre,fechaPublicacion,list_artistas.get(0));
+            Album new_Album = new Album(nombre,new Date(),list_artistas.get(0));
             
             List<DiscoAlbum> new_DiscoAlbum = new ArrayList<DiscoAlbum>();
             for(Disco c : list_discos)
@@ -44,14 +40,14 @@ public class AlbumNegocio {
             cn.add(new_Album);
             
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.CREATED);
+            return new ResponseEntity<Object>(HttpStatus.CREATED);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity UpdateAlbum(String idAlbum,String nombre,Date fechaPublicacion,  ArrayList<String> discos)
+    public static ResponseEntity<Object> UpdateAlbum(String idAlbum,String nombre,  ArrayList<String> discos)
     {
         try
         {
@@ -69,7 +65,7 @@ public class AlbumNegocio {
                 new_DiscoAlbum.add(new DiscoAlbum(c, upd_Album));
             
             upd_Album.setNombre(nombre);
-            upd_Album.setFechaPublicacion(fechaPublicacion);
+            upd_Album.setFechaPublicacion(new Date());
 
             upd_Album.setDiscosAlbum(new_DiscoAlbum);
             
@@ -78,14 +74,14 @@ public class AlbumNegocio {
             cn.update(upd_Album);
             
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.ACCEPTED);
+            return new ResponseEntity<Object>(HttpStatus.ACCEPTED);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity DeleteAlbum(String idAlbum)
+    public static ResponseEntity<Object> DeleteAlbum(String idAlbum)
     {
         try
         {
@@ -95,11 +91,11 @@ public class AlbumNegocio {
             Album del_Album = (Album) cn.ReadOne_simpleid(Album.class, Integer.parseInt(idAlbum));
             cn.delete(del_Album);
             cn.cerrarConexion();
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<Object>(HttpStatus.OK);
         }catch(Exception e)
         {
             e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
 }

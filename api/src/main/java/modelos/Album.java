@@ -30,7 +30,6 @@ public class Album {
     private Artista artista;
 
     //Relaciones
-    //@LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "idDiscoAlbum.album", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore
     private List<DiscoAlbum> discosAlbum = new ArrayList<>();

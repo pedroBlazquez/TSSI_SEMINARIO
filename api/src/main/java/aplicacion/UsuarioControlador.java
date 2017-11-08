@@ -70,8 +70,8 @@ public class UsuarioControlador {
 
         JSONArray integrantesLista = json.getJSONArray("integrantesLista");
         IntegranteArtistaNegocio intArtNegocio = new IntegranteArtistaNegocio();
-        List<IntegranteArtista> integrantesListaObjs = new ArrayList();
-        List<Integer> roles = new ArrayList();
+        List<IntegranteArtista> integrantesListaObjs = new ArrayList<IntegranteArtista>();
+        List<Integer> roles = new ArrayList<Integer>();
 
         for (int i = 0; i < integrantesLista.length(); i++) {
             JSONObject obj = integrantesLista.getJSONObject(i);

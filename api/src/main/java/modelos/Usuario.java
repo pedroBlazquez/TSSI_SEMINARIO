@@ -6,9 +6,11 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "Usuarios")
@@ -49,27 +51,27 @@ public class Usuario {
 
     // Relaciones
     @JsonIgnore
-    @OneToMany(mappedBy = "idSeguidos.seguidor", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idSeguidos.seguidor", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Seguidos> seguidos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "idSeguidos.seguido", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idSeguidos.seguido", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Seguidos> seguidores = new ArrayList<>();
 
     @JsonIgnore
-    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Artista artista;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Compartido> compartidos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<ListaReproduccion> listasreproduccion = new ArrayList<>();
     
     public Usuario(){
@@ -209,5 +211,22 @@ public class Usuario {
 
 	public void setListasreproduccion(List<ListaReproduccion> listasreproduccion) {
 		this.listasreproduccion = listasreproduccion;
+	}
+
+	public JSONObject toJson() throws JSONException {
+	    JSONObject json = new JSONObject();
+
+	    json.put("id", this.id);
+	    json.put("mail", this.mail);
+	    json.put("nombre", this.nombre);
+	    json.put("apellido", this.apellido);
+	    json.put("usuarioTipoId", this.usuarioTipo.getId());
+	    json.put("usuarioTipoDescripcion", this.usuarioTipo.getDescripcion());
+
+	    if (this.usuarioTipo.getId() != 1) {
+	        json.put("nombreFantasia", this.artista.getNombreFantasia());
+	    }
+
+	    return json;
 	}
 }

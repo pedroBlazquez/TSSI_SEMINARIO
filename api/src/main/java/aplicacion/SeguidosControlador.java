@@ -41,7 +41,7 @@ public class SeguidosControlador {
             return SeguidosNegocio.Seguir(idUsuario, usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -53,7 +53,7 @@ public class SeguidosControlador {
             return SeguidosNegocio.getSeguimiento((int)idUsuario, usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -61,15 +61,15 @@ public class SeguidosControlador {
     public ResponseEntity<?> getSeguidores(@PathVariable("idUsuario") long idUsuario, HttpServletRequest request) throws JSONException, IOException {
         try {
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<Usuario> seguidores = new ArrayList();
+            List<Usuario> seguidores = new ArrayList<Usuario>();
             if((int)idUsuario == 0)
                 seguidores = SeguidosNegocio.getSeguidores(usermail);
             else
                 seguidores = SeguidosNegocio.getSeguidores((int)idUsuario);
                 
-            return new ResponseEntity(seguidores,HttpStatus.OK);
+            return new ResponseEntity<Object>(seguidores,HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -78,16 +78,16 @@ public class SeguidosControlador {
         try {
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            List<Usuario> seguidos = new ArrayList();
+            List<Usuario> seguidos = new ArrayList<Usuario>();
             if((int)idUsuario == 0)
                 seguidos = SeguidosNegocio.getSeguidos(usermail);
             else
                 seguidos = SeguidosNegocio.getSeguidos((int)idUsuario);
                 
-            return new ResponseEntity(seguidos,HttpStatus.OK);
+            return new ResponseEntity<Object>(seguidos,HttpStatus.OK);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
