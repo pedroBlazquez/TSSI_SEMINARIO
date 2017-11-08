@@ -11,8 +11,10 @@ import {failRegister, successRegister} from '../actions/registerActions';
 export function* requestLoginSaga(action) {
   try {
     // Here should be async request
-    const token = yield call(post, '/login', {mail: action.user, password: action.pass});
-    yield put(successLogin());
+    const response = yield call(post, '/login', {mail: action.user, password: action.pass});
+    const {token, usuario} = response.data;
+    yield call(setAuthToken, token);
+    yield put(successLogin(usuario));
   } catch (e) {
     yield put(errorLogin('Usuario o password incorrectos'));
   }

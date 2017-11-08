@@ -4,7 +4,9 @@ import {Route, withRouter, Switch} from 'react-router-dom';
 
 import PerfilLayout from '../views/PerfilLayout';
 import PerfilSideBar from '../components/PerfilSideBar';
+import withProfile from '../hoc/withProfile';
 
+const SideBar = withRouter(withProfile(PerfilSideBar));
 
 class PerfilContainer extends Component {
   constructor (props) {
@@ -16,7 +18,7 @@ class PerfilContainer extends Component {
     const {children} = this.props;
     return (
       <PerfilLayout
-        sider={<PerfilSideBar />}
+        sider={<SideBar />}
       >
         {children}
       </PerfilLayout>

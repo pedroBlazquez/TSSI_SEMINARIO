@@ -31,26 +31,26 @@ const getOptions = (profileId, esArtista) => {
 
 class PerfilSideBar extends Component {
   render () {
-    const {match, esArtista = true, ownProfile = true} = this.props;
+    const {match, esArtista, esPerfilPropio, user} = this.props;
     return (
       <div className={'side-bar-container margin-10p relative'}>
         <img className={'img-circle'} src={NoImage}/>
         <h3 className={'profile-title'}>{'Fulano Perez'}</h3>
         <VerticalMenu options={getOptions(match.params.profileId, esArtista)} />
         <div className={'margin-5p'}>
-          {ownProfile && 
+          {esPerfilPropio && 
             <Button className={'green-button full-width margin-5p-bottom'}>
               {'Editar Perfil'}
             </Button>
           }
-          {esArtista && ownProfile && 
+          {esArtista && esPerfilPropio && 
             <Button className={'green-button full-width'}>
               <NavLink to={`/perfil/${match.params.profileId}/administrar`}>{'Administrar contenido'}</NavLink>
             </Button>
           }
         </div>
         <div className={'absolute'} style={{bottom: 5}}>
-          {ownProfile && 
+          {esPerfilPropio && 
             <Button className={'green-button full-width'}>{'Eliminar Cuenta'}</Button>
           }
         </div>
@@ -59,4 +59,4 @@ class PerfilSideBar extends Component {
   }
 }
 
-export default withRouter(PerfilSideBar);
+export default PerfilSideBar;
