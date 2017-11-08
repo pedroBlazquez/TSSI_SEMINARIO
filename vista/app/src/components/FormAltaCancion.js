@@ -19,15 +19,21 @@ class FormAltaCancion extends Component {
           }
         </FormItem>
         <FormItem>
-          {FechaValidator({form})('fechaPublicacion')
-            (<FechaNacimiento className={'full-width'} placeholder='Fecha de Publicacion'/>)
+          {form.getFieldDecorator('audio')
+            (<Upload accept="audio">
+              <Button>
+                <Icon type="upload" /> 
+                {'Subir Canción'}
+              </Button>
+            </Upload>)
           }
         </FormItem>
         <FormItem>
-          {form.getFieldDecorator('archivo')
+          {form.getFieldDecorator('imagen')
             (<Upload accept="audio">
               <Button>
-                <Icon type="upload" /> Click to Upload
+                <Icon type="upload" /> 
+                {'Subir imagen'}
               </Button>
             </Upload>)
           }
@@ -47,5 +53,16 @@ class FormAltaCancion extends Component {
   }
 }
 
-export default Form.create({})(ExtendedForm(FormAltaCancion));
+export default Form.create({
+  onFieldsChange(props, changedFields) {
+    if (typeof props.onChange === 'function') {
+      props.onChange(changedFields);
+    }
+  },
+  mapPropsToFields (props) {
+    return {
+      nombre: {...props.nombre}
+    }
+  }
+})(ExtendedForm(FormAltaCancion));
 

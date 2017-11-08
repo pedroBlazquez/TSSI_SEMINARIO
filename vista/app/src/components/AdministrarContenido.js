@@ -1,32 +1,64 @@
 import React, {Component} from 'react';
+import Contenido from '../components/Contenido';
 
-import {Tabs} from 'antd';
-import PerfilWrapper from './PerfilContentWrapper';
+import {Modal} from 'antd';
 
-const TabPane = Tabs.TabPane;
+class AdministrarContenido extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      modalOpen: false
+    }
+  }
 
-class AdminsitrarContenido extends Component {
+  toggleModal = () => {
+    this.setState({modalOpen: !this.state.modalOpen});
+  }
+
+  closeModalAndSubmit = (e, values) => {
+    const {formElementProps} = this.props;
+    const {onSubmit} = formElementProps;
+    this.toggleModal();
+    onSubmit(e, values);
+  }
+
+  closeModalAndCancel = (e, values) => {
+    const {formElementProps} = this.props;
+    const {onCanel} = formElementProps;
+
+    if (typeof onCanel === 'function') {
+      onCanel(e, values);
+    }
+    this.toggleModal();
+  }
+
   render () {
-    const {canciones, discos, albumes, eventos} = this.props;
+    const {modalOpen} = this.state;
+    const {modalTitle, contenidoProps, FormElement, formElementProps} = this.props;
     return (
-      <PerfilWrapper>
-        <Tabs className={'full-height bg-color-white'}>
-          <TabPane tab="Canciones" key="1">
-            {canciones}
-          </TabPane>
-          <TabPane tab="Discos" key="2">
-            {discos}
-          </TabPane>
-          <TabPane tab="Albumes" key="3">
-            {albumes}
-          </TabPane>
-          <TabPane tab="Eventos" key="4">
-            {eventos}
-          </TabPane>
-        </Tabs>
-      </PerfilWrapper>
+      <div>
+        <Contenido
+          {...contenidoProps}
+          onAgregar={this.toggleModal}
+          agregar
+          showOptions
+        />
+        {modalOpen && 
+          <Modal
+            title={modalTitle}
+            visible={modalOpen}
+            footer={[]}
+          >
+            <FormElement
+              {...formElementProps}
+              onCancel={this.closeModalAndCancel}
+              onSubmit={this.closeModalAndSubmit}
+            />
+          </Modal>
+        }
+      </div>
     );
   }
 }
 
-export default AdminsitrarContenido;
+export default AdministrarContenido;

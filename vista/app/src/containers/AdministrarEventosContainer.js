@@ -3,7 +3,7 @@ import Contenido from '../components/Contenido';
 
 import {Modal} from 'antd';
 
-class AdministrarDiscosContainer extends Component {
+class AdministrarEventosContainer extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -26,18 +26,18 @@ class AdministrarDiscosContainer extends Component {
           items={items}
           onEliminar={onEliminar}
           onEditar={(id) => {console.log(id)}}
-          agregarButtonText={'Agregar Disco'}
+          agregarButtonText={'Agregar Evento'}
           onAgregar={this.toggleModal}
           agregar
           showOptions
         />
         {modalOpen && 
           <Modal
-            title={'Alta Disco'}
+            title={'Alta Evento'}
             visible={modalOpen}
             footer={[]}
           >
-            <div onClick={this.toggleModal}>{'Administrar discos'}</div>
+            <div onClick={this.toggleModal}>{'Administrar Evento'}</div>
           </Modal>
         }
       </div>
@@ -45,4 +45,4 @@ class AdministrarDiscosContainer extends Component {
   }
 }
 
-export default AdministrarDiscosContainer;
+export default AdministrarEventosContainer;

@@ -1,55 +1,38 @@
 import React, {Component} from 'react';
-import Contenido from '../components/Contenido';
-import AltaCancion from '../components/FormAltaCancion';
-
+import {connect} from 'react-redux';
 import {Modal} from 'antd';
 
-const MOCK = [{id: 1, descripcion: 'Cancion 1'}, {id: 2, descripcion: 'Cancion 2'}, {id: 3, descripcion: 'Cancion 3'}]
+import Contenido from '../components/Contenido';
+import AltaCancion from '../components/FormAltaCancion';
+import AdministrarContenido from '../components/AdministrarContenido';
 
 class AdministrarCancionesContainer extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      modalOpen: false
-    }
-  }
-
-  toggleModal = () => {
-    this.setState({modalOpen: !this.state.modalOpen});
-  }
-
 
   render () {
-    const {modalOpen} = this.state;
+    const {onEliminar, onEditar, items} = this.props;
+
     return (
-      <div>
-        <Contenido
-          items={MOCK}
-          onEliminar={(id) => {console.log(id)}}
-          onEditar={(id) => {console.log(id)}}
-          agregarButtonText={'Agregar Cancion'}
-          onAgregar={this.toggleModal}
-          agregar
-          showOptions
-        />
-        {modalOpen && 
-          <Modal
-            title={'Alta Cancion'}
-            visible={modalOpen}
-            footer={[]}
-          >
-            <AltaCancion
-              onCancel={this.toggleModal}
-              onSubmit={(e, v) => {
-                debugger;
-                this.toggleModal();
-              }}
-            />
-          </Modal>
-        }
-      </div>
+      <AdministrarContenido 
+        FormElement={AltaCancion}
+        formElementProps={{
+          onSubmit: (e, v) => {console.log(v)}
+        }}
+        modalTitle={'Alta Cancion'}
+        contenidoProps={{
+          onEliminar,
+          onEditar,
+          items,
+          agregarButtonText: 'Agregar Cancion'
+        }}
+      />
     );
   }
 }
 
-export default AdministrarCancionesContainer;
+const mapStateToProps = (state) => ({
+  items: [{id:1 , descripcion: '1'}, {id:2 , descripcion: '1'}, {id:3 , descripcion: '1'}]
+}); 
+
+export default connect(
+  mapStateToProps
+)(AdministrarCancionesContainer);
