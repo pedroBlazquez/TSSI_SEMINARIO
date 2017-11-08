@@ -176,3 +176,22 @@ json:
 DELETE /listas/ (delete )
 json:
 "idListaReproduccion":"id_ListaReproduccion"
+
+### LIKES
+
+GET /like/getUserLikes (Obtiene todos los objetos con like del usuario)
+
+POST /like/getUserLike (Comprueba like de un usuario a un objeto especifico)
+json:
+"id":"id_objeto",
+"tipo": "tipo_objeto" (Album/Artista/Cancion/Disco/Evento/Publicacion)
+
+POST /like/getLikeCount (Cantidad de likes de un objeto especifico)
+json:
+"id":"id_objeto",
+"tipo": "tipo_objeto" (Album/Artista/Cancion/Disco/Evento/Publicacion)
+
+POST /like/ (crear/borrar like del usuario actual a un objeto especifico, si existe lo borra, sino lo crea)
+json:
+"id":"id_objeto",
+"tipo": "tipo_objeto" (Album/Artista/Cancion/Disco/Evento/Publicacion)
