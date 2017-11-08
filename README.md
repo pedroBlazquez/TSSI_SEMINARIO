@@ -19,9 +19,9 @@ Para poder enviar cambios al repositorio se deberá:
 3. Crear commit con los cambios. `git commit -m "Mensaje"`
 4. Enviar los cambios. `git push origin branch-name`
 
-### Endpoints
+# Endpoints
 
-# ALBUMS
+### ALBUMS
 
 GET /albums/{idalbum} (Obtiene 1 album por id)
 
@@ -44,7 +44,7 @@ DELETE /albums/ (delete album)
 json:
 "idAlbum":"id_Album"
 
-# DISCOS
+### DISCOS
 
 GET /discos/{iddisco} (Obtiene 1 disco por id)
 
@@ -69,7 +69,7 @@ DELETE /discos/ (delete )
 json:
 "idDisco":"id_Disco"
 
-# CANCIONES
+### CANCIONES
 
 GET /canciones/{idcancion} (Obtiene 1 cancion por id)
 
@@ -92,7 +92,7 @@ DELETE /canciones/ (delete )
 json:
 "idCancion":"id_Cancion"
 
-# EVENTOS
+### EVENTOS
 
 GET /eventos/{idevento} (Obtiene 1 evento por id)
 
@@ -119,7 +119,7 @@ DELETE /eventos/ (delete )
 json:
 "idEvento":"id_Evento"
 
-# Publicaciones
+### Publicaciones
 
 GET /publicaciones/{idpublicacion} (Obtiene 1 publicacion por id)
 
@@ -138,7 +138,7 @@ DELETE /publicaciones/ (delete )
 json:
 "idPublicacion":"id_Publicacion"
 
-# SEGUIDOS
+### SEGUIDOS
 
 GET /usuario/getSeguidos/{idUsuario} (Obtiene lista de seguidos por un usuario, 0 = usuario actual)
 
