@@ -8,10 +8,12 @@ export const ruleValidator = (rules) => ({form}) => (mapTo) => (Input) => (
 );
 
 // Custom Validators
-export const PasswordValidator = ruleValidator([REQUIRED]);
+export const RequiredValidator = ruleValidator([REQUIRED]);
+
+export const PasswordValidator = RequiredValidator;
 
 export const MailValidator = ruleValidator([MAIL, REQUIRED_WHITE_SPACE]);
 
 export const DatosPersonalesValidator = ruleValidator([REQUIRED_WHITE_SPACE]);
 
-export const FechaValidator = ruleValidator([REQUIRED]);
+export const FechaValidator = RequiredValidator;

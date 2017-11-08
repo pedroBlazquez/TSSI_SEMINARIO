@@ -19,8 +19,14 @@ function withProfile (Wrapp) {
     render () {
       const esArtista = this.esArtista();
       const esPerfilPropio = this.esPerfilPropio();
+      const {profileId} = this.props.match.params
       return (
-        <Wrapp {...this.props} esArtista={esArtista} esPerfilPropio={esPerfilPropio}/>
+        <Wrapp 
+          {...this.props}
+          esArtista={esArtista}
+          esPerfilPropio={esPerfilPropio}
+          profileId={profileId}
+        />
       )
     }
   }

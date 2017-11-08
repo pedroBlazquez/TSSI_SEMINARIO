@@ -13,14 +13,6 @@ import Novedades from '../components/Novedades';
 
 // TODO: Cambiar las rutas para un mejor approach
 // https://css-tricks.com/react-router-4/
-const Home = () => (
-  <Switch>
-    <Route path="/" exact>
-      <div>{'Hola Home'}</div>
-    </Route>
-  </Switch>
-);
-
 const MainRoute = ({isLogged}) => (
   <MainLayout
     header={'MusicAPP'}

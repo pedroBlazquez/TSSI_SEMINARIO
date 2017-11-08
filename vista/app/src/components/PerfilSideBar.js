@@ -6,6 +6,7 @@ import {Button} from 'antd';
 
 import NoImage from '../assets/no-image-profile.png';
 import VerticalMenu from './VerticalMenu';
+import PerfilWrapper from './PerfilContentWrapper';
 
 const getProfileOptions = (profileId) => [
   {to: `/perfil/${profileId}`, value: 'Perfil', exact: true},
@@ -31,30 +32,32 @@ const getOptions = (profileId, esArtista) => {
 
 class PerfilSideBar extends Component {
   render () {
-    const {match, esArtista, esPerfilPropio, user} = this.props;
+    const {esArtista, esPerfilPropio, user, profileId} = this.props;
     return (
-      <div className={'side-bar-container margin-10p relative'}>
-        <img className={'img-circle'} src={NoImage}/>
-        <h3 className={'profile-title'}>{'Fulano Perez'}</h3>
-        <VerticalMenu options={getOptions(match.params.profileId, esArtista)} />
-        <div className={'margin-5p'}>
-          {esPerfilPropio && 
-            <Button className={'green-button full-width margin-5p-bottom'}>
-              {'Editar Perfil'}
-            </Button>
-          }
-          {esArtista && esPerfilPropio && 
-            <Button className={'green-button full-width'}>
-              <NavLink to={`/perfil/${match.params.profileId}/administrar`}>{'Administrar contenido'}</NavLink>
-            </Button>
-          }
+      <PerfilWrapper>
+        <div className={'side-bar-container relative'}>
+          <img className={'img-circle'} src={NoImage}/>
+          <h3 className={'profile-title'}>{'Fulano Perez'}</h3>
+          <VerticalMenu options={getOptions(profileId, esArtista)} />
+          <div className={'margin-5p'}>
+            {esPerfilPropio && 
+              <Button className={'green-button full-width margin-5p-bottom'}>
+                {'Editar Perfil'}
+              </Button>
+            }
+            {esArtista && esPerfilPropio && 
+              <Button className={'green-button full-width'}>
+                <NavLink to={`/perfil/${profileId}/administrar`}>{'Administrar contenido'}</NavLink>
+              </Button>
+            }
+          </div>
+          <div className={'absolute'} style={{bottom: 5}}>
+            {esPerfilPropio && 
+              <Button className={'green-button full-width'}>{'Eliminar Cuenta'}</Button>
+            }
+          </div>
         </div>
-        <div className={'absolute'} style={{bottom: 5}}>
-          {esPerfilPropio && 
-            <Button className={'green-button full-width'}>{'Eliminar Cuenta'}</Button>
-          }
-        </div>
-      </div>
+      </PerfilWrapper>
     );
   }
 }
