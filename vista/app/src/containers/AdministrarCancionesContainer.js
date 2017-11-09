@@ -53,7 +53,11 @@ class AdministrarCancionesContainer extends Component {
     const {onSubmit, onUpdate, alta, modificar, user} = this.props;
     if (this.state.editando !== null) {
       const {editando} = this.state;
-      const cancion = {...values, idCancion: editando};
+      const cancion = {
+        ...values,
+        idCancion: editando.toString(),
+        genero: GENEROS.find(g => g.id === values.genero).value
+      };
       modificar(cancion, user.idArtista);
       this.setState(initialState);
     } else {
