@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Modal} from 'antd';
 
+import {GENEROS} from '../utils/constants'
+
 import AltaCancion from '../components/FormAltaCancion';
 import AdministrarContenido from '../components/AdministrarContenido';
 
@@ -28,25 +30,31 @@ class AdministrarCancionesContainer extends Component {
     this.setState({cancion: {
       nombre: {
         value: cancion.nombre
+      },
+      genero: {
+        value: ''
       }
     }, editando: id});
   }
 
   onEliminar = (id) => {
-    const {baja} = this.props;
-    baja(id);
+    const {baja, user} = this.props;
+    baja(id, user.idArtista);
   }
 
   onFormChange = (changedFields) => {
     if (this.state.editando !== null) {
-      this.setState({cancion: {...changedFields}});
+      const {cancion} = this.state;
+      this.setState({cancion: {...cancion,...changedFields}});
     }
   }
 
   onSubmit = (e, values) => {
     const {onSubmit, onUpdate, alta, modificar, user} = this.props;
     if (this.state.editando !== null) {
-      modificar(values);
+      const {editando} = this.state;
+      const cancion = {...values, idCancion: editando};
+      modificar(cancion, user.idArtista);
       this.setState(initialState);
     } else {
       alta(values, user.idArtista);

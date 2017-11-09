@@ -21,7 +21,7 @@ class FormAltaCancion extends Component {
         </FormItem>
         <FormItem>
           {RequiredValidator({form})('genero')
-            (<GenerosMusicalesDD type={'text'} />)
+            (<GenerosMusicalesDD />)
           }
         </FormItem>
         <FormItem>
@@ -67,7 +67,8 @@ export default Form.create({
   },
   mapPropsToFields (props) {
     return {
-      nombre: {...props.nombre}
+      nombre: {...props.nombre},
+      genero: {...props.genero}
     }
   }
 })(ExtendedForm(FormAltaCancion));
