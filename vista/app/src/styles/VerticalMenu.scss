@@ -1,0 +1,21 @@
+@import 'variables';
+
+.vertical-menu-container {
+  border-radius: 5px;
+  border: $border-dark-gray;
+
+  .option {
+    text-decoration: none;
+    border-bottom: $border-dark-gray;
+    color: $dark-gray;
+    padding: 5px;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .active-option {
+    background-color: $light-gray;
+    font-weight: bolder;
+  }
+}

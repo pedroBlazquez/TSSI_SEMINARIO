@@ -5,7 +5,6 @@ import { Form, Button } from 'antd';
 import {PasswordValidator, MailValidator} from '../utils/validators';
 
 import ExtendedFrom from './ExtendedForm';
-import FormWrapper from './FormWrapper';
 import MailInput from './MailInput';
 import PassInput from './PasswordInput';
 
@@ -44,14 +43,4 @@ class LoginForm extends Component {
   
 } 
 
-export default Form.create({
-  onFieldsChange(props, changedFields) {
-    props.onChange(changedFields);
-  },
-  mapPropsToFields (props) {
-    return ({
-      usuario: {...props.usuario},
-      password: {...props.password}
-    });
-  }
-})(ExtendedFrom(LoginForm));
+export default Form.create({})(ExtendedFrom(LoginForm));
