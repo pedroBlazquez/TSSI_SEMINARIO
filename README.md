@@ -1,4 +1,4 @@
-# TSSI_SEMINARIO
+﻿# TSSI_SEMINARIO
 Trabajo práctico para materia "Seminario" de la carrera Tec.Sup. en Sistemas informáticos
 
 # Instalación
@@ -219,3 +219,15 @@ GET /compartir/getCompartidos/{idUsuario}
 ### INICIO / NOVEDADES
 #### Obtener novedades recomendadas para el usuario actual
 GET /Inicio
+
+### ARTISTA
+#### Obtener artistas por su id
+* GET /artistas/{idartista}
+
+#### Obtener artistas por su id de Usuario
+* GET /artistas/getbyUsuario/{idusuario}
+
+### USUARIO
+#### Obtener usuario por su id
+* GET /usuario/{idusuario}
+
