@@ -12,13 +12,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import conexion.Conexion;
+import modelos.Evento;
 import modelos.IntegranteArtista;
+import modelos.Usuario;
 import negocio.ArtistaNegocio;
 import negocio.IntegranteArtistaNegocio;
 import negocio.UsuarioNegocio;
@@ -89,6 +94,20 @@ public class UsuarioControlador {
         JSONObject json = new JSONObject(httpEntity.getBody());
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         return usuarioNegocio.checkMail(json.getString("mail"));
+    }
+    
+    @RequestMapping(value = "/{idusuario}", method = RequestMethod.GET)
+    public ResponseEntity<?> getEvento(@PathVariable("idusuario") long idusuario) {
+        try {
+            Usuario u = UsuarioNegocio.getById((int)idusuario);
+            if (u == null) {
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+                // You many decide to return HttpStatus.NOT_FOUND
+            }
+            return new ResponseEntity<Usuario>(u, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 
