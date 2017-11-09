@@ -215,3 +215,7 @@ GET /compartir/getCompartidos/{idUsuario}
 * json:
 "id":"id_objeto",
 "tipo": "tipo_objeto"
+
+### INICIO / NOVEDADES
+#### Obtener novedades recomendadas para el usuario actual
+GET /Inicio
