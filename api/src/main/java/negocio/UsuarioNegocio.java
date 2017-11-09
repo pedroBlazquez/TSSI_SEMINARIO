@@ -61,7 +61,21 @@ public class UsuarioNegocio {
 
         return u;
     }
+    
+    public static Usuario getById(int id) {
+        Conexion cn = new Conexion();
+        Usuario u = null;
+        cn.abrirConexion();
 
+        List<Object> usuarioLista = cn.getListQuery("FROM Usuario WHERE id = " + id);
+
+        if (!usuarioLista.isEmpty()) {
+            u = (Usuario) usuarioLista.get(0);
+        }
+
+        return u;
+    }
+    
     //Esto no es una baja logica, es una eliminacion permanente del registro
     public boolean eliminarUsuario(String mail){
         Conexion cn = new Conexion();
