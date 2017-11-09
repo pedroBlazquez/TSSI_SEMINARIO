@@ -118,14 +118,14 @@ public class ListaControlador {
             return ListasNegocio.CreateListaReproduccion(nombre,privacidad,  canciones, usermail);
             
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
  
     // -------------------Update-------------------------------------------
     
-    @RequestMapping(value = "/", method = RequestMethod.PUT) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.PUT) 
     public ResponseEntity<?> updateListaReproduccion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
@@ -142,9 +142,26 @@ public class ListaControlador {
         }
     }
     
+    // -------------------Update (agregar cancion)-------------------------------------------
+    
+    @RequestMapping(value = "/agregarCancion", method = RequestMethod.PUT) 
+    public ResponseEntity<?> updateListaReproduccion_agregarCancion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
+        try {
+            //obtiene objeto json
+            JSONObject json = new JSONObject(httpEntity.getBody());    
+            //busca en json los atributos
+            String idListaReproduccion= json.getString("idListaReproduccion");
+            String idCancion= json.getString("idCancion");
+            
+            return ListasNegocio.UpdateListaReproduccion_agregarCancion(idListaReproduccion,idCancion);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     // -------------------Delete-------------------------------------------
     
-    @RequestMapping(value = "/", method = RequestMethod.DELETE) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.DELETE) 
     public ResponseEntity<?> deleteListaReproduccion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json

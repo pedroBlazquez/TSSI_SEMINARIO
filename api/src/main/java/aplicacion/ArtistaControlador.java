@@ -2,25 +2,13 @@ package aplicacion;
 
 import org.springframework.web.bind.annotation.*;
 
-import aplicacion.autenticacion.Token;
 import modelos.Artista;
-import modelos.Evento;
-import negocio.EventoNegocio;
 import conexion.Conexion;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
-
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/artistas")

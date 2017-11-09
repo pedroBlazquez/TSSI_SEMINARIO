@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import aplicacion.Tools;
 import conexion.Conexion;
@@ -121,6 +123,28 @@ public class InicioNegocio {
             
             cn.cerrarConexion();
             return return_list;
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public static ResponseEntity<Object> Buscar(String busqueda,String genero,String artista,String direccion,String desdehasta,Date fecha,String usermail)
+    {
+        try
+        {
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            
+            //obtengo usuario actual
+            List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
+            Usuario usuario = usuarios.get(0);
+            
+            
+            
+            cn.cerrarConexion();
+            return new ResponseEntity<Object>(usuarios,HttpStatus.NOT_MODIFIED);
         }catch(Exception e)
         {
             e.printStackTrace();

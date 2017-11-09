@@ -83,6 +83,33 @@ public class ListasNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
+    public static ResponseEntity<Object> UpdateListaReproduccion_agregarCancion(String idLista,String idCancion)
+    {
+        try
+        {
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            
+            ListaReproduccion upd_ListaReproduccion = (ListaReproduccion) cn.ReadOne_simpleid(ListaReproduccion.class, Integer.parseInt(idLista));
+            
+            List<Cancion> list_canciones = cn.getListQuery("from modelos.Cancion WHERE id = "+idCancion);
+            
+            List<CancionLista> new_CancionListaReproduccion = new ArrayList<CancionLista>();
+            for(Cancion c : list_canciones)
+                new_CancionListaReproduccion.add(new CancionLista(c, upd_ListaReproduccion));
+            
+            upd_ListaReproduccion.setCancionesLista(new_CancionListaReproduccion);
+            
+            cn.update(upd_ListaReproduccion);
+            
+            cn.cerrarConexion();
+            return new ResponseEntity<Object>(HttpStatus.ACCEPTED);
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
+        }
+    }
     public static ResponseEntity<Object> DeleteListaReproduccion(String idListaReproduccion)
     {
         try
