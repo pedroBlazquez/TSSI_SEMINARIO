@@ -1,26 +1,18 @@
 package negocio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Artista;
-import modelos.Cancion;
-import modelos.CancionDisco;
-import modelos.Disco;
 import modelos.Genero;
-import modelos.GeneroDisco;
 import modelos.Usuario;
 
 public class InicioNegocio {
@@ -32,30 +24,43 @@ public class InicioNegocio {
             Conexion cn = new Conexion();
             cn.abrirConexion();
             
+            //obtengo usuario actual
             List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
             Usuario usuario = usuarios.get(0);
             
-            List<Object> list = new ArrayList<Object>();
+            //creo lista para devolver
+            List<Object> return_list = new ArrayList<Object>();
+            //lista de prioridad (aparece primero)
+            List<Object> priority_list = new ArrayList<Object>();
+            //lista secundaria
+            List<Object> general_list = new ArrayList<Object>();
             
-            //obtiene artistas seguidos
+            //obtengo artistas seguidos
             List<Artista> artistas_seguidos = cn.getListQuery(
                 "select s.idSeguidos.seguido.artista from modelos.Seguidos s " + 
                 "WHERE s.idSeguidos.seguidor.id = "+usuario.getId()+
                 " and s.idSeguidos.seguido.usuarioTipo.id != " + 2); //CAMBIAR NUMERO ACORDE AL USUARIO TIPO OYENTE
             
-            //Novedades de artistas seguidos
+            //fecha actual
+            String date_now = Tools.DateFormatter(new Date());
+            //fecha desde la cual se toman novedades
             String date_novedades = Tools.DateFormatter(Tools.GetDateDifference(2));
+            
+            //armo query para filtrar por artistas seguidos
+            StringBuilder query_artistas_seguidos = new StringBuilder();
             for (Artista seguido : artistas_seguidos)
-            {
-                list.addAll(cn.getListQuery("from Cancion WHERE artista.id = "+seguido.getId()+" and fechaPublicacion > '"+date_novedades+"'"));
-                list.addAll(cn.getListQuery("from Disco WHERE artista.id = "+seguido.getId()+" and fechaPublicacion > '"+date_novedades+"'"));
-                list.addAll(cn.getListQuery("from Album WHERE artista.id = "+seguido.getId()+" and fechaPublicacion > '"+date_novedades+"'"));
-                list.addAll(cn.getListQuery("from Publicacion WHERE artista.id = "+seguido.getId()+" and fechaPublicacion > '"+date_novedades+"'"));
-                list.addAll(cn.getListQuery("from Evento WHERE artista.id = "+seguido.getId()+" and fechaPublicacion > '"+date_novedades+"'"));
-            }
-
-            //obtiene generos de estos artistas
-            Set<Genero> generos_set = new TreeSet<Genero>(new Comparator<Genero>() {
+                query_artistas_seguidos.append(seguido.getId()).append(",");
+            query_artistas_seguidos.deleteCharAt(query_artistas_seguidos.length() - 1);
+            
+            //busco novedades para los artistas seguidos
+            priority_list.addAll(cn.getListQuery("from Cancion WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
+            priority_list.addAll(cn.getListQuery("from Disco WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
+            priority_list.addAll(cn.getListQuery("from Album WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
+            priority_list.addAll(cn.getListQuery("from Publicacion WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
+            priority_list.addAll(cn.getListQuery("from Evento WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"' and fechaEvento > '"+date_now+"'"));
+            
+            //obtengo generos de estos artistas, para definir los generos que le gustan al usuario
+            Set<Genero> generos1_set = new TreeSet<Genero>(new Comparator<Genero>() {
                 @Override
                 public int compare(Genero o1, Genero o2) {
                     if(o1.getId() == o2.getId())
@@ -65,24 +70,57 @@ public class InicioNegocio {
                 }
             });
             for (Artista seguido : artistas_seguidos)
+                generos1_set.addAll(cn.getListQuery("select ga.idGeneroArtista.genero from GeneroArtista ga "
+                        + "WHERE ga.idGeneroArtista.artista.id = "+seguido.getId()
+                        +" order by ga.idGeneroArtista.genero.id"));
+            
+            //armo query para filtrar por generos que le gustan al usuario
+            StringBuilder query_in_generos = new StringBuilder();
+            for (Genero g : generos1_set)
+                query_in_generos.append(g.getId()).append(",");
+            query_in_generos.deleteCharAt(query_in_generos.length() - 1);
+            
+            //busco novedades para Discos y Canciones de los generos que le gustan al usuario
+            general_list.addAll(cn.getListQuery("select gc.idGeneroCancion.cancion from GeneroCancion gc WHERE gc.idGeneroCancion.cancion.artista.id not in ("+query_artistas_seguidos+") and gc.idGeneroCancion.genero.id in ("+query_in_generos+") and gc.idGeneroCancion.cancion.fechaPublicacion > '"+date_novedades+"'"));
+            general_list.addAll(cn.getListQuery("select gd.idGeneroDisco.disco from GeneroDisco gd WHERE gd.idGeneroDisco.disco.artista.id not in ("+query_artistas_seguidos+") and gd.idGeneroDisco.genero.id in ("+query_in_generos+") and gd.idGeneroDisco.disco.fechaPublicacion > '"+date_novedades+"'"));
+            
+            //obtengo artistas del genero que le gustan al usuario, pero que no sigue
+            List<Artista> artistas_genero = cn.getListQuery("select ga.idGeneroArtista.artista from GeneroArtista ga WHERE ga.idGeneroArtista.artista.id not in ("+query_artistas_seguidos+") and ga.idGeneroArtista.genero.id in ("+query_in_generos+")");
+            if(!artistas_genero.isEmpty())
             {
-                generos_set.addAll(cn.getListQuery("select ga.idGeneroArtista.genero from GeneroArtista ga WHERE ga.idGeneroArtista.artista.id = "+seguido.getId()+" order by ga.idGeneroArtista.genero.id"));
+                //armo query para filtrar por artistas de los generos
+                StringBuilder query_artistas_genero = new StringBuilder();
+                for (Artista a : artistas_genero)
+                    query_artistas_genero.append(a.getId()).append(",");
+                query_artistas_genero.deleteCharAt(query_artistas_genero.length() - 1);
+                
+                //busco novedades para Album, Publicacion y Evento, de artistas del genero, que no sean seguidos por el usuario
+                general_list.addAll(cn.getListQuery("from Album WHERE artista.id in ("+query_artistas_genero+") and artista.id not in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
+                general_list.addAll(cn.getListQuery("from Publicacion WHERE artista.id in ("+query_artistas_genero+") and artista.id not in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
+                general_list.addAll(cn.getListQuery("from Evento WHERE artista.id in ("+query_artistas_genero+") and artista.id not in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"' and fechaEvento > '"+date_now+"'"));
+                
+                //agrego aleatoriamente 3 artistas que de los generos que le gustan al usuario
+                Collections.shuffle(artistas_genero);
+                int loop_count = 0;
+                for(Artista a : artistas_genero)
+                {
+                    loop_count++;
+                    general_list.add(a);
+                    if(loop_count == 3)
+                        break;
+                }
             }
+            //mezclo ambas listas
+            Collections.shuffle(priority_list);
+            Collections.shuffle(general_list);
             
-            
-            //obtener artistas seguidos
-            // -> de estos obtener canciones, discos + lista, albums + lista, eventos, publicaciones, de los ultimos 2 dias
-            // -> obtener generos de artistas (generos que me gustan)
-            // ---->ULTIMO obtener canciones, discos + lista, albums + lista publicados hace 2 dias
-            // ---->SUGERENCIA obtener canciones, discos + lista, albums + lista con mayor cantidad de likes, 2 de cada uno
-            // ---->ULTIMO/SUGERENCIA obtener eventos publicados hace 2 dias, o que falte menos de 1 mes y sea del genero que me gusta
-            // SUGERENCIA artistas del genero que me gusta, 
-            //
-            
+            //agrego listas a return list
+            return_list.addAll(priority_list);
+            return_list.addAll(general_list);
             
             
             cn.cerrarConexion();
-            return list;
+            return return_list;
         }catch(Exception e)
         {
             e.printStackTrace();
