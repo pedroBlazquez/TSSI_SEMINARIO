@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {Modal} from 'antd';
 
 import AltaCancion from '../components/FormAltaCancion';
 import AdministrarContenido from '../components/AdministrarContenido';
+
+import {getCancionesPerfil} from '../selectors/perfil';
+
+import {altaCancion, modCancion, bajaCancion} from '../actions/contenidoActions';
 
 const initialState = {
   editando: null,
@@ -27,6 +32,11 @@ class AdministrarCancionesContainer extends Component {
     }, editando: id});
   }
 
+  onEliminar = (id) => {
+    const {baja} = this.props;
+    baja(id);
+  }
+
   onFormChange = (changedFields) => {
     if (this.state.editando !== null) {
       this.setState({cancion: {...changedFields}});
@@ -34,12 +44,12 @@ class AdministrarCancionesContainer extends Component {
   }
 
   onSubmit = (e, values) => {
-    const {onSubmit, onUpdate} = this.props;
+    const {onSubmit, onUpdate, alta, modificar, user} = this.props;
     if (this.state.editando !== null) {
-      console.log('Se estaba editando');
+      modificar(values);
       this.setState(initialState);
     } else {
-      console.log('un alta nueva');
+      alta(values, user.idArtista);
     }
   }
 
@@ -50,7 +60,7 @@ class AdministrarCancionesContainer extends Component {
   }
 
   render () {
-    const {onEliminar, items, canciones} = this.props;
+    const {canciones} = this.props;
     return (
       <AdministrarContenido 
         FormElement={AltaCancion}
@@ -62,9 +72,9 @@ class AdministrarCancionesContainer extends Component {
         }}
         modalTitle={this.state.editando === null ? 'Alta Cancion' : 'Actualizar Canción'}
         contenidoProps={{
-          onEliminar,
+          onEliminar: this.onEliminar,
           onEditar: this.onEditar,
-          items,
+          items: canciones.map(c => ({id: c.id, descripcion: c.nombre})),
           agregarButtonText: 'Agregar Cancion'
         }}
       />
@@ -72,11 +82,18 @@ class AdministrarCancionesContainer extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  alta: bindActionCreators(altaCancion, dispatch),
+  modificar: bindActionCreators(modCancion, dispatch),
+  baja: bindActionCreators(bajaCancion, dispatch)
+});
+
 const mapStateToProps = (state) => ({
-  items: [{id:1 , descripcion: '1'}, {id:2 , descripcion: '1'}, {id:3 , descripcion: '1'}],
-  canciones: [{id:1 , nombre: '1'}, {id:2 , nombre: '2'}, {id:3 , nombre: '1'}]
+  canciones: getCancionesPerfil(state),
+  user: {idArtista: 3}
 }); 
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AdministrarCancionesContainer);

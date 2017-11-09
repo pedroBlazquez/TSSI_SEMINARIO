@@ -1,6 +1,6 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 
-import {post} from '../utils/api';
+import {_post} from '../utils/api';
 import {USUARIO_ARTISTA, USUARIO_BANDA, USUARIO_OYENTE} from '../utils/constants';
 import {setAuthToken} from '../utils/storage';
 import {REQUEST_LOGIN, REGISTER_USER} from '../actions/types';
@@ -11,7 +11,7 @@ import {failRegister, successRegister} from '../actions/registerActions';
 export function* requestLoginSaga(action) {
   try {
     // Here should be async request
-    const response = yield call(post, '/login', {mail: action.user, password: action.pass});
+    const response = yield call(_post, '/login', {mail: action.user, password: action.pass});
     const {token, usuario} = response.data;
     yield call(setAuthToken, token);
     yield put(successLogin(usuario));
@@ -22,7 +22,7 @@ export function* requestLoginSaga(action) {
 
 export function* altaUsuario ({user}) {
   try {
-    const mailDisponible = yield post('/usuario/registro/checkMail', {mail: user.usuarioFields.usuario.value});
+    const mailDisponible = yield _post('/usuario/registro/checkMail', {mail: user.usuarioFields.usuario.value});
     if (!mailDisponible) { throw new Error ("Ya existe el mail");}
 
     const payload = {};
@@ -48,7 +48,7 @@ export function* altaUsuario ({user}) {
       }
     }
 
-    yield post('/usuario/registro', {...payload});
+    yield _post('/usuario/registro', {...payload});
     yield put(successRegister(true));
   } catch (e) {
     yield put(failRegister(e.message));
@@ -57,7 +57,7 @@ export function* altaUsuario ({user}) {
 
 export function* checkMail ({user}) {
   try {
-    yield post('/usuario/registro/checkMail', {mail: user.usuario});
+    yield _post('/usuario/registro/checkMail', {mail: user.usuario});
 
   } catch (e) {
 

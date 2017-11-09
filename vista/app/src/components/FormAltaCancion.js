@@ -3,6 +3,7 @@ import {Form, Button, Input, Upload, Icon} from 'antd';
 
 import ExtendedForm from './ExtendedForm';
 import FechaNacimiento from './FechaNacimiento';
+import {GenerosMusicalesDD} from './GenerosMusicales';
 import {DatosPersonalesValidator, FechaValidator, RequiredValidator} from '../utils/validators';
 
 const FormItem = Form.Item;
@@ -16,6 +17,11 @@ class FormAltaCancion extends Component {
         <FormItem>
           {DatosPersonalesValidator({form})('nombre')
             (<Input type={'text'} placeholder='Ingrese el nombre de la cancion'/>)
+          }
+        </FormItem>
+        <FormItem>
+          {RequiredValidator({form})('genero')
+            (<GenerosMusicalesDD type={'text'} />)
           }
         </FormItem>
         <FormItem>
