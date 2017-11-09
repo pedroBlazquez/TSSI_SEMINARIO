@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -21,6 +22,12 @@ public class Tools {
             // TODO Auto-generated catch block
             return null;
         }
+    }
+    
+    public static String DateFormatter (Date date)
+    {
+        return format.format(date);
+        
     }
     
     public static ArrayList<String> Convert_jsonArray_toArrayString (JSONArray jsonArray ) throws JSONException
@@ -47,5 +54,13 @@ public class Tools {
             res = Builder.toString();
         }
         return res;
+    }
+    
+    public static Date GetDateDifference(int days_difference)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -days_difference);
+        return cal.getTime();
     }
 }
