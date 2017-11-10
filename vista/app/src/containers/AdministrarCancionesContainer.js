@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Modal} from 'antd';
 
 import {GENEROS} from '../utils/constants'
 
@@ -38,8 +37,8 @@ class AdministrarCancionesContainer extends Component {
   }
 
   onEliminar = (id) => {
-    const {baja, user} = this.props;
-    baja(id, user.idArtista);
+    const {baja} = this.props;
+    baja(id);
   }
 
   onFormChange = (changedFields) => {
@@ -50,7 +49,7 @@ class AdministrarCancionesContainer extends Component {
   }
 
   onSubmit = (e, values) => {
-    const {onSubmit, onUpdate, alta, modificar, user} = this.props;
+    const {onSubmit, onUpdate, alta, modificar} = this.props;
     if (this.state.editando !== null) {
       const {editando} = this.state;
       const cancion = {
@@ -58,10 +57,10 @@ class AdministrarCancionesContainer extends Component {
         idCancion: editando.toString(),
         genero: GENEROS.find(g => g.id === values.genero).value
       };
-      modificar(cancion, user.idArtista);
+      modificar(cancion);
       this.setState(initialState);
     } else {
-      alta(values, user.idArtista);
+      alta(values);
     }
   }
 
@@ -101,8 +100,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  canciones: getCancionesPerfil(state),
-  user: {idArtista: 3}
+  canciones: getCancionesPerfil(state)
 }); 
 
 export default connect(

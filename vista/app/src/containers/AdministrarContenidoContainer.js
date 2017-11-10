@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {Tabs} from 'antd';
 
 import PerfilWrapper from '../components/PerfilContentWrapper';
@@ -25,7 +26,7 @@ class AdministrarContenidoContainer extends Component {
             <AdministrarAlbumes />
           </TabPane>
           <TabPane tab="Eventos" key="4">
-            <AdministrarEventos />
+            {'eventos'}
           </TabPane>
         </Tabs>
       </PerfilWrapper>
@@ -33,4 +34,10 @@ class AdministrarContenidoContainer extends Component {
   }
 }
 
-export default AdministrarContenidoContainer;
+const mapStateToProps = (state) => ({
+
+});
+
+export default connect(
+
+)(AdministrarContenidoContainer);

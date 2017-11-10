@@ -31,7 +31,7 @@ const Item = ({
 class Contenido extends Component {
 
   render () {
-    const {agregarButtonText, onAgregar, agregar, items, selection = [], ...itemProps} = this.props;
+    const {agregarButtonText, onAgregar, agregar, items, seleccion = [], ...itemProps} = this.props;
     return (
       <div className={'contenido-container'}>
         {agregar && <Button onClick={onAgregar} className={'margin-10p'}>{agregarButtonText}</Button>}
@@ -41,7 +41,7 @@ class Contenido extends Component {
               key={i.id}
               id={i.id}
               descripcion={i.descripcion}
-              selected={selection.includes(i.id)}
+              selected={seleccion.includes(i.id)}
               {...itemProps}
             />
           )}

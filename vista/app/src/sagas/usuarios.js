@@ -1,6 +1,6 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 
-import {_post} from '../utils/api';
+import {_post, _get, config} from '../utils/api';
 import {USUARIO_ARTISTA, USUARIO_BANDA, USUARIO_OYENTE} from '../utils/constants';
 import {setAuthToken} from '../utils/storage';
 import {REQUEST_LOGIN, REGISTER_USER} from '../actions/types';
@@ -14,7 +14,13 @@ export function* requestLoginSaga(action) {
     const response = yield call(_post, '/login', {mail: action.user, password: action.pass});
     const {token, usuario} = response.data;
     yield call(setAuthToken, token);
-    yield put(successLogin(usuario));
+    if (usuario.tipoUsuario !== USUARIO_OYENTE.id) {
+      const detalleArtista = yield call(_get, `/artistas/getbyUsuario/${usuario.id}`, config());
+      const usuarioConDetalle = {...usuario, idArtista: detalleArtista.data.id};
+      yield put(successLogin(usuarioConDetalle));
+    } else {
+      yield put(successLogin(usuario));
+    }
   } catch (e) {
     yield put(errorLogin('Usuario o password incorrectos'));
   }

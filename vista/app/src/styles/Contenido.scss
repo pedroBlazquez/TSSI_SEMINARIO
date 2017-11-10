@@ -7,25 +7,12 @@
 
   .items-container {
     border: $border-light-gray;
-    border-radius: $border-radius-10p;
 
     .item {
       min-height: 25px;
       padding: 0 10px;
       border-bottom: $border-light-gray;
 
-      .selectable {
-        cursor: pointer;
-
-        .selected {
-          background-color: $light-gray;
-          .descripcion {
-            font-weight: bolder;
-            color: white;
-          }
-        }
-      }
-      
       .descripcion {
         font-size: 18px;
       }
@@ -38,14 +25,22 @@
         }
       }
 
-      &:first-child {
-        border-radius: $border-radius-10p $border-radius-10p 0 0;
-      }
       &:last-child {
         border-bottom: none;
-        border-radius: 0 0 $border-radius-10p $border-radius-10p;
       }
     }
 
+  }
+}
+
+.selectable {
+  cursor: pointer;
+}
+
+.selected {
+  background-color: $light-gray;
+  .descripcion {
+    font-weight: bolder;
+    color: white;
   }
 }

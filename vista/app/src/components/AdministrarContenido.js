@@ -54,6 +54,7 @@ class AdministrarContenido extends Component {
         />
         {modalOpen && 
           <Modal
+            onCancel={this.closeModalAndCancel}
             title={modalTitle}
             visible={modalOpen}
             footer={[]}

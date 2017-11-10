@@ -17,6 +17,11 @@ export const getDiscosPerfil = createSelector(
   perfil => perfil.discos
 );
 
+export const getAlbumesPerfil = createSelector(
+  [getPerfil],
+  perfil => perfil.albumes
+);
+
 export const getListasPerfil = createSelector(
   [getPerfil],
   perfil => perfil.listas
