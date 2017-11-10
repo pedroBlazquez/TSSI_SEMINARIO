@@ -310,4 +310,5 @@ insert into eventos(costo, descripcion,direccion,fechaEvento,fechaPublicacion,no
 
 -- --------------------------------------------------------------------------------------------------------------------------------------
 
+insert into generoscancion (idCancion,idGenero) select a.idCancion,b.idGenero from canciones a inner join generosartista b on a.idArtista = b.idArtista;
 
