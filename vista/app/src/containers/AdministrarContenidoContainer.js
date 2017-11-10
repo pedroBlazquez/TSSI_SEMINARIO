@@ -26,7 +26,7 @@ class AdministrarContenidoContainer extends Component {
             <AdministrarAlbumes />
           </TabPane>
           <TabPane tab="Eventos" key="4">
-            {'eventos'}
+            <AdministrarEventos />
           </TabPane>
         </Tabs>
       </PerfilWrapper>

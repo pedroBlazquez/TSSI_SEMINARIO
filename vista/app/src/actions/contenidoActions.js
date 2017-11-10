@@ -7,7 +7,10 @@ import {
   MOD_CANCION,
   BAJA_ALBUM,
   BAJA_DISCO,
-  BAJA_CANCION
+  BAJA_CANCION,
+  ALTA_EVENTO,
+  MOD_EVENTO,
+  BAJA_EVENTO
 } from './types';
 
 export const altaAlbum = (album) => ({type: ALTA_ALBUM, album});
@@ -16,7 +19,9 @@ export const bajaAlbum = (album) => ({type: BAJA_ALBUM, album});
 export const altaDisco = (disco) => ({type: ALTA_DISCO, disco});
 export const modDisco = (disco) => ({type: MOD_DISCO, disco});
 export const bajaDisco = (disco) => ({type: BAJA_DISCO, disco});
-export const altaCancion = (cancion, idArtista) => ({type: ALTA_CANCION, cancion, idArtista});
-export const modCancion = (cancion, idArtista) => ({type: MOD_CANCION, cancion, idArtista});
-export const bajaCancion = (cancion, idArtista) => ({type: BAJA_CANCION, cancion, idArtista});
-
+export const altaCancion = (cancion) => ({type: ALTA_CANCION, cancion});
+export const modCancion = (cancion) => ({type: MOD_CANCION, cancion});
+export const bajaCancion = (cancion) => ({type: BAJA_CANCION, cancion});
+export const altaEvento = (evento) => ({type: ALTA_EVENTO, evento});
+export const bajaEvento = (evento) => ({type: BAJA_EVENTO, evento});
+export const modEvento = (evento) => ({type: MOD_EVENTO, evento});

@@ -12,9 +12,17 @@ import {
   MOD_DISCO,
   ALTA_ALBUM,
   BAJA_ALBUM,
-  MOD_ALBUM
+  MOD_ALBUM,
+  ALTA_EVENTO,
+  BAJA_EVENTO,
+  MOD_EVENTO
 } from '../actions/types';
-import {setCancionesPerfil, setDiscosPerfil, setAlbumesPerfil} from '../actions/perfilActions';
+import {
+  setCancionesPerfil,
+  setDiscosPerfil,
+  setAlbumesPerfil,
+  setEventosPerfil
+} from '../actions/perfilActions';
 import {getCurrentUser} from '../selectors/login';
 
 // Our worker Saga
@@ -132,6 +140,38 @@ export function* bajaAlbum(action) {
   }
 }
 
+export function* altaEvento(action) {
+  try {
+    const {evento} = action;
+    const user = yield select(getCurrentUser);
+    const headers = config();
+    const payload = {
+      ...evento,
+      fechaEvento: evento.fecha.format('YYYY-MM-DD')
+    }
+    yield call(_post, '/eventos/', {...payload}, headers);
+    
+    const eventosActualizados = yield call(_get, `/eventos/getArtista/${user.idArtista}`, headers);
+    yield put(setEventosPerfil(eventosActualizados.data));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export function* bajaEvento(action) {
+  try {
+    const {evento} = action;
+    const user = yield select(getCurrentUser);
+    const headers = config();
+    yield call(_delete, '/albums/', {data: {idEvento: evento.toString()}, ...headers});
+
+    const eventosActualizados = yield call(_get, `/eventos/getArtista/${user.idArtista}`, headers);
+    yield put(setEventosPerfil(eventosActualizados.data));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 
 // Our watcher Saga
 export default function* watchLoginSagas () {
@@ -142,4 +182,6 @@ export default function* watchLoginSagas () {
   yield takeEvery(BAJA_DISCO, bajaDisco);
   yield takeEvery(ALTA_ALBUM, altaAlbum);
   yield takeEvery(BAJA_ALBUM, bajaAlbum);
+  yield takeEvery(ALTA_EVENTO, altaEvento);
+  yield takeEvery(BAJA_EVENTO, bajaEvento);
 }

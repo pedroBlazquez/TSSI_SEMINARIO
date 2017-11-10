@@ -27,6 +27,12 @@ export const getListasPerfil = createSelector(
   perfil => perfil.listas
 );
 
+export const getEventosPerfil = createSelector(
+  [getPerfil],
+  perfil => perfil.eventos
+);
+
+
 export const getLoadingPerfil = createSelector(
   [getPerfil],
   perfil => perfil.loadingStatus

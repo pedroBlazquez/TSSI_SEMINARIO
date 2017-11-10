@@ -15,6 +15,9 @@ export const BAJA_ALBUM   = 'BAJA_ALBUM';
 export const ALTA_DISCO   = 'ALTA_DISCO';
 export const MOD_DISCO    = 'MOD_DISCO';
 export const BAJA_DISCO   = 'BAJA_DISCO';
+export const ALTA_EVENTO  = 'ALTA_EVENTO';
+export const BAJA_EVENTO  = 'BAJA_EVENTO';
+export const MOD_EVENTO   = 'MOD_EVENTO';
 
 // Perfil
 export const TRAER_PERFIL         = 'TRAER_PERFIL';
@@ -28,3 +31,4 @@ export const PERFIL_LISTAS        = 'PERFIL_LISTAS';
 export const PERFIL_PUBLICACIONES = 'PERFIL_PUBLICACIONES';
 export const PERFIL_ALBUMES       = 'PERFIL_ALBUMES';
 export const PERFIL_RESTORE       = 'PERFIL_RESTORE';
+export const PERFIL_EVENTOS       = 'PERFIL_EVENTOS';
