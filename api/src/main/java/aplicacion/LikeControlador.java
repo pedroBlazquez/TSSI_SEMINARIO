@@ -47,7 +47,12 @@ public class LikeControlador {
             JSONObject json = new JSONObject(httpEntity.getBody());  
             String id= json.getString("id");
             String tipo= json.getString("tipo");
-            return LikeNegocio.getLikeCount(tipo,id);
+            int cant_likes = LikeNegocio.getLikeCount(tipo,id);
+
+            if(cant_likes == 0)
+                return new ResponseEntity<Object>(cant_likes,HttpStatus.NOT_FOUND);
+            else
+                return new ResponseEntity<Object>(cant_likes,HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -60,7 +65,12 @@ public class LikeControlador {
             JSONObject json = new JSONObject(httpEntity.getBody());  
             String id= json.getString("id");
             String tipo= json.getString("tipo");
-            return LikeNegocio.getUserLike(tipo,id,usermail);
+            boolean exists = LikeNegocio.getUserLike(tipo,id,usermail);
+            
+            if(!exists)
+                return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+            else
+                return new ResponseEntity<Object>(HttpStatus.OK);
             
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);

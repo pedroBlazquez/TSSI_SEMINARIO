@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import aplicacion.autenticacion.Token;
 import modelos.Evento;
 import negocio.EventoNegocio;
+import negocio.PublicacionNegocio;
 import conexion.Conexion;
 
 import org.json.JSONException;
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 public class EventoControlador {
 
     @RequestMapping(value = "/{evento}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEvento(@PathVariable("evento") long idevento) {
+    public ResponseEntity<?> getEvento(@PathVariable("evento") long idevento, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -36,14 +37,18 @@ public class EventoControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Evento>(eventos.get(0), HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEventosArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getEventosArtista(@PathVariable("artista") long idartista, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -53,7 +58,11 @@ public class EventoControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<Evento>>(eventos, HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 public class PublicacionControlador {
 
     @RequestMapping(value = "/{publicacion}", method = RequestMethod.GET)
-    public ResponseEntity<?> getPublicacion(@PathVariable("publicacion") long idpublicacion) {
+    public ResponseEntity<?> getPublicacion(@PathVariable("publicacion") long idpublicacion, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -35,14 +35,18 @@ public class PublicacionControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Publicacion>(publicaciones.get(0), HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getPublicacionesArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getPublicacionesArtista(@PathVariable("artista") long idartista, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -52,7 +56,11 @@ public class PublicacionControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<Publicacion>>(publicaciones, HttpStatus.OK);
+            
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

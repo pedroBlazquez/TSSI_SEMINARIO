@@ -41,34 +41,22 @@ public class SeguidosNegocio {
         }
     }
     
-    public static ResponseEntity<Object> getSeguimiento(int idSeguido, String usermail_seguidor)
+    public static boolean getSeguimiento(int idSeguido, String usermail_seguidor)
     {
-        try
-        {
-            Conexion cn = new Conexion();
-            cn.abrirConexion();
-            
-            List<Usuario> usuarios_seguidor = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail_seguidor+"'");
-            Usuario seguidor = usuarios_seguidor.get(0);
-            
-            List<Seguidos> seguidos = cn.getListQuery("from modelos.Seguidos WHERE idSeguidos.seguidor.id = "+seguidor.getId()+" and idSeguidos.seguido.id = "+idSeguido);
-            
-            ResponseEntity<Object> re;
-            if(seguidos.isEmpty())
-            {
-                re = new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
-            }else 
-            {
-                re = new ResponseEntity<Object>(HttpStatus.OK);
-            }
-            
-            cn.cerrarConexion();
-            return re;
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        
+        List<Usuario> usuarios_seguidor = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail_seguidor+"'");
+        Usuario seguidor = usuarios_seguidor.get(0);
+        
+        List<Seguidos> seguidos = cn.getListQuery("from modelos.Seguidos WHERE idSeguidos.seguidor.id = "+seguidor.getId()+" and idSeguidos.seguido.id = "+idSeguido);
+        
+        cn.cerrarConexion();
+        
+        if(seguidos.isEmpty())
+            return false;
+        else 
+            return true;
     }
     
     public static List<Usuario> getSeguidores(String usermail_seguido)

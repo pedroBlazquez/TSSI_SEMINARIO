@@ -2,12 +2,17 @@ package aplicacion;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import aplicacion.autenticacion.Token;
 import modelos.Cancion;
 import modelos.Disco;
+import modelos.Genero;
 import negocio.CancionNegocio;
 import conexion.Conexion;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -17,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,35 +33,46 @@ import javax.servlet.http.HttpServletRequest;
 public class CancionControlador {
 
     @RequestMapping(value = "/{cancion}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancion(@PathVariable("cancion") long idcancion) {
+    public ResponseEntity<?> getCancion(@PathVariable("cancion") long idcancion, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
             List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE id = "+idcancion);
             cn.cerrarConexion();
+            
             if (canciones.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Cancion>(canciones.get(0), HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = CancionNegocio.setData(canciones,usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancionesArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getCancionesArtista(@PathVariable("artista") long idartista, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
             List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE artista.id = "+idartista);
             cn.cerrarConexion();
             if (canciones.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<Cancion>>(canciones, HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = CancionNegocio.setData(canciones,usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

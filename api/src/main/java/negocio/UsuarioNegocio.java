@@ -1,12 +1,19 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import aplicacion.Tools;
 import conexion.Conexion;
+import modelos.Artista;
 import modelos.Usuario;
 import modelos.UsuarioTipo;
 
@@ -94,6 +101,34 @@ public class UsuarioNegocio {
         return true;
     }
     
+    public static List<JSONObject> setData(Usuario usuario,String usermail) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        
+        JSONObject jobj = Tools.convertObj_toJSON(usuario);
+        
+        int idUsuario = usuario.getId();
+        
+        List<Artista> artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idUsuario);
+        if(!artista.isEmpty())
+        {
+            jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail)));
+        }
+        else
+        {
+            jobj.put("seguidores", SeguidosNegocio.getSeguidores(idUsuario).size());
+            jobj.put("seguido", SeguidosNegocio.getSeguimiento(idUsuario,usermail));
+        }
+
+        jobj.put("object_type", "Usuario");
+        
+        list.add(jobj);
+        
+        cn.cerrarConexion();
+        return list;
+    }
   
     
 }

@@ -1,14 +1,21 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Artista;
 import modelos.Evento;
+import modelos.Publicacion;
 
 public class EventoNegocio {
     
@@ -57,6 +64,30 @@ public class EventoNegocio {
             e.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
+    }
+    public static List<JSONObject> setData(List<Evento> eventos,String usermail) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Evento a : eventos)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(a);
+            
+            String idEvento = String.valueOf(a.getId());
+            
+            jobj.put("likes", LikeNegocio.getLikeCount("Evento",idEvento));
+            
+            jobj.put("liked", LikeNegocio.getUserLike("Evento",idEvento,usermail));
+            
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Evento",idEvento,usermail));
+
+            jobj.put("object_type", "Evento");
+            
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
     }
     
    

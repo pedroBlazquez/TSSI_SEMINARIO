@@ -50,8 +50,11 @@ public class SeguidosControlador {
         try {
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            return SeguidosNegocio.getSeguimiento((int)idUsuario, usermail);
-            
+            boolean seguido = SeguidosNegocio.getSeguimiento((int)idUsuario, usermail);
+            if(!seguido)
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+            else 
+                return new ResponseEntity<Object>(HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
