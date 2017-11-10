@@ -1,13 +1,22 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import aplicacion.Tools;
 import conexion.Conexion;
+import modelos.Album;
 import modelos.Artista;
+import modelos.Disco;
 import modelos.Publicacion;
 
 public class PublicacionNegocio {
@@ -73,5 +82,27 @@ public class PublicacionNegocio {
             e.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
+    }
+    public static List<JSONObject> setData(List<Publicacion> publicaciones,String usermail) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Publicacion a : publicaciones)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(a);
+            
+            String idPublicacion = String.valueOf(a.getId());
+            
+            jobj.put("likes", LikeNegocio.getLikeCount("Publicacion",idPublicacion));
+            
+            jobj.put("liked", LikeNegocio.getUserLike("Publicacion",idPublicacion,usermail));
+            
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Publicacion",idPublicacion,usermail));
+            
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
     }
 }
