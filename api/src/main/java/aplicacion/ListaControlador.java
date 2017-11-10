@@ -6,6 +6,7 @@ import aplicacion.autenticacion.Token;
 import modelos.Cancion;
 import modelos.ListaReproduccion;
 import modelos.Usuario;
+import negocio.DiscoNegocio;
 import negocio.ListasNegocio;
 import conexion.Conexion;
 
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ListaControlador {
 
     @RequestMapping(value = "/{lista}", method = RequestMethod.GET) //obtener lista
-    public ResponseEntity<?> getCancion(@PathVariable("lista") long idlista) {
+    public ResponseEntity<?> getCancion(@PathVariable("lista") long idlista, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -38,7 +39,11 @@ public class ListaControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<ListaReproduccion>(listas.get(0), HttpStatus.OK);
+            
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = ListasNegocio.setData(listas, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -59,14 +64,17 @@ public class ListaControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Object>(listas, HttpStatus.OK);
+            
+            List<JSONObject> jobj_list = ListasNegocio.setData(listas, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getUsuario/{usuario}", method = RequestMethod.GET) //obtener listas publicas de un usuario especifico
-    public ResponseEntity<?> getListaReproduccionArtista(@PathVariable("usuario") long idusuario) {
+    public ResponseEntity<?> getListaReproduccionArtista(@PathVariable("usuario") long idusuario, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -76,7 +84,11 @@ public class ListaControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Object>(listas, HttpStatus.OK);
+            
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = ListasNegocio.setData(listas, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

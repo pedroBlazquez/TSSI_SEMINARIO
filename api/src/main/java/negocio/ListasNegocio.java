@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Cancion;
 import modelos.CancionLista;
+import modelos.Disco;
+import modelos.Genero;
 import modelos.ListaReproduccion;
 import modelos.Usuario;
 
@@ -126,5 +133,24 @@ public class ListasNegocio {
             e.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
+    }
+    public static List<JSONObject> setData(List<ListaReproduccion> listas,String usermail) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(ListaReproduccion a : listas)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(a);
+            
+            String idListaReproduccion = String.valueOf(a.getId());
+            
+            List<Cancion> canciones = cn.getListQuery("select cd.idCancionLista.cancion from modelos.CancionLista cd WHERE cd.idCancionLista.lista.id = "+idListaReproduccion);
+            jobj.put("canciones", new JSONArray(CancionNegocio.setGenero(canciones)));
+            
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
     }
 }
