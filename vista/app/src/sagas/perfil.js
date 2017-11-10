@@ -55,6 +55,7 @@ export function* traerPerfil(action) {
     yield put(setSeguidoresPerfil(seguidores.data));
     yield put(setSeguidosPerfil(seguidos.data));
     yield put(setListasPerfil(listas.data));
+    yield put(setUsuarioPerfil(usuario.data));
 
   } catch (e) {
     console.log(e);
