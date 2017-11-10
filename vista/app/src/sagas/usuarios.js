@@ -14,13 +14,8 @@ export function* requestLoginSaga(action) {
     const response = yield call(_post, '/login', {mail: action.user, password: action.pass});
     const {token, usuario} = response.data;
     yield call(setAuthToken, token);
-    if (usuario.tipoUsuario !== USUARIO_OYENTE.id) {
-      const detalleArtista = yield call(_get, `/artistas/getbyUsuario/${usuario.id}`, config());
-      const usuarioConDetalle = {...usuario, idArtista: detalleArtista.data.id};
-      yield put(successLogin(usuarioConDetalle));
-    } else {
-      yield put(successLogin(usuario));
-    }
+    const usuarioData = yield call(_get, `/usuario/${usuario.id}`, config());
+    yield put(successLogin(usuarioData.data[0]));
   } catch (e) {
     yield put(errorLogin('Usuario o password incorrectos'));
   }

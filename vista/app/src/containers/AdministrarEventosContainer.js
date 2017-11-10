@@ -61,8 +61,8 @@ class AdministrarEventosContainer extends Component {
         ...values,
         idEvento: editando.toString(),
       };
-      modificar(evento);
       this.setState(initialState);
+      modificar(evento);
     } else {
       alta(values);
     }

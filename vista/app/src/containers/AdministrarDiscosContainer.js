@@ -30,8 +30,9 @@ class AdministrarCancionesContainer extends Component {
         value: disco.nombre
       },
       genero: {
-        value: ''
-      }
+        value: disco.genero.id
+      },
+      cancionesSeleccionadas: disco.canciones
     }, editando: id});
   }
 
@@ -54,10 +55,11 @@ class AdministrarCancionesContainer extends Component {
       const disco = {
         ...values,
         idDisco: editando.toString(),
-        genero: GENEROS.find(g => g.id === values.genero).value
+        genero: GENEROS.find(g => g.id === values.genero).value,
+        canciones: values.canciones.map(c => c.id)
       };
-      modificar(disco);
       this.setState(initialState);
+      modificar(disco);
     } else {
       alta(values);
     }

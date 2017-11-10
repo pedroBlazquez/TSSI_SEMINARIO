@@ -31,7 +31,7 @@ class AdministrarCancionesContainer extends Component {
         value: cancion.nombre
       },
       genero: {
-        value: ''
+        value: cancion.genero.id
       }
     }, editando: id});
   }
@@ -57,8 +57,8 @@ class AdministrarCancionesContainer extends Component {
         idCancion: editando.toString(),
         genero: GENEROS.find(g => g.id === values.genero).value
       };
-      modificar(cancion);
       this.setState(initialState);
+      modificar(cancion);
     } else {
       alta(values);
     }

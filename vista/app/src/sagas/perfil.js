@@ -24,9 +24,10 @@ export function* traerPerfil(action) {
     yield put(loadingStatus(true));
 
     // Traemos los datos del usuario que estamos viendo actualmente
-    const usuario = yield call(_get, `/usuario/${idPerfil}`, headers);
-    const idUsuario = usuario.data.id
-    const esArtista = usuario.data.tipoUsuario !== USUARIO_OYENTE.id;
+    const usuarioData = yield call(_get, `/usuario/${idPerfil}`, headers);
+    const usuario = usuarioData.data[0];
+    const idUsuario = usuario.id;
+    const esArtista = usuario.tipoUsuario !== USUARIO_OYENTE.id;
 
     // Llamadas comunes a todos los tipos de usuario
     const seguidos = yield call(_get, `/usuario/getSeguidos/${idUsuario}`, headers);
@@ -35,8 +36,8 @@ export function* traerPerfil(action) {
     
     if (esArtista) {
       // Llamadas relacionadas a artistas
-      const artista = yield call(_get, `/artistas/getbyUsuario/${idUsuario}`, headers);
-      const idArtista = artista.data.id;
+      const artista = usuario.artista[0]
+      const idArtista = artista.id;
       const publicaciones = yield call(_get, `/publicaciones/getArtista/${idArtista}`, headers);
       const canciones = yield call(_get, `/canciones/getArtista/${idArtista}`, headers);
       const discos = yield call(_get, `/discos/getArtista/${idArtista}`, headers);
@@ -56,7 +57,7 @@ export function* traerPerfil(action) {
     yield put(setSeguidoresPerfil(seguidores.data));
     yield put(setSeguidosPerfil(seguidos.data));
     yield put(setListasPerfil(listas.data));
-    yield put(setUsuarioPerfil(usuario.data));
+    yield put(setUsuarioPerfil(usuario));
 
   } catch (e) {
     console.log(e);

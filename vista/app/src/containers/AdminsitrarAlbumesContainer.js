@@ -52,8 +52,8 @@ class AdministrarCancionesContainer extends Component {
         ...values,
         idAlbum: editando.toString()
       };
-      modificar(album);
       this.setState(initialState);
+      modificar(album);
     } else {
       alta(values);
     }
