@@ -121,6 +121,8 @@ public class UsuarioNegocio {
             jobj.put("seguidores", SeguidosNegocio.getSeguidores(idUsuario).size());
             jobj.put("seguido", SeguidosNegocio.getSeguimiento(idUsuario,usermail));
         }
+
+        jobj.put("object_type", "Usuario");
         
         list.add(jobj);
         

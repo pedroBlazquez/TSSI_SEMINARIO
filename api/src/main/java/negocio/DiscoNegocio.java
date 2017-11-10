@@ -163,6 +163,8 @@ public class DiscoNegocio {
             jobj.put("liked", LikeNegocio.getUserLike("Disco",idDisco,usermail));
             
             jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Disco",idDisco,usermail));
+
+            jobj.put("object_type", "Disco");
             
             list.add(jobj);
         }

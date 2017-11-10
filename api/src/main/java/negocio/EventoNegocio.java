@@ -81,6 +81,8 @@ public class EventoNegocio {
             jobj.put("liked", LikeNegocio.getUserLike("Evento",idEvento,usermail));
             
             jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Evento",idEvento,usermail));
+
+            jobj.put("object_type", "Evento");
             
             list.add(jobj);
         }

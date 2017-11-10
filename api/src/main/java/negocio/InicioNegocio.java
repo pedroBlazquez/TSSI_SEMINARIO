@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,7 +20,7 @@ import modelos.Usuario;
 
 public class InicioNegocio {
     
-    public static List<Object> getNovedades(String usermail)
+    public static List<JSONObject> getNovedades(String usermail)
     {
         try
         {
@@ -31,11 +32,11 @@ public class InicioNegocio {
             Usuario usuario = usuarios.get(0);
             
             //creo lista para devolver
-            List<Object> return_list = new ArrayList<Object>();
+            List<JSONObject> return_list = new ArrayList<JSONObject>();
             //lista de prioridad (aparece primero)
-            List<Object> priority_list = new ArrayList<Object>();
+            List<JSONObject> priority_list = new ArrayList<JSONObject>();
             //lista secundaria
-            List<Object> general_list = new ArrayList<Object>();
+            List<JSONObject> general_list = new ArrayList<JSONObject>();
             
             //obtengo artistas seguidos
             List<Artista> artistas_seguidos = cn.getListQuery(
@@ -55,11 +56,18 @@ public class InicioNegocio {
             query_artistas_seguidos.deleteCharAt(query_artistas_seguidos.length() - 1);
             
             //busco novedades para los artistas seguidos
-            priority_list.addAll(cn.getListQuery("from Cancion WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
+            priority_list.addAll(CancionNegocio.setData(cn.getListQuery("from Cancion WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"), usermail));
+            priority_list.addAll(DiscoNegocio.setData(cn.getListQuery("from Disco WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"), usermail));
+            priority_list.addAll(AlbumNegocio.setData(cn.getListQuery("from Album WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"), usermail));
+            priority_list.addAll(PublicacionNegocio.setData(cn.getListQuery("from Publicacion WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"), usermail));
+            priority_list.addAll(EventoNegocio.setData(cn.getListQuery("from Evento WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"' and fechaEvento > '"+date_now+"'"), usermail));
+            
+            /*priority_list.addAll(cn.getListQuery("from Cancion WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
             priority_list.addAll(cn.getListQuery("from Disco WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
             priority_list.addAll(cn.getListQuery("from Album WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
             priority_list.addAll(cn.getListQuery("from Publicacion WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
             priority_list.addAll(cn.getListQuery("from Evento WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"' and fechaEvento > '"+date_now+"'"));
+            */
             
             //obtengo generos de estos artistas, para definir los generos que le gustan al usuario
             Set<Genero> generos1_set = new TreeSet<Genero>(new Comparator<Genero>() {
@@ -83,8 +91,8 @@ public class InicioNegocio {
             query_in_generos.deleteCharAt(query_in_generos.length() - 1);
             
             //busco novedades para Discos y Canciones de los generos que le gustan al usuario
-            general_list.addAll(cn.getListQuery("select gc.idGeneroCancion.cancion from GeneroCancion gc WHERE gc.idGeneroCancion.cancion.artista.id not in ("+query_artistas_seguidos+") and gc.idGeneroCancion.genero.id in ("+query_in_generos+") and gc.idGeneroCancion.cancion.fechaPublicacion > '"+date_novedades+"'"));
-            general_list.addAll(cn.getListQuery("select gd.idGeneroDisco.disco from GeneroDisco gd WHERE gd.idGeneroDisco.disco.artista.id not in ("+query_artistas_seguidos+") and gd.idGeneroDisco.genero.id in ("+query_in_generos+") and gd.idGeneroDisco.disco.fechaPublicacion > '"+date_novedades+"'"));
+            general_list.addAll(CancionNegocio.setData(cn.getListQuery("select gc.idGeneroCancion.cancion from GeneroCancion gc WHERE gc.idGeneroCancion.cancion.artista.id not in ("+query_artistas_seguidos+") and gc.idGeneroCancion.genero.id in ("+query_in_generos+") and gc.idGeneroCancion.cancion.fechaPublicacion > '"+date_novedades+"'"), usermail));
+            general_list.addAll(DiscoNegocio.setData(cn.getListQuery("select gd.idGeneroDisco.disco from GeneroDisco gd WHERE gd.idGeneroDisco.disco.artista.id not in ("+query_artistas_seguidos+") and gd.idGeneroDisco.genero.id in ("+query_in_generos+") and gd.idGeneroDisco.disco.fechaPublicacion > '"+date_novedades+"'"), usermail));
             
             //obtengo artistas del genero que le gustan al usuario, pero que no sigue
             List<Artista> artistas_genero = cn.getListQuery("select ga.idGeneroArtista.artista from GeneroArtista ga WHERE ga.idGeneroArtista.artista.id not in ("+query_artistas_seguidos+") and ga.idGeneroArtista.genero.id in ("+query_in_generos+")");
@@ -97,14 +105,15 @@ public class InicioNegocio {
                 query_artistas_genero.deleteCharAt(query_artistas_genero.length() - 1);
                 
                 //busco novedades para Album, Publicacion y Evento, de artistas del genero, que no sean seguidos por el usuario
-                general_list.addAll(cn.getListQuery("from Album WHERE artista.id in ("+query_artistas_genero+") and artista.id not in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
-                general_list.addAll(cn.getListQuery("from Publicacion WHERE artista.id in ("+query_artistas_genero+") and artista.id not in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
-                general_list.addAll(cn.getListQuery("from Evento WHERE artista.id in ("+query_artistas_genero+") and artista.id not in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"' and fechaEvento > '"+date_now+"'"));
+                general_list.addAll(AlbumNegocio.setData(cn.getListQuery("from Album WHERE artista.id in ("+query_artistas_genero+") and artista.id and fechaPublicacion > '"+date_novedades+"'"), usermail));
+                general_list.addAll(PublicacionNegocio.setData(cn.getListQuery("from Publicacion WHERE artista.id in ("+query_artistas_genero+") and artista.id and fechaPublicacion > '"+date_novedades+"'"), usermail));
+                general_list.addAll(EventoNegocio.setData(cn.getListQuery("from Evento WHERE artista.id in ("+query_artistas_genero+") and artista.id and fechaPublicacion > '"+date_novedades+"' and fechaEvento > '"+date_now+"'"), usermail));
                 
                 //agrego aleatoriamente 3 artistas que de los generos que le gustan al usuario
-                Collections.shuffle(artistas_genero);
+                List<JSONObject> artistas = ArtistaNegocio.setData(artistas_genero, usermail);
+                Collections.shuffle(artistas);
                 int loop_count = 0;
-                for(Artista a : artistas_genero)
+                for(JSONObject a : artistas)
                 {
                     loop_count++;
                     general_list.add(a);

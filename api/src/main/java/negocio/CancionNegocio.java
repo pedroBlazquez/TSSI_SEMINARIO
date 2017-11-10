@@ -133,6 +133,8 @@ public class CancionNegocio {
             
             jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Cancion",idc,usermail));
             
+            jobj.put("object_type", "Cancion");
+            
             list.add(jobj);
         }
         cn.cerrarConexion();

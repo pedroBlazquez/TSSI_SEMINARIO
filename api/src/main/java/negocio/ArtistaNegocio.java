@@ -78,6 +78,8 @@ public class ArtistaNegocio {
             
             jobj.put("seguidores", SeguidosNegocio.getSeguidores(a.getUsuario().getId()).size());
             jobj.put("seguido", SeguidosNegocio.getSeguimiento(a.getUsuario().getId(),usermail));
+
+            jobj.put("object_type", "Artista");
             
             list.add(jobj);
         }

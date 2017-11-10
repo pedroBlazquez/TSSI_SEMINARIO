@@ -99,6 +99,8 @@ public class PublicacionNegocio {
             jobj.put("liked", LikeNegocio.getUserLike("Publicacion",idPublicacion,usermail));
             
             jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Publicacion",idPublicacion,usermail));
+
+            jobj.put("object_type", "Publicacion");
             
             list.add(jobj);
         }

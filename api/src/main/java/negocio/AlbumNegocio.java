@@ -139,6 +139,8 @@ public class AlbumNegocio {
             jobj.put("liked", LikeNegocio.getUserLike("Album",idAlbum,usermail));
             
             jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Album",idAlbum,usermail));
+
+            jobj.put("object_type", "Album");
             
             list.add(jobj);
         }
