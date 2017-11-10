@@ -10,11 +10,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import aplicacion.Tools;
 import conexion.Conexion;
+import modelos.Album;
 import modelos.Artista;
+import modelos.Disco;
+import modelos.Genero;
+import modelos.IntegranteArtista;
 import modelos.Usuario;
 
 public class ArtistaNegocio {
@@ -59,5 +65,26 @@ public class ArtistaNegocio {
         
         return a;
     }
-    
+    public static List<JSONObject> setData(List<Artista> artistas,String usermail) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Artista a : artistas)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(a);
+            
+            String idArtista = String.valueOf(a.getId());
+            
+            List<Genero> generos = cn.getListQuery("select cd.idGeneroArtista.genero from modelos.GeneroArtista cd WHERE cd.idGeneroArtista.artista.id = "+idArtista);
+            jobj.put("generos", Tools.convertList_toJSON(generos));
+            
+            List<IntegranteArtista> integrantes = cn.getListQuery("from modelos.IntegranteArtista WHERE artista.id = "+idArtista);
+            jobj.put("integrantes", Tools.convertList_toJSON(integrantes));
+            
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
+    }
 }
