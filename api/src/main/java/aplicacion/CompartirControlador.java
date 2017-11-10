@@ -64,8 +64,11 @@ public class CompartirControlador {
             JSONObject json = new JSONObject(httpEntity.getBody());  
             String id= json.getString("id");
             String tipo= json.getString("tipo");
-            return CompartirNegocio.getCompartidoUsuario(tipo,id,usermail);
-            
+            boolean exists = CompartirNegocio.getCompartidoUsuario(tipo,id,usermail);
+            if(!exists)
+                return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+            else
+                return new ResponseEntity<Object>(HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

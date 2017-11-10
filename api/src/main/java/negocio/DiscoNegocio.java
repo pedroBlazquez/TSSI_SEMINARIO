@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import aplicacion.Tools;
 import conexion.Conexion;
@@ -121,4 +126,50 @@ public class DiscoNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
+    public static List<JSONObject> setGenero(List<Disco> discos) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Disco c : discos)
+        {
+            List<Genero> generos = cn.getListQuery("select gc.idGeneroDisco.genero from modelos.GeneroDisco gc WHERE gc.idGeneroDisco.disco.id = "+c.getId());
+            JSONObject jobj = Tools.convertObj_toJSON(c);
+            jobj.put("genero", Tools.convertObj_toJSON(generos.get(0)));
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
+    }
+    public static List<JSONObject> setData(List<Disco> discos,String usermail) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Disco a : discos)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(a);
+            
+            String idDisco = String.valueOf(a.getId());
+            
+            List<Cancion> canciones = cn.getListQuery("select cd.idCancionDisco.cancion from modelos.CancionDisco cd WHERE cd.idCancionDisco.disco.id = "+idDisco);
+            jobj.put("canciones", new JSONArray(CancionNegocio.setGenero(canciones)));
+            
+            List<Genero> generos = cn.getListQuery("select gc.idGeneroDisco.genero from modelos.GeneroDisco gc WHERE gc.idGeneroDisco.disco.id = "+idDisco);
+            jobj.put("genero", Tools.convertObj_toJSON(generos.get(0)));
+            
+            jobj.put("likes", LikeNegocio.getLikeCount("Disco",idDisco));
+            
+            jobj.put("liked", LikeNegocio.getUserLike("Disco",idDisco,usermail));
+            
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Disco",idDisco,usermail));
+
+            jobj.put("object_type", "Disco");
+            
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
+    }
+    
 }

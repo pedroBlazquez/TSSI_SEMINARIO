@@ -4,15 +4,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Album;
 import modelos.Artista;
+import modelos.Cancion;
 import modelos.Disco;
 import modelos.DiscoAlbum;
+import modelos.Genero;
 
 public class AlbumNegocio {
     
@@ -97,5 +104,47 @@ public class AlbumNegocio {
             e.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
+    }
+    /*public static List<JSONObject> setDiscos(List<Album> albums) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Album a : albums)
+        {
+            List<Disco> discos = cn.getListQuery("select cd.idDiscoAlbum.disco from modelos.DiscoAlbum cd WHERE cd.idDiscoAlbum.album.id = "+a.getId());
+            JSONObject jobj = Tools.convertObj_toJSON(a);
+            jobj.put("discos", Tools.convertList_toJSON(discos));
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
+    }*/
+    public static List<JSONObject> setData(List<Album> albums,String usermail) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Album a : albums)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(a);
+            
+            String idAlbum = String.valueOf(a.getId());
+            
+            List<Disco> discos = cn.getListQuery("select cd.idDiscoAlbum.disco from modelos.DiscoAlbum cd WHERE cd.idDiscoAlbum.album.id = "+a.getId());
+            jobj.put("discos", new JSONArray(DiscoNegocio.setGenero(discos)));
+            
+            jobj.put("likes", LikeNegocio.getLikeCount("Album",idAlbum));
+            
+            jobj.put("liked", LikeNegocio.getUserLike("Album",idAlbum,usermail));
+            
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Album",idAlbum,usermail));
+
+            jobj.put("object_type", "Album");
+            
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
     }
 }

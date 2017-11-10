@@ -1,10 +1,13 @@
 package aplicacion;
 
 
+import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
@@ -20,8 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import aplicacion.autenticacion.Token;
 import conexion.Conexion;
-import modelos.Evento;
 import modelos.IntegranteArtista;
 import modelos.Usuario;
 import negocio.ArtistaNegocio;
@@ -97,14 +100,29 @@ public class UsuarioControlador {
     }
     
     @RequestMapping(value = "/{idusuario}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEvento(@PathVariable("idusuario") long idusuario) {
+    public ResponseEntity<?> getUsuario(@PathVariable("idusuario") long idusuario, HttpServletRequest request) {
         try {
-            Usuario u = UsuarioNegocio.getById((int)idusuario);
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            Usuario u = new Usuario();
+            if(idusuario == 0)
+            {
+                Conexion cn = new Conexion();
+                cn.abrirConexion();
+                List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
+                cn.cerrarConexion();
+                u = usuarios.get(0);
+            }
+            else
+                u = UsuarioNegocio.getById((int)idusuario);
+                
             if (u == null) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Usuario>(u, HttpStatus.OK);
+            
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(u, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

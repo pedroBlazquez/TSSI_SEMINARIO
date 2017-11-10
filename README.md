@@ -173,6 +173,11 @@ Para poder enviar cambios al repositorio se deberá:
 "nombre":"nombre_lista",
 "privacidad": true/false,
 "canciones":[idcancion1,idcancion2]
+#### Update lista - Agregar Cancion
+* PUT /listas/agregarCancion
+* json:
+"idListaReproduccion":"id_ListaReproduccion",
+"idCancion":"id_Cancion"
 #### Delete lista
 * DELETE /listas/
 * json:
