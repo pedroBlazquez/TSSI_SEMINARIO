@@ -85,7 +85,7 @@ public class LikeNegocio {
         }
     }
     
-    public static ResponseEntity<Object> getUserLike(String Tipo,String id,String usermail)
+    public static boolean getUserLike(String Tipo,String id,String usermail)
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -109,9 +109,9 @@ public class LikeNegocio {
         
         cn.cerrarConexion();
         if(list_exists.isEmpty())
-            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+            return false;
         else
-            return new ResponseEntity<Object>(HttpStatus.OK);
+            return true;
         
     }
     
@@ -132,7 +132,7 @@ public class LikeNegocio {
         
     }
     
-    public static ResponseEntity<Object> getLikeCount(String Tipo,String id)
+    public static int getLikeCount(String Tipo,String id)
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -153,10 +153,7 @@ public class LikeNegocio {
             list_exists = cn.getListQuery("from modelos.Like WHERE accion.publicacion.id = "+id);
         
         cn.cerrarConexion();
-        if(list_exists.isEmpty())
-            return new ResponseEntity<Object>(list_exists.size(),HttpStatus.NOT_FOUND);
-        else
-            return new ResponseEntity<Object>(list_exists.size(),HttpStatus.OK);
+        return list_exists.size();
         
     }
     

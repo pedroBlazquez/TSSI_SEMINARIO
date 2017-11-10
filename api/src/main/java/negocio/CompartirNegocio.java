@@ -105,7 +105,7 @@ public class CompartirNegocio {
             return new ResponseEntity<List<Compartido>>(list,HttpStatus.OK);
         
     }
-    public static ResponseEntity<Object> getCompartidoUsuario(String Tipo,String id,String usermail)
+    public static boolean getCompartidoUsuario(String Tipo,String id,String usermail)
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -129,9 +129,9 @@ public class CompartirNegocio {
         
         cn.cerrarConexion();
         if(list_exists.isEmpty())
-            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+            return false;
         else
-            return new ResponseEntity<Object>(HttpStatus.OK);
+            return true;
         
     }
     
