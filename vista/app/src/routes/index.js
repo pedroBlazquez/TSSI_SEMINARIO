@@ -11,6 +11,7 @@ import RegistroUsuario from '../containers/RegistroUsuarioContainer';
 import Perfil from './Perfil';
 import Novedades from '../components/Novedades'; 
 
+
 // TODO: Cambiar las rutas para un mejor approach
 // https://css-tricks.com/react-router-4/
 const MainRoute = ({isLogged}) => (
@@ -28,7 +29,8 @@ const MainRoute = ({isLogged}) => (
 
 const mapStateToProps = (state) => ({
   isLogged: state.loginReducer.success
-}); 
+});
+
 
 export default withRouter(connect(
   mapStateToProps

@@ -2,8 +2,8 @@ import { put, takeEvery, call } from 'redux-saga/effects';
 
 import {_post, _get, config} from '../utils/api';
 import {USUARIO_ARTISTA, USUARIO_BANDA, USUARIO_OYENTE} from '../utils/constants';
-import {setAuthToken} from '../utils/storage';
-import {REQUEST_LOGIN, REGISTER_USER} from '../actions/types';
+import {setAuthToken, getAuthToken} from '../utils/storage';
+import {REQUEST_LOGIN, REGISTER_USER, CHECK_TOKEN} from '../actions/types';
 import {errorLogin, successLogin} from '../actions/loginActions'; 
 import {failRegister, successRegister} from '../actions/registerActions'; 
 
@@ -18,6 +18,21 @@ export function* requestLoginSaga(action) {
     yield put(successLogin(usuarioData.data[0]));
   } catch (e) {
     yield put(errorLogin('Usuario o password incorrectos'));
+  }
+}
+
+export function* checkToken(action) {
+  try {
+    // Here should be async request
+    const token = yield call(getAuthToken);
+    if (token) {
+      const headers = config();
+      const response = yield call(_get, '/usuario/0', headers);
+      const usuario = response.data[0];
+      yield put(successLogin(usuario));
+    }
+  } catch (e) {
+    console.log(e);
   }
 }
 
@@ -69,4 +84,5 @@ export function* checkMail ({user}) {
 export default function* watchLoginSagas () {
   yield takeEvery(REQUEST_LOGIN, requestLoginSaga);
   yield takeEvery(REGISTER_USER, altaUsuario);
+  yield takeEvery(CHECK_TOKEN, checkToken);
 }
