@@ -10,4 +10,3 @@ export const _post   = axios.post;
 export const _get    = axios.get;
 export const _put    = axios.put;
 export const _delete = axios.delete;
-

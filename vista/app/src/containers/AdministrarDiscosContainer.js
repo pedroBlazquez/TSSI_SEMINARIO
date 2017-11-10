@@ -1,48 +1,113 @@
 import React, {Component} from 'react';
-import Contenido from '../components/Contenido';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
-import {Modal} from 'antd';
+import {GENEROS} from '../utils/constants';
 
-class AdministrarDiscosContainer extends Component {
+import AltaDisco from '../components/FormAltaDisco';
+import AdministrarContenido from '../components/AdministrarContenido';
+
+import {getDiscosPerfil, getCancionesPerfil} from '../selectors/perfil';
+import {altaDisco, modDisco, bajaDisco} from '../actions/contenidoActions';
+
+const initialState = {
+  editando: null,
+  disco: null
+};
+
+class AdministrarCancionesContainer extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      modalOpen: false
+    this.state = initialState;
+  }
+
+  onEditar = (id) => {
+    const {discos} = this.props;
+    const disco = discos.find(c => c.id === id);
+
+    this.setState({disco: {
+      nombre: {
+        value: disco.nombre
+      },
+      genero: {
+        value: disco.genero.id
+      },
+      cancionesSeleccionadas: disco.canciones
+    }, editando: id});
+  }
+
+  onEliminar = (id) => {
+    const {baja} = this.props;
+    baja(id);
+  }
+
+  onFormChange = (changedFields) => {
+    if (this.state.editando !== null) {
+      const {disco} = this.state;
+      this.setState({disco: {...disco,...changedFields}});
     }
   }
 
-  toggleModal = () => {
-    this.setState({modalOpen: !this.state.modalOpen});
+  onSubmit = (e, values) => {
+    const {onSubmit, onUpdate, alta, modificar} = this.props;
+    if (this.state.editando !== null) {
+      const {editando} = this.state;
+      const disco = {
+        ...values,
+        idDisco: editando.toString(),
+        genero: GENEROS.find(g => g.id === values.genero).value,
+        canciones: values.canciones.map(c => c.id)
+      };
+      this.setState(initialState);
+      modificar(disco);
+    } else {
+      alta(values);
+    }
   }
 
+  onCancel = () => {
+    if (this.state.editando !== null) {
+      this.setState(initialState);
+    }
+  }
 
   render () {
-    const {modalOpen} = this.state;
-    const {onEliminar, onEditar, items} = this.props;
-
+    const {discos, canciones} = this.props;
+    if (!canciones.length) return (<div>{'Debe crear una canción antes de poder operar con discos'}</div>);
     return (
-      <div>
-        <Contenido
-          items={items}
-          onEliminar={onEliminar}
-          onEditar={(id) => {console.log(id)}}
-          agregarButtonText={'Agregar Disco'}
-          onAgregar={this.toggleModal}
-          agregar
-          showOptions
-        />
-        {modalOpen && 
-          <Modal
-            title={'Alta Disco'}
-            visible={modalOpen}
-            footer={[]}
-          >
-            <div onClick={this.toggleModal}>{'Administrar discos'}</div>
-          </Modal>
-        }
-      </div>
+      <AdministrarContenido 
+        FormElement={AltaDisco}
+        formElementProps={{
+          onSubmit: this.onSubmit,
+          onCancel: this.onCancel,
+          onChange: this.onFormChange,
+          canciones,
+          ...this.state.disco
+        }}
+        modalTitle={this.state.editando === null ? 'Alta Disco' : 'Actualizar Disco'}
+        contenidoProps={{
+          onEliminar: this.onEliminar,
+          onEditar: this.onEditar,
+          items: discos.map(d => ({id: d.id, descripcion: d.nombre})),
+          agregarButtonText: 'Agregar Disco'
+        }}
+      />
     );
   }
 }
 
-export default AdministrarDiscosContainer;
+const mapDispatchToProps = (dispatch) => ({
+  alta: bindActionCreators(altaDisco, dispatch),
+  modificar: bindActionCreators(modDisco, dispatch),
+  baja: bindActionCreators(bajaDisco, dispatch)
+});
+
+const mapStateToProps = (state) => ({
+  discos: getDiscosPerfil(state),
+  canciones: getCancionesPerfil(state)
+}); 
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AdministrarCancionesContainer);

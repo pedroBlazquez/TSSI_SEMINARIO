@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import {Form, Button, Input, Upload, Icon} from 'antd';
+import {Form, Button, Input, Upload, Icon, InputNumber} from 'antd';
 
 import ExtendedForm from './ExtendedForm';
 import FechaNacimiento from './FechaNacimiento';
-import {GenerosMusicalesDD} from './GenerosMusicales';
 import {DatosPersonalesValidator, FechaValidator, RequiredValidator} from '../utils/validators';
 
+const TextArea = Input.TextArea;
 const FormItem = Form.Item;
 
-class FormAltaCancion extends Component {
+class FormAltaEvento extends Component {
 
   render () {
     const {onSubmit, onCancel, form} = this.props;
@@ -16,27 +16,38 @@ class FormAltaCancion extends Component {
       <Form onSubmit={onSubmit}>
         <FormItem>
           {DatosPersonalesValidator({form})('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre de la cancion'/>)
+            (<Input type={'text'} placeholder='Ingrese el nombre del evento'/>)
           }
         </FormItem>
         <FormItem>
-          {RequiredValidator({form})('genero')
-            (<GenerosMusicalesDD />)
+          {DatosPersonalesValidator({form})('direccion')
+            (<Input type={'text'} placeholder='Ingrese la direccion del evento'/>)
           }
         </FormItem>
         <FormItem>
-          {form.getFieldDecorator('audio')
-            (<Upload accept="audio">
-              <Button>
-                <Icon type="upload" /> 
-                {'Subir Canción'}
-              </Button>
-            </Upload>)
+            {
+              DatosPersonalesValidator({form})('descripcion')
+              (<TextArea placeholder={'Ingrese una breve descripcion'} rows={4}/>)
+            }
+          </FormItem>
+        <FormItem>
+          {
+            FechaValidator({form})('fecha')
+            (<FechaNacimiento className="full-width" placeholder={'Fecha'}/>)
+          }
+        </FormItem>
+        <FormItem label={'Costo (Opcional): '}>
+          {form.getFieldDecorator('costo', {initialValue: 0})
+            (<InputNumber
+              min={0}
+              formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+            />)
           }
         </FormItem>
         <FormItem>
           {form.getFieldDecorator('imagen')
-            (<Upload accept="audio">
+            (<Upload accept="image">
               <Button>
                 <Icon type="upload" /> 
                 {'Subir imagen'}
@@ -68,8 +79,10 @@ export default Form.create({
   mapPropsToFields (props) {
     return {
       nombre: {...props.nombre},
-      genero: {...props.genero}
+      descripcion: {...props.descripcion},
+      direccion: {...props.descripcion},
+      fecha: {...props.fecha},
+      costo: {...props.costo}
     }
   }
-})(ExtendedForm(FormAltaCancion));
-
+})(ExtendedForm(FormAltaEvento));
