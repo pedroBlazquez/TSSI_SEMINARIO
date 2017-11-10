@@ -162,6 +162,21 @@ export function* bajaAlbum(action) {
   }
 }
 
+export function* modificarAlbum(action) {
+  try {
+    const {album} = action;
+    const user = yield select(getCurrentUser);
+    const artista = user.artista[0]
+    const headers = config();
+    yield call(_put, '/albums/', {...album}, headers);
+    
+    const albumsActualizados = yield call(_get, `/albums/getArtista/${artista.id}`, headers);
+    yield put(setAlbumesPerfil(albumsActualizados.data));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* altaEvento(action) {
   try {
     const {evento} = action;
@@ -207,6 +222,7 @@ export default function* watchLoginSagas () {
   yield takeEvery(MOD_DISCO, modificarDisco);
   yield takeEvery(ALTA_ALBUM, altaAlbum);
   yield takeEvery(BAJA_ALBUM, bajaAlbum);
+  yield takeEvery(MOD_ALBUM, modificarAlbum);
   yield takeEvery(ALTA_EVENTO, altaEvento);
   yield takeEvery(BAJA_EVENTO, bajaEvento);
 }

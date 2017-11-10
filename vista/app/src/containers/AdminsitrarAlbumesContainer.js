@@ -28,7 +28,8 @@ class AdministrarCancionesContainer extends Component {
     this.setState({album: {
       nombre: {
         value: album.nombre
-      }
+      },
+      discosSeleccionados: album.discos
     }, editando: id});
   }
 
@@ -50,7 +51,8 @@ class AdministrarCancionesContainer extends Component {
       const {editando} = this.state;
       const album = {
         ...values,
-        idAlbum: editando.toString()
+        idAlbum: editando.toString(),
+        discos: values.discos.map(d => d.id)
       };
       this.setState(initialState);
       modificar(album);

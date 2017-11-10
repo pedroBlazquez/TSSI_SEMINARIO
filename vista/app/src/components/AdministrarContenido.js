@@ -24,10 +24,10 @@ class AdministrarContenido extends Component {
 
   closeModalAndCancel = (e, values) => {
     const {formElementProps} = this.props;
-    const {onCanel} = formElementProps;
+    const {onCancel} = formElementProps;
 
-    if (typeof onCanel === 'function') {
-      onCanel(e, values);
+    if (typeof onCancel === 'function') {
+      onCancel(e, values);
     }
     this.toggleModal();
   }
