@@ -93,4 +93,11 @@ public class Tools {
         String json = ow.writeValueAsString(obj);
         return new JSONArray(json);
     }   
+    
+    public static void addToQuery(String query, String new_condition)
+    {
+        if(query != "")
+            query += " and ";
+        query+= " "+new_condition+" ";
+    }
 }

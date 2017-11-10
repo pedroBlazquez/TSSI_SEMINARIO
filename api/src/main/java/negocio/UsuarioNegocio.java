@@ -130,5 +130,36 @@ public class UsuarioNegocio {
         return list;
     }
   
+    public static List<JSONObject> setData(List<Usuario> usuarios,String usermail) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        
+        
+        
+        for(Usuario usuario : usuarios)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(usuario);
+            int idUsuario = usuario.getId();
+            
+            List<Artista> artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idUsuario);
+            if(!artista.isEmpty())
+            {
+                jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail)));
+            }
+            else
+            {
+                jobj.put("seguidores", SeguidosNegocio.getSeguidores(idUsuario).size());
+                jobj.put("seguido", SeguidosNegocio.getSeguimiento(idUsuario,usermail));
+            }
+    
+            jobj.put("object_type", "Usuario");
+            
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
+    }
     
 }
