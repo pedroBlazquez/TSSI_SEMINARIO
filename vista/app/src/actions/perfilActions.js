@@ -8,7 +8,9 @@ import {
   PERFIL_RESTORE,
   PERFIL_SEGUIDORES,
   PERFIL_SEGUIDOS,
-  PERFIL_USUARIO
+  PERFIL_USUARIO,
+  PERFIL_ALBUMES,
+  PERFIL_EVENTOS
 } from './types';
 
 export const cargarPerfil = (id) => ({type: TRAER_PERFIL, id});
@@ -21,3 +23,5 @@ export const setSeguidoresPerfil  = (seguidores) => ({type: PERFIL_SEGUIDORES, s
 export const setSeguidosPerfil  = (seguidos) => ({type: PERFIL_SEGUIDOS, seguidos});
 export const restorePerfil = () => ({type: PERFIL_RESTORE});
 export const setUsuarioPerfil = (usuario) => ({type: PERFIL_USUARIO, usuario});
+export const setAlbumesPerfil = (albumes) => ({type: PERFIL_ALBUMES, albumes});
+export const setEventosPerfil = (eventos) => ({type: PERFIL_EVENTOS, eventos})

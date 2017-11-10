@@ -21,8 +21,8 @@ const Item = ({
     <span className={'descripcion'}>{descripcion}</span>
     {showOptions &&
       <div>
-        <Icon type="edit" className={'icon-edit'} onClick={() => {onEditar(id)}}/>
-        <Icon type="delete" className={'icon-delete'} onClick={() => {onEliminar(id)}}/>
+        <Icon type="edit" className={'icon-edit'} onClick={(e) => { e.stopPropagation(); onEditar(id);}}/>
+        <Icon type="delete" className={'icon-delete'} onClick={(e) => {e.stopPropagation(); onEliminar(id);}}/>
       </div>
     }
   </div>
@@ -31,7 +31,7 @@ const Item = ({
 class Contenido extends Component {
 
   render () {
-    const {agregarButtonText, onAgregar, agregar, items, ...itemProps} = this.props;
+    const {agregarButtonText, onAgregar, agregar, items, seleccion = [], ...itemProps} = this.props;
     return (
       <div className={'contenido-container'}>
         {agregar && <Button onClick={onAgregar} className={'margin-10p'}>{agregarButtonText}</Button>}
@@ -41,6 +41,7 @@ class Contenido extends Component {
               key={i.id}
               id={i.id}
               descripcion={i.descripcion}
+              selected={seleccion.includes(i.id)}
               {...itemProps}
             />
           )}

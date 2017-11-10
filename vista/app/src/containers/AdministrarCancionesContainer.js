@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Modal} from 'antd';
+
+import {GENEROS} from '../utils/constants'
 
 import AltaCancion from '../components/FormAltaCancion';
 import AdministrarContenido from '../components/AdministrarContenido';
@@ -28,6 +29,9 @@ class AdministrarCancionesContainer extends Component {
     this.setState({cancion: {
       nombre: {
         value: cancion.nombre
+      },
+      genero: {
+        value: cancion.genero.id
       }
     }, editando: id});
   }
@@ -39,17 +43,24 @@ class AdministrarCancionesContainer extends Component {
 
   onFormChange = (changedFields) => {
     if (this.state.editando !== null) {
-      this.setState({cancion: {...changedFields}});
+      const {cancion} = this.state;
+      this.setState({cancion: {...cancion,...changedFields}});
     }
   }
 
   onSubmit = (e, values) => {
-    const {onSubmit, onUpdate, alta, modificar, user} = this.props;
+    const {onSubmit, onUpdate, alta, modificar} = this.props;
     if (this.state.editando !== null) {
-      modificar(values);
+      const {editando} = this.state;
+      const cancion = {
+        ...values,
+        idCancion: editando.toString(),
+        genero: GENEROS.find(g => g.id === values.genero).value
+      };
       this.setState(initialState);
+      modificar(cancion);
     } else {
-      alta(values, user.idArtista);
+      alta(values);
     }
   }
 
@@ -89,8 +100,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  canciones: getCancionesPerfil(state),
-  user: {idArtista: 3}
+  canciones: getCancionesPerfil(state)
 }); 
 
 export default connect(
