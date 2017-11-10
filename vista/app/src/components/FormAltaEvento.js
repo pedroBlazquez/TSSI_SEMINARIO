@@ -37,9 +37,8 @@ class FormAltaEvento extends Component {
           }
         </FormItem>
         <FormItem label={'Costo (Opcional): '}>
-          {form.getFieldDecorator('costo')
+          {form.getFieldDecorator('costo', {initialValue: 0})
             (<InputNumber
-              initialValue={0}
               min={0}
               formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               parser={value => value.replace(/\$\s?|(,*)/g, '')}

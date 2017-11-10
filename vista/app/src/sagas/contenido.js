@@ -163,7 +163,7 @@ export function* bajaEvento(action) {
     const {evento} = action;
     const user = yield select(getCurrentUser);
     const headers = config();
-    yield call(_delete, '/albums/', {data: {idEvento: evento.toString()}, ...headers});
+    yield call(_delete, '/eventos/', {data: {idEvento: evento.toString()}, ...headers});
 
     const eventosActualizados = yield call(_get, `/eventos/getArtista/${user.idArtista}`, headers);
     yield put(setEventosPerfil(eventosActualizados.data));

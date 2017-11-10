@@ -12,7 +12,8 @@ import {
   setSeguidoresPerfil,
   setSeguidosPerfil,
   setUsuarioPerfil,
-  setAlbumesPerfil
+  setAlbumesPerfil,
+  setEventosPerfil
 } from '../actions/perfilActions'; 
 
 // Our worker Saga
@@ -46,7 +47,7 @@ export function* traerPerfil(action) {
       yield put(setCancionesPerfil(canciones.data));
       yield put(setDiscosPerfil(discos.data));
       yield put(setAlbumesPerfil(albumes.data));
-      // FALTA EVENTOS
+      yield put(setEventosPerfil(eventos.data));
     } else {
       const publicaciones = yield call(_get, `/compartir/getCompartidos/${idUsuario}`, headers);
       yield put(setPublicacionesPerfil(publicaciones.data));
