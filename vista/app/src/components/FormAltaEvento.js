@@ -81,6 +81,7 @@ export default Form.create({
       nombre: {...props.nombre},
       descripcion: {...props.descripcion},
       direccion: {...props.descripcion},
+      fecha: {...props.fecha},
       costo: {...props.costo}
     }
   }

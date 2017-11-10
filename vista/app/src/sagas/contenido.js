@@ -211,6 +211,24 @@ export function* bajaEvento(action) {
   }
 }
 
+export function* modificarEvento(action) {
+  try {
+    const {evento} = action;
+    const user = yield select(getCurrentUser);
+    const artista = user.artista[0]
+    const headers = config();
+    const payload = {
+      ...evento,
+      fechaEvento: evento.fecha.format('YYYY-MM-DD')
+    }
+    yield call(_put, '/eventos/', {...payload}, headers);
+    
+    const eventosActualizados = yield call(_get, `/eventos/getArtista/${artista.id}`, headers);
+    yield put(setEventosPerfil(eventosActualizados.data));
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 // Our watcher Saga
 export default function* watchLoginSagas () {
@@ -225,4 +243,5 @@ export default function* watchLoginSagas () {
   yield takeEvery(MOD_ALBUM, modificarAlbum);
   yield takeEvery(ALTA_EVENTO, altaEvento);
   yield takeEvery(BAJA_EVENTO, bajaEvento);
+  yield takeEvery(MOD_EVENTO, modificarEvento);
 }

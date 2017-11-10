@@ -30,13 +30,16 @@ class AdministrarEventosContainer extends Component {
         value: evento.nombre
       },
       descripcion: {
-        value: ''
+        value: evento.descripcion
+      },
+      direccion: {
+        value: evento.direccion
       },
       fecha : {
-        value: moment()
+        value: moment(evento.fechaEvento)
       },
       costo : {
-        value: 0
+        value: evento.costo
       }
     }, editando: id});
   }
