@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
-import conexion.Conexion;
-import negocio.EventoNegocio;
 import negocio.InicioNegocio;
 
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
