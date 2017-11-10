@@ -7,3 +7,7 @@ export function setAuthToken (token) {
 export function getAuthToken () {
   return storage.getItem('auth');
 }
+
+export function unsetAuthToken () {
+  storage.removeItem('auth');
+}
