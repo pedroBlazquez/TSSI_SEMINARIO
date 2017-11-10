@@ -1,24 +1,18 @@
 package negocio;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import aplicacion.Tools;
 import conexion.Conexion;
-import modelos.Album;
 import modelos.Artista;
-import modelos.Disco;
 import modelos.Genero;
 import modelos.IntegranteArtista;
 import modelos.Usuario;
@@ -28,7 +22,7 @@ public class ArtistaNegocio {
     public boolean altaArtista(JSONObject data, int artistaTipoId, String mail) throws JSONException {
         Conexion cn = new Conexion();
         JSONArray generosArray = data.getJSONArray("generos");
-        List<Integer> generosLista = new ArrayList();
+        //List<Integer> generosLista = new ArrayList();
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         GeneroArtistaNegocio generoArtistaNegocio = new GeneroArtistaNegocio();
 
@@ -81,6 +75,9 @@ public class ArtistaNegocio {
             
             List<IntegranteArtista> integrantes = cn.getListQuery("from modelos.IntegranteArtista WHERE artista.id = "+idArtista);
             jobj.put("integrantes", Tools.convertList_toJSON(integrantes));
+            
+            jobj.put("seguidores", SeguidosNegocio.getSeguidores(a.getUsuario().getId()).size());
+            jobj.put("seguido", SeguidosNegocio.getSeguimiento(a.getUsuario().getId(),usermail));
             
             list.add(jobj);
         }

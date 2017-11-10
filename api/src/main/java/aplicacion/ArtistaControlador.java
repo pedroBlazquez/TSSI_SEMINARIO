@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import aplicacion.autenticacion.Token;
 import modelos.Artista;
 import negocio.ArtistaNegocio;
-import negocio.DiscoNegocio;
 import conexion.Conexion;
 
 import org.json.JSONObject;

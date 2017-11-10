@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -14,10 +13,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import aplicacion.Tools;
 import conexion.Conexion;
-import modelos.Album;
 import modelos.Artista;
 import modelos.Cancion;
-import modelos.Disco;
 import modelos.Genero;
 import modelos.GeneroCancion;
 
