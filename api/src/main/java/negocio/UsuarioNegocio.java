@@ -114,7 +114,7 @@ public class UsuarioNegocio {
         List<Artista> artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idUsuario);
         if(!artista.isEmpty())
         {
-            jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail)));
+            jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail,true)));
         }
         else
         {
@@ -130,7 +130,7 @@ public class UsuarioNegocio {
         return list;
     }
   
-    public static List<JSONObject> setData(List<Usuario> usuarios,String usermail) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(List<Usuario> usuarios,String usermail,boolean only_oyente) throws JsonProcessingException, JSONException
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -144,19 +144,30 @@ public class UsuarioNegocio {
             int idUsuario = usuario.getId();
             
             List<Artista> artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idUsuario);
-            if(!artista.isEmpty())
+             
+            boolean agregar = true;
+            if(!artista.isEmpty()) //es artista
             {
-                jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail)));
+                if(!only_oyente)
+                {
+                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail,false)));
+                }
+                else
+                    agregar = false;
             }
             else
             {
                 jobj.put("seguidores", SeguidosNegocio.getSeguidores(idUsuario).size());
                 jobj.put("seguido", SeguidosNegocio.getSeguimiento(idUsuario,usermail));
             }
-    
-            jobj.put("object_type", "Usuario");
             
-            list.add(jobj);
+            if(agregar)
+            {
+                jobj.put("object_type", "Usuario");
+                list.add(jobj);
+            }
+    
+            
         }
         cn.cerrarConexion();
         return list;

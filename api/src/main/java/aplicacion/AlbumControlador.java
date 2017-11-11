@@ -44,7 +44,7 @@ public class AlbumControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail);
+            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -65,7 +65,7 @@ public class AlbumControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail);
+            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {

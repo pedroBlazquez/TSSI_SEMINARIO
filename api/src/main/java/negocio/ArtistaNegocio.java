@@ -59,7 +59,7 @@ public class ArtistaNegocio {
         
         return a;
     }
-    public static List<JSONObject> setData(List<Artista> artistas,String usermail) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(List<Artista> artistas,String usermail,boolean w_integrantes) throws JsonProcessingException, JSONException
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -73,8 +73,11 @@ public class ArtistaNegocio {
             List<Genero> generos = cn.getListQuery("select cd.idGeneroArtista.genero from modelos.GeneroArtista cd WHERE cd.idGeneroArtista.artista.id = "+idArtista);
             jobj.put("generos", Tools.convertList_toJSON(generos));
             
-            List<IntegranteArtista> integrantes = cn.getListQuery("from modelos.IntegranteArtista WHERE artista.id = "+idArtista);
-            jobj.put("integrantes", Tools.convertList_toJSON(integrantes));
+            if(w_integrantes)
+            {
+                List<IntegranteArtista> integrantes = cn.getListQuery("from modelos.IntegranteArtista WHERE artista.id = "+idArtista);
+                jobj.put("integrantes", Tools.convertList_toJSON(integrantes));
+            }
             
             jobj.put("seguidores", SeguidosNegocio.getSeguidores(a.getUsuario().getId()).size());
             jobj.put("seguido", SeguidosNegocio.getSeguimiento(a.getUsuario().getId(),usermail));
