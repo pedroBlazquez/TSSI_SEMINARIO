@@ -1,0 +1,144 @@
+.compartirIcon,
+.avatarIcon {
+    margin-top: 8px;
+    margin-right: 10px;
+}
+
+.compartirIcon:hover {
+    color: green;
+    cursor: pointer;
+}
+
+.cardHeaderInfo {
+    display: inline-block;
+    float: right;
+}
+
+.novedadTitulo {
+    display: inline-block;
+    margin-right: 5px; 
+}
+
+.fechaPublicacion {
+    font-size: 10px;
+}
+
+.columnRight {
+    float: right;
+}
+
+.columnLeft {
+    float: left;
+}
+
+.likesNumber {
+    font-size: 15px;
+    vertical-align: text-bottom;
+    margin-right: 10px;
+}
+
+.addSong {
+    width: 25px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* ESTILOS DE EVENTOS*/
+
+.eventoImagenMarco {
+    overflow: hidden;
+    max-height: 200px;
+    margin-bottom: 10px;
+}
+
+.eventoImagen {
+    width: 100%;
+}
+
+/* ESTILOS DE ARTISTAS*/
+
+.avatarArtistaContainer {
+    width: 30%;
+    display: inline-block;
+}
+
+.avatarArtistaContainer > span {
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+}
+
+.avatarArtistaContainer > span > i {
+    font-size: 100px;
+    line-height: 145px;
+}
+
+.cancionInfoContainer,
+.artistaInfoContainer {
+    width: 70%;
+    display: inline-block;
+    float: right;
+    margin-top: 15px;
+}
+
+.cancionInfoContainer .compartirIcon,
+.artistaInfoContainer .compartirIcon,
+.artistaInfoContainer i {
+    margin: 0;
+}
+
+.artistaInfoContainer .topBlock {
+    margin-bottom: 70px;
+}
+
+/*ESTILOS CANCION*/
+.cancionImagenContainer {
+    width: 28%;
+    display: inline-block;
+    margin-right: 10px;
+}
+.cancionImagenContainer > img {
+    width: 100%;
+}
+
+.cancionTitleBlock {
+    display: inline-block;
+}
+
+.cancionTitleBlock {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.cancionInfoContainer .addSong {
+    display: inline-block;
+}
+
+.cancionInfoContainer .topBlock {
+    margin-bottom: 60px;
+}
+
+/*ESTILOS DISCO*/
+
+.discoInfoContainer {
+    vertical-align: top;
+    display: inline-block;
+    min-width: 370px;
+}
+
+.discoInfoContainer .topBlock {
+    margin-bottom: 50px;
+    margin-right: 36px;
+}
+
+.discoTopBlock .discoInfoContainer .compartirIcon {
+    margin: 0;
+}
+
+.discoTopBlock {
+    margin-bottom: 20px;
+}
+
+.discoCancion {
+    margin-bottom: 10px;
+}

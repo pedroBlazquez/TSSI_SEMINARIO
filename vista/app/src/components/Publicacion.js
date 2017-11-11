@@ -2,22 +2,30 @@ import React, {Component} from 'react';
 
 import {Card, Avatar} from 'antd';
 
-const CardTitle = ({user}) => (
+const CardTitle = ({user, fechaPublicacion}) => (
   <div className={'flex flex-space-between'}>
-    <Avatar icon={'user'}/>
-    <h2>{user.nombreFantasia}</h2>
+    <div>
+      <Avatar className='avatarIcon' icon={'user'}/>
+      <div className='cardHeaderInfo'>
+        <h2 className='novedadTitulo'>{user}</h2>
+        <span className='fechaPublicacion'>{fechaPublicacion}</span>
+      </div>
+    </div>
   </div>
 );
 
 class Publicacion extends Component {
   render () {
-    const {user, children} = this.props;
+    const {publicacion} = this.props,
+          usuario = publicacion.artista ?
+            publicacion.artista.nombreFantasia :
+            publicacion.usuario.nombre + ' ' + publicacion.usuario.apellido;
     return (
       <Card
         className={'margin-10p'}
-        title={<CardTitle user={user}/>}
+        title={<CardTitle user={usuario} fechaPublicacion={publicacion.fechaPublicacion}/>}
       >
-        {children}
+      {publicacion.texto}
       </Card>
     );
   }
