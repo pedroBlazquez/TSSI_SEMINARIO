@@ -120,7 +120,7 @@ public class AlbumNegocio {
         cn.cerrarConexion();
         return list;
     }*/
-    public static List<JSONObject> setData(List<Album> albums,String usermail) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(List<Album> albums,String usermail,boolean w_generodisco) throws JsonProcessingException, JSONException
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -132,8 +132,14 @@ public class AlbumNegocio {
             String idAlbum = String.valueOf(a.getId());
             
             List<Disco> discos = cn.getListQuery("select cd.idDiscoAlbum.disco from modelos.DiscoAlbum cd WHERE cd.idDiscoAlbum.album.id = "+a.getId());
-            jobj.put("discos", new JSONArray(DiscoNegocio.setGenero(discos)));
-            
+            JSONArray discos_w_genero = null;
+            if(w_generodisco)
+                discos_w_genero = new JSONArray(DiscoNegocio.setGenero(discos));
+            else
+                discos_w_genero = Tools.convertList_toJSON(discos);
+                
+            jobj.put("discos", discos_w_genero);
+                
             jobj.put("likes", LikeNegocio.getLikeCount("Album",idAlbum));
             
             jobj.put("liked", LikeNegocio.getUserLike("Album",idAlbum,usermail));

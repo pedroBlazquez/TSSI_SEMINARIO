@@ -114,7 +114,7 @@ public class UsuarioNegocio {
         List<Artista> artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idUsuario);
         if(!artista.isEmpty())
         {
-            jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail)));
+            jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail,true)));
         }
         else
         {
@@ -150,7 +150,7 @@ public class UsuarioNegocio {
             {
                 if(!only_oyente)
                 {
-                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail)));
+                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail,false)));
                 }
                 else
                     agregar = false;
