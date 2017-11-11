@@ -1,0 +1,40 @@
+import React, {Component} from 'react';
+
+import {Avatar} from 'antd';
+
+/*
+    Este componente recibe id y tipo de contenido,
+    hay que ver como pasar el id de usuario que imagino
+    que se podra sacar del arbol de estados.
+*/
+class Like extends Component {
+
+    constructor (props) {
+        super(props);
+        this.state = {
+            liked: props.isLiked,
+            likes: props.likes
+        }
+    }
+
+    //Envia a la api la accion de like o unlike
+    clickHandler = () => {
+        this.setState({liked: !this.state.liked});
+        if (this.state.liked) {
+            this.state.likes++;
+        } else {
+            this.state.likes--;
+        }
+    }
+
+    render () {
+        return (
+            <div>
+                <span className='likesNumber'><strong>{this.state.likes}</strong></span>
+                <Avatar className='like' icon={this.state.liked ? 'like-o' : 'like'} onClick={this.clickHandler}/>
+            </div>
+        );
+    }
+}
+
+export default Like;
