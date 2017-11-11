@@ -19,6 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import conexion.Conexion;
+import modelos.Evento;
+import negocio.CompartirNegocio;
+import negocio.LikeNegocio;
+
 public class Tools {
     
     private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -83,6 +88,16 @@ public class Tools {
         String json = ow.writeValueAsString(obj);
         return new JSONObject(json);
     }   
+    public static List<JSONObject> convertList_toListJSON(List<?> obj) throws JsonProcessingException, JSONException
+    {
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Object o : obj)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(o);
+            list.add(jobj);
+        }
+        return list;
+    }
     public static JSONArray convertList_toJSON(List<?> obj) throws JsonProcessingException, JSONException
     {
         if(obj == null)
