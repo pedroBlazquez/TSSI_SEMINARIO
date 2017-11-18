@@ -38,11 +38,11 @@ class Cancion extends Component {
                       </div>
                       <AgregarCancionLista id={cancion.id}/>
                   </div>
-                  <Compartir id={cancion.id} tipoContenido='cancion'/>
+                  <Compartir id={cancion.id} typeContent='Cancion'/>
               </div>
               <div>
                   <div className='columnRight'>
-                      <Like id={cancion.id} tipoContenido='cancion' likes={cancion.likes} isLiked={cancion.liked}/>
+                      <Like id={cancion.id} typeContent='Cancion' likes={cancion.likes} isLiked={cancion.liked}/>
                   </div>
               </div>
           </div>          

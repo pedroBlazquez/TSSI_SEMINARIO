@@ -34,3 +34,13 @@ export const PERFIL_PUBLICACIONES = 'PERFIL_PUBLICACIONES';
 export const PERFIL_ALBUMES       = 'PERFIL_ALBUMES';
 export const PERFIL_RESTORE       = 'PERFIL_RESTORE';
 export const PERFIL_EVENTOS       = 'PERFIL_EVENTOS';
+
+// Novedades
+export const GET_NOVEDADES_INICIO = 'GET_NOVEDADES_INICIO';
+export const SET_NOVEDADES_INICIO = 'SET_NOVEDADES_INICIO';
+
+// Compartir
+export const SEND_COMPARTIR       = 'SEND_COMPARTIR';
+
+// Like
+export const SEND_LIKE            = 'SEND_LIKE';

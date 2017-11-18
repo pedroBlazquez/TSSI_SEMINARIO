@@ -8,12 +8,7 @@ import Like from './Like';
 class Artista extends Component {
 
   getGeneros = function(generos) {
-      let generosArray = [];
-      generos.map(function(genero) {
-          generosArray.push(genero.descripcion);
-      });
-
-      return generosArray;
+      return generos.map(genero => genero.descripcion);
   }
 
   render () {
@@ -27,7 +22,7 @@ class Artista extends Component {
           <div className='artistaInfoContainer'>
               <div className='topBlock flex flex-space-between'>
                   <h1 className='artistaTitulo'><strong>{artista.nombreFantasia}</strong></h1>
-                  <Compartir id={artista.id} tipoContenido='artista'/>
+                  <Compartir id={artista.id} typeContent='Artista'/>
               </div>
               <div className='flex flex-space-between'>
                   <div className='columnLeft'>
@@ -35,7 +30,7 @@ class Artista extends Component {
                       <div><strong>Generos:</strong> {generos.join(', ')}</div>
                   </div>
                   <div className='columnRight'>
-                      <Like id={artista.id} tipoContenido='artista' likes={artista.seguidores} isLiked={artista.seguido}/>
+                      <Like id={artista.id} typeContent='Artista' likes={artista.seguidores} isLiked={artista.seguido}/>
                   </div>
               </div>
           </div>

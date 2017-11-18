@@ -2,3 +2,17 @@
 .login-button {
   width: 100%;
 }
+
+.form-container {
+  max-width: 800px;
+  margin: auto;
+  width: 100%;
+}
+
+#root {
+  height: inherit;
+}
+
+.ant-layout {
+  min-height: 100%;
+}

@@ -13,7 +13,7 @@ const CardTitle = ({artista, fechaPublicacion, id}) => (
         <span className='fechaPublicacion'>{fechaPublicacion}</span>
       </div>
     </div>
-    <Compartir id={id} tipoContenido='evento'/>
+    <Compartir id={id} typeContent='Evento'/>
   </div>
 );
 

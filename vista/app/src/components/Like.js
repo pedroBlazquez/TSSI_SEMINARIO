@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 import {Avatar} from 'antd';
+
+import {sendLike} from '../actions/likeAction';
 
 /*
     Este componente recibe id y tipo de contenido,
@@ -19,12 +23,14 @@ class Like extends Component {
 
     //Envia a la api la accion de like o unlike
     clickHandler = () => {
+        let {id, typeContent} = this.props;
         this.setState({liked: !this.state.liked});
         if (this.state.liked) {
             this.state.likes++;
         } else {
             this.state.likes--;
         }
+        this.props.sendLike(id, typeContent);
     }
 
     render () {
@@ -37,4 +43,11 @@ class Like extends Component {
     }
 }
 
-export default Like;
+const mapDispatchToProps = (dispatch) => ({
+  sendLike: bindActionCreators(sendLike, dispatch)
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Like);
