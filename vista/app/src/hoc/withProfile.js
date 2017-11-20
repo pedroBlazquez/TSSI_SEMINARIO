@@ -8,7 +8,7 @@ function withProfile (Wrapp) {
   return class WithProfile extends Component {
     esArtista () {
       const {user} = this.props;
-      return user.usuarioTipoId !== USUARIO_OYENTE.id;
+      return user.usuarioTipo.id !== USUARIO_OYENTE.id;
     }
 
     esPerfilPropio () {
