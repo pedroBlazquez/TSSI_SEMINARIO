@@ -32,3 +32,11 @@ export const GUITARRA = {id:2, value: 'Guitarrista'};
 export const BAJO = {id:3, value: 'Bajista'};
 export const BATERIA = {id:4, value: 'Baterista'};
 export const ROLES_INTEGRANTES = [VOCALISTA, GUITARRA, BAJO, BATERIA];
+
+export const OBJECT_TYPES = {
+  ARTISTA: 'Artista',
+  PUBLICACION: 'Publicacion',
+  EVENTO: 'Evento',
+  DISCO: 'Disco',
+  CANCION: 'Cancion'
+};
