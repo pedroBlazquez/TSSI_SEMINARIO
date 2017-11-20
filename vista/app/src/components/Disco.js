@@ -36,11 +36,11 @@ class Disco extends Component {
                         <h3>{disco.artista.nombreFantasia}</h3>
                         <h5>{disco.fechaPublicacion}</h5>
                     </div>
-                    <Compartir id={disco.id} tipoContenido='cancion'/>
+                    <Compartir id={disco.id} typeContent='Disco'/>
                 </div>
                 <div>
                     <div className='columnRight'>
-                        <Like id={disco.id} tipoContenido='cancion' likes={disco.likes} isLiked={disco.liked}/>
+                        <Like id={disco.id} typeContent='Disco' likes={disco.likes} isLiked={disco.liked}/>
                     </div>
                 </div>
             </div>

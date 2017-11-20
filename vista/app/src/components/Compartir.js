@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 import {Avatar} from 'antd';
+
+import {sendCompartir} from '../actions/compartirAction';
 
 /*
     Este componente recibe id y tipo de contenido,
@@ -10,7 +14,8 @@ import {Avatar} from 'antd';
 class Compartir extends Component {
 
   clickHandler = () => {
-    alert(this.props.id + this.props.tipoContenido);
+    let {id, typeContent} = this.props;
+    this.props.sendCompartir(id, typeContent);
   }
 
   render () {
@@ -20,4 +25,11 @@ class Compartir extends Component {
   }
 }
 
-export default Compartir;
+const mapDispatchToProps = (dispatch) => ({
+  sendCompartir: bindActionCreators(sendCompartir, dispatch)
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Compartir);
