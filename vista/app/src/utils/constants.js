@@ -38,5 +38,6 @@ export const OBJECT_TYPES = {
   PUBLICACION: 'Publicacion',
   EVENTO: 'Evento',
   DISCO: 'Disco',
-  CANCION: 'Cancion'
+  CANCION: 'Cancion',
+  ALBUM: 'Album'
 };

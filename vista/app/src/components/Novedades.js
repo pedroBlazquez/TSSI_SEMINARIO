@@ -7,6 +7,7 @@ import Evento from './Evento';
 import Artista from './Artista';
 import Cancion from './Cancion';
 import Disco from './Disco';
+import Album from './Album';
 
 import {OBJECT_TYPES} from '../utils/constants';
 
@@ -33,6 +34,9 @@ export default class Novedades extends Component {
         case OBJECT_TYPES.CANCION:
           element = <Cancion key={record.id} cancion={record} />;
           break;
+        case OBJECT_TYPES.ALBUM:
+          element = <Album key={record.id} album={record}/>;
+          break;
       }
       return element;
     });
@@ -49,7 +53,11 @@ export default class Novedades extends Component {
             <FormNuevaPublicacion />
           </Card>
         }
-        { !!records.length && this.getElements() }
+        { !!records.length ?
+          this.getElements() :
+          <Card className={'margin-10p'}>{'No hay elementos para mostrar'}</Card>
+        }
+
       </div>
     );
   }

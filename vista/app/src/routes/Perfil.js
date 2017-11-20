@@ -8,6 +8,7 @@ import NovedadesPerfil from '../containers/NovedadesPerfil';
 import AdministrarContenido from '../containers/AdministrarContenidoContainer';
 import CancionesPerfil from '../containers/CancionesPerfil';
 import DiscosPerfil from '../containers/DiscosPerfil';
+import AlbumesPerfil from '../containers/AlbumesPefil';
 
 const Perfil = () => (
   <PerfilContainer>
@@ -18,6 +19,7 @@ const Perfil = () => (
       <Route path={'/perfil/:profileId/listas'} component={() => (<div>{'Aca van las listas de reproduccion'}</div>)}/>
       <Route path={'/perfil/:profileId/canciones'} component={CancionesPerfil}/>
       <Route path={'/perfil/:profileId/discos'} component={DiscosPerfil}/>
+      <Route path={'/perfil/:profileId/albumes'} component={AlbumesPerfil}/>
       <AuthRoute
         path={'/perfil/:profileId/administrar'}
         exact
