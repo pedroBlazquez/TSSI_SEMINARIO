@@ -1,3 +1,4 @@
+
 USE db_musicapp;
 
 
@@ -14,12 +15,12 @@ INSERT INTO integranteroles(descripcion) VALUES("DJ");
 
 INSERT INTO generos(descripcion) VALUES("Rock");
 INSERT INTO generos(descripcion) VALUES("Pop");
-INSERT INTO generos(descripcion) VALUES("Electronica");
+-- INSERT INTO generos(descripcion) VALUES("Electronica");
 INSERT INTO generos(descripcion) VALUES("Rap");
 INSERT INTO generos(descripcion) VALUES("Cumbia");
 INSERT INTO generos(descripcion) VALUES("Reggaeton");
 INSERT INTO generos(descripcion) VALUES("Heavy Metal");
-INSERT INTO generos(descripcion) VALUES("Psychedelic");
+-- INSERT INTO generos(descripcion) VALUES("Psychedelic");
 
 
 insert into usuarios(nombre,apellido,estado,fechaAlta,fechaNacimiento,mail,password,idUsuarioTipo) values ("Christian","Laino",1, now(), "1995-03-27", "christianlaino@hotmail.com","asd123",1);
@@ -60,7 +61,7 @@ insert into artistas(descripcion,fechaInicio,nombreFantasia,idUsuario) values ("
 insert into integrantesartista(nombres,apellido,fechaNacimiento, idArtista, idRol) values ("Kevin","Parker","1995-03-27",1,1);
 
 insert into generosartista(idArtista,idGenero) values (1,1);
-insert into generosartista(idArtista,idGenero) values (1,7);
+insert into generosartista(idArtista,idGenero) values (1,6);
 
 
 insert into canciones(nombre, idArtista, archivo,fechaPublicacion) values ("Let it happen",1,"/path","2015-01-01");
@@ -103,7 +104,7 @@ insert into artistas(descripcion,fechaInicio,nombreFantasia,idUsuario) values ("
 insert into integrantesartista(nombres,apellido,fechaNacimiento, idArtista, idRol) values ("Axl","Rose","1995-03-27",1,1);
 
 insert into generosartista(idArtista,idGenero) values (2,1);
-insert into generosartista(idArtista,idGenero) values (2,8);
+insert into generosartista(idArtista,idGenero) values (2,6);
 
 
 insert into canciones(nombre, idArtista, archivo,fechaPublicacion) values ("Welcome to the Jungle",2,"/path","2015-01-01");
@@ -147,7 +148,7 @@ insert into artistas(descripcion,fechaInicio,nombreFantasia,idUsuario) values ("
 insert into integrantesartista(nombres,apellido,fechaNacimiento, idArtista, idRol) values ("Chizzo","Napoli","1995-03-27",3,1);
 
 insert into generosartista(idArtista,idGenero) values (3,1);
-insert into generosartista(idArtista,idGenero) values (3,8);
+insert into generosartista(idArtista,idGenero) values (3,6);
 
 
 insert into canciones(nombre, idArtista, archivo,fechaPublicacion) values ("Desnudo Para Siempre(Despedazado por Mil Partes)",3,"/path","2015-01-01");
@@ -268,7 +269,7 @@ insert into artistas(descripcion,fechaInicio,nombreFantasia,idUsuario) values ("
 
 insert into integrantesartista(nombres,apellido,fechaNacimiento, idArtista, idRol) values ("Eelke","Kleijn","1995-03-27",1,5);
 
-insert into generosartista(idArtista,idGenero) values (1,3);
+insert into generosartista(idArtista,idGenero) values (1,4);
 
 
 insert into canciones(nombre, idArtista, archivo,fechaPublicacion) values ("Mistakes I've Made",4,"/path","2015-01-01");
@@ -311,4 +312,4 @@ insert into eventos(costo, descripcion,direccion,fechaEvento,fechaPublicacion,no
 -- --------------------------------------------------------------------------------------------------------------------------------------
 
 insert into generoscancion (idCancion,idGenero) select a.idCancion,b.idGenero from canciones a inner join generosartista b on a.idArtista = b.idArtista;
-
+insert into generosdisco (idDisco,idGenero) select a.idDisco,b.idGenero from discos a inner join generosartista b on a.idArtista = b.idArtista;
