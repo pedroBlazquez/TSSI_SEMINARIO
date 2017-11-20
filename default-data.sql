@@ -313,3 +313,121 @@ insert into eventos(costo, descripcion,direccion,fechaEvento,fechaPublicacion,no
 
 insert into generoscancion (idCancion,idGenero) select a.idCancion,b.idGenero from canciones a inner join generosartista b on a.idArtista = b.idArtista;
 insert into generosdisco (idDisco,idGenero) select a.idDisco,b.idGenero from discos a inner join generosartista b on a.idArtista = b.idArtista;
+
+
+
+
+
+
+-- seguidores------------------------------------------------------------------------------
+insert into seguidos (idSeguido, idSeguidor) values (1,2);
+insert into seguidos (idSeguido, idSeguidor) values (1,3);
+insert into seguidos (idSeguido, idSeguidor) values (1,4);
+insert into seguidos (idSeguido, idSeguidor) values (1,5);
+insert into seguidos (idSeguido, idSeguidor) values (1,6);
+insert into seguidos (idSeguido, idSeguidor) values (1,7);
+insert into seguidos (idSeguido, idSeguidor) values (2,8);
+insert into seguidos (idSeguido, idSeguidor) values (2,9);
+insert into seguidos (idSeguido, idSeguidor) values (2,10);
+insert into seguidos (idSeguido, idSeguidor) values (3,11);
+insert into seguidos (idSeguido, idSeguidor) values (3,12);
+insert into seguidos (idSeguido, idSeguidor) values (3,13);
+insert into seguidos (idSeguido, idSeguidor) values (3,14);
+insert into seguidos (idSeguido, idSeguidor) values (4,15);
+insert into seguidos (idSeguido, idSeguidor) values (4,16);
+insert into seguidos (idSeguido, idSeguidor) values (4,17);
+insert into seguidos (idSeguido, idSeguidor) values (5,18);
+insert into seguidos (idSeguido, idSeguidor) values (5,19);
+insert into seguidos (idSeguido, idSeguidor) values (5,20);
+insert into seguidos (idSeguido, idSeguidor) values (6,21);
+insert into seguidos (idSeguido, idSeguidor) values (6,22);
+insert into seguidos (idSeguido, idSeguidor) values (6,23);
+insert into seguidos (idSeguido, idSeguidor) values (7,24);
+insert into seguidos (idSeguido, idSeguidor) values (7,25);
+insert into seguidos (idSeguido, idSeguidor) values (7,26);
+insert into seguidos (idSeguido, idSeguidor) values (8,27);
+insert into seguidos (idSeguido, idSeguidor) values (8,20);
+insert into seguidos (idSeguido, idSeguidor) values (9,2);
+insert into seguidos (idSeguido, idSeguidor) values (9,3);
+insert into seguidos (idSeguido, idSeguidor) values (9,4);
+insert into seguidos (idSeguido, idSeguidor) values (10,5);
+insert into seguidos (idSeguido, idSeguidor) values (10,6);
+insert into seguidos (idSeguido, idSeguidor) values (10,7);
+insert into seguidos (idSeguido, idSeguidor) values (11,8);
+insert into seguidos (idSeguido, idSeguidor) values (11,9);
+insert into seguidos (idSeguido, idSeguidor) values (11,10);
+insert into seguidos (idSeguido, idSeguidor) values (12,11);
+insert into seguidos (idSeguido, idSeguidor) values (13,12);
+insert into seguidos (idSeguido, idSeguidor) values (14,13);
+insert into seguidos (idSeguido, idSeguidor) values (1,14);
+insert into seguidos (idSeguido, idSeguidor) values (2,15);
+insert into seguidos (idSeguido, idSeguidor) values (3,16);
+insert into seguidos (idSeguido, idSeguidor) values (6,19);
+insert into seguidos (idSeguido, idSeguidor) values (7,20);
+insert into seguidos (idSeguido, idSeguidor) values (8,21);
+insert into seguidos (idSeguido, idSeguidor) values (9,22);
+insert into seguidos (idSeguido, idSeguidor) values (10,23);
+insert into seguidos (idSeguido, idSeguidor) values (11,24);
+insert into seguidos (idSeguido, idSeguidor) values (12,25);
+insert into seguidos (idSeguido, idSeguidor) values (13,26);
+insert into seguidos (idSeguido, idSeguidor) values (14,27);
+insert into seguidos (idSeguido, idSeguidor) values (15,20);
+insert into seguidos (idSeguido, idSeguidor) values (17,2);
+insert into seguidos (idSeguido, idSeguidor) values (18,3);
+insert into seguidos (idSeguido, idSeguidor) values (19,4);
+insert into seguidos (idSeguido, idSeguidor) values (20,5);
+insert into seguidos (idSeguido, idSeguidor) values (21,6);
+insert into seguidos (idSeguido, idSeguidor) values (22,7);
+insert into seguidos (idSeguido, idSeguidor) values (23,8);
+insert into seguidos (idSeguido, idSeguidor) values (24,9);
+insert into seguidos (idSeguido, idSeguidor) values (25,10);
+insert into seguidos (idSeguido, idSeguidor) values (26,11);
+insert into seguidos (idSeguido, idSeguidor) values (27,12);
+insert into seguidos (idSeguido, idSeguidor) values (28,13);
+insert into seguidos (idSeguido, idSeguidor) values (28,14);
+insert into seguidos (idSeguido, idSeguidor) values (1,15);
+insert into seguidos (idSeguido, idSeguidor) values (2,16);
+insert into seguidos (idSeguido, idSeguidor) values (13,17);
+insert into seguidos (idSeguido, idSeguidor) values (14,19);
+insert into seguidos (idSeguido, idSeguidor) values (16,21);
+insert into seguidos (idSeguido, idSeguidor) values (17,22);
+insert into seguidos (idSeguido, idSeguidor) values (18,23);
+insert into seguidos (idSeguido, idSeguidor) values (19,24);
+insert into seguidos (idSeguido, idSeguidor) values (21,25);
+insert into seguidos (idSeguido, idSeguidor) values (21,26);
+insert into seguidos (idSeguido, idSeguidor) values (21,27);
+insert into seguidos (idSeguido, idSeguidor) values (21,20);
+insert into seguidos (idSeguido, idSeguidor) values (21,2);
+insert into seguidos (idSeguido, idSeguidor) values (21,3);
+insert into seguidos (idSeguido, idSeguidor) values (22,4);
+insert into seguidos (idSeguido, idSeguidor) values (23,5);
+insert into seguidos (idSeguido, idSeguidor) values (23,6);
+insert into seguidos (idSeguido, idSeguidor) values (23,7);
+insert into seguidos (idSeguido, idSeguidor) values (23,9);
+insert into seguidos (idSeguido, idSeguidor) values (23,10);
+insert into seguidos (idSeguido, idSeguidor) values (24,11);
+insert into seguidos (idSeguido, idSeguidor) values (24,12);
+insert into seguidos (idSeguido, idSeguidor) values (24,13);
+insert into seguidos (idSeguido, idSeguidor) values (25,14);
+insert into seguidos (idSeguido, idSeguidor) values (25,15);
+insert into seguidos (idSeguido, idSeguidor) values (25,16);
+insert into seguidos (idSeguido, idSeguidor) values (25,17);
+insert into seguidos (idSeguido, idSeguidor) values (25,18);
+insert into seguidos (idSeguido, idSeguidor) values (26,19);
+insert into seguidos (idSeguido, idSeguidor) values (26,20);
+insert into seguidos (idSeguido, idSeguidor) values (26,21);
+insert into seguidos (idSeguido, idSeguidor) values (26,22);
+insert into seguidos (idSeguido, idSeguidor) values (27,23);
+insert into seguidos (idSeguido, idSeguidor) values (27,24);
+insert into seguidos (idSeguido, idSeguidor) values (27,25);
+insert into seguidos (idSeguido, idSeguidor) values (27,26);
+insert into seguidos (idSeguido, idSeguidor) values (28,27);
+insert into seguidos (idSeguido, idSeguidor) values (27,20);
+
+
+
+
+-- ----------------------------------------------------------------------------------------
+
+
+
