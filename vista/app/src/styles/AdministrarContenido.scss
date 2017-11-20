@@ -1,0 +1,6 @@
+@import "variables";
+
+.table-container {
+  max-height: $content-max-height;
+  overflow-y: auto;
+}

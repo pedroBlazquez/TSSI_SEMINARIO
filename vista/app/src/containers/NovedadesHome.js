@@ -5,6 +5,9 @@ import {connect} from 'react-redux';
 
 import {getNovedades} from '../actions/novedadesAction';
 
+import {Card} from 'antd';
+import FormBusqueda from '../components/FormBusqueda';
+import MainContent from '../components/MainContent';
 import withProfile from '../hoc/withProfile';
 import Novedades from '../components/Novedades';
 
@@ -16,7 +19,12 @@ class NovedadesHome extends Component {
   render () {
     const {records} = this.props;
     return (
-      !!records ? <Novedades conPublicacion={false} records={records} /> : null
+      <MainContent>
+        <Card className={'margin-10p'}>
+          <FormBusqueda />
+        </Card>
+        <Novedades records={records} />
+      </MainContent>
     );
   }
 }
