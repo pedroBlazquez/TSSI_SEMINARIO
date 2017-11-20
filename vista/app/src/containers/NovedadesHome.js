@@ -8,15 +8,15 @@ import {getNovedades} from '../actions/novedadesAction';
 import withProfile from '../hoc/withProfile';
 import Novedades from '../components/Novedades';
 
-class NovedadesPerfil extends Component {
+class NovedadesHome extends Component {
   componentWillMount() {
-    this.props.getUltimasPublicaciones();
+    this.props.getNovedades();
   }
 
   render () {
-    const {esPerfilPropio, records} = this.props;
+    const {records} = this.props;
     return (
-      !!records ? <Novedades conPublicacion={esPerfilPropio} records={records} /> : null
+      !!records ? <Novedades conPublicacion={false} records={records} /> : null
     );
   }
 }
@@ -26,11 +26,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getUltimasPublicaciones: bindActionCreators(getNovedades, dispatch)
+  getNovedades: bindActionCreators(getNovedades, dispatch)
 });
 
-export default withRouter(withProfile(connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NovedadesPerfil)
-));
+)(NovedadesHome);
