@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 
 import {Card} from 'antd';
 import Publicacion from './Publicacion';
@@ -10,34 +8,29 @@ import Artista from './Artista';
 import Cancion from './Cancion';
 import Disco from './Disco';
 
-import {getNovedades} from '../actions/novedadesAction';
+import {OBJECT_TYPES} from '../utils/constants';
 
 import '../styles/novedades.css'
 
-class Novedades extends Component {
-
-  componentWillMount() {
-    this.props.getNovedades();
-  }
-
+export default class Novedades extends Component {
   getElements = () => {
     const {records} = this.props;
     return records.map(function(record) {
       let element;
       switch(record.object_type) {
-        case 'Artista':
+        case OBJECT_TYPES.ARTISTA:
           element = <Artista key={record.id} artista={record} />;
           break;
-        case 'Publicacion':
+        case OBJECT_TYPES.PUBLICACION:
           element = <Publicacion key={record.id} publicacion={record} />;
           break;
-        case 'Evento':
+        case OBJECT_TYPES.EVENTO:
           element = <Evento key={record.id} evento={record} />;
           break;
-        case 'Disco':
+        case OBJECT_TYPES.DISCO:
           element = <Disco key={record.id} disco={record} />;
           break;
-        case 'Cancion':
+        case OBJECT_TYPES.CANCION:
           element = <Cancion key={record.id} cancion={record} />;
           break;
       }
@@ -46,30 +39,18 @@ class Novedades extends Component {
   }
 
   render () {
-    const {conPublicacion, records} = this.props;
+    const {conPublicacion, records, conBusqueda} = this.props;
 
     return (
-      <div className={'full-height'} style={{maxWidth: 600, width: '80%', margin: '0 auto', paddingTop: 10}}>
+      <div className={'main-content'}>
+        { conBusqueda && <div>{'Aca va la busqueda'}</div>}
         { conPublicacion &&
           <Card className={'margin-10p'} title={'Publicá un mensaje!'}>
             <FormNuevaPublicacion />
           </Card>
         }
-        { records.length && this.getElements() }
+        { !!records.length && this.getElements() }
       </div>
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  records: state.novedadesReducer.records
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getNovedades: bindActionCreators(getNovedades, dispatch)
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Novedades);
