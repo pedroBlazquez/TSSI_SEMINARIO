@@ -38,7 +38,8 @@ public class Evento {
     private String imagen;
 
     // FK
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 

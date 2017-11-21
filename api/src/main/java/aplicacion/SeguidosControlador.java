@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import aplicacion.autenticacion.Token;
 import modelos.Usuario;
 import negocio.SeguidosNegocio;
+import negocio.UsuarioNegocio;
 
 @RestController
 @RequestMapping("/usuario")
@@ -70,7 +71,9 @@ public class SeguidosControlador {
             else
                 seguidores = SeguidosNegocio.getSeguidores((int)idUsuario);
                 
-            return new ResponseEntity<Object>(seguidores,HttpStatus.OK);
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(seguidores, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -86,8 +89,10 @@ public class SeguidosControlador {
                 seguidos = SeguidosNegocio.getSeguidos(usermail);
             else
                 seguidos = SeguidosNegocio.getSeguidos((int)idUsuario);
-                
-            return new ResponseEntity<Object>(seguidos,HttpStatus.OK);
+            
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(seguidos, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
             
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);

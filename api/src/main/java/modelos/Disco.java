@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "Discos")
@@ -26,7 +27,8 @@ public class Disco {
     private String portada;
 
     // FK
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 

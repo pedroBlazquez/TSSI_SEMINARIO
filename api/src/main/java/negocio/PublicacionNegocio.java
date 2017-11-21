@@ -83,7 +83,7 @@ public class PublicacionNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static List<JSONObject> setData(List<Publicacion> publicaciones,String usermail) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(List<Publicacion> publicaciones,String usermail,boolean w_artista) throws JsonProcessingException, JSONException
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -93,6 +93,10 @@ public class PublicacionNegocio {
             JSONObject jobj = Tools.convertObj_toJSON(a);
             
             String idPublicacion = String.valueOf(a.getId());
+            
+
+            if(w_artista)
+                jobj.put("artista", Tools.convertObj_toJSON(a.getArtista()));
             
             jobj.put("likes", LikeNegocio.getLikeCount("Publicacion",idPublicacion));
             

@@ -23,7 +23,8 @@ public class Publicacion {
     private Date fechaPublicacion;
 
     // FK
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 

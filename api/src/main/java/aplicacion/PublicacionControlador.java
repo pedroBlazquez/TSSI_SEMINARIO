@@ -29,7 +29,7 @@ public class PublicacionControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion WHERE id = "+idpublicacion);
+            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion p JOIN FETCH p.artista a WHERE p.id = "+idpublicacion);
             cn.cerrarConexion();
             if (publicaciones.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
@@ -37,7 +37,7 @@ public class PublicacionControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail);
+            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail,true);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -58,7 +58,7 @@ public class PublicacionControlador {
             }
             
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail);
+            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail,false);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {

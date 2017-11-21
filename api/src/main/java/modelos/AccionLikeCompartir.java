@@ -20,26 +20,32 @@ public class AccionLikeCompartir {
     private Date fechaAccion;
 
     // FK
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCancion")
     private Cancion cancion;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idDisco")
     private Disco disco;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idAlbum")
     private Album album;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idPublicacion")
     private Publicacion publicacion;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idEvento")
     private Evento evento;

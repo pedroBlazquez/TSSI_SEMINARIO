@@ -35,7 +35,7 @@ public class AlbumControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Album> albums = cn.getListQuery("from modelos.Album WHERE id = "+idalbum);
+            List<Album> albums = cn.getListQuery("from modelos.Album a JOIN FETCH a.artista ar WHERE a.id = "+idalbum);
             cn.cerrarConexion();
             
             if (albums.isEmpty()) {
@@ -44,7 +44,7 @@ public class AlbumControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true);
+            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true,true);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -65,7 +65,7 @@ public class AlbumControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true);
+            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true,false);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {

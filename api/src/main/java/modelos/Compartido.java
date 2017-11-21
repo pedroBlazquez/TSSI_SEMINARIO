@@ -2,6 +2,8 @@ package modelos;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "Compartidos")
@@ -13,7 +15,8 @@ public class Compartido {
     private int id;
 
     // FK
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 

@@ -37,7 +37,7 @@ public class CancionControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE id = "+idcancion);
+            List<Cancion> canciones = cn.getListQuery("select c from modelos.Cancion c JOIN FETCH c.artista a WHERE c.id = "+idcancion,1);
             cn.cerrarConexion();
             
             if (canciones.isEmpty()) {
@@ -46,7 +46,7 @@ public class CancionControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = CancionNegocio.setData(canciones,usermail);
+            List<JSONObject> jobj_list = CancionNegocio.setData(canciones,usermail,true);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -68,7 +68,7 @@ public class CancionControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = CancionNegocio.setData(canciones,usermail);
+            List<JSONObject> jobj_list = CancionNegocio.setData(canciones,usermail,false);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -83,14 +83,18 @@ public class CancionControlador {
             Conexion cn = new Conexion();
             cn.abrirConexion();
             List<Disco> cd = cn.getListQuery("select cd.idCancionDisco.disco from modelos.CancionDisco cd WHERE cd.idCancionDisco.cancion.id = "+(int)idCancion);
-           
+            
+            
+            List<JSONObject> jobj_list = Tools.convertList_toListJSON(cd);
+            
             cn.cerrarConexion();
             if (cd.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<Disco>>(cd, HttpStatus.OK);
+            return new ResponseEntity<Object>(cd, HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
