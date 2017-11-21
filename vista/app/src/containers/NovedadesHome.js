@@ -5,8 +5,10 @@ import {connect} from 'react-redux';
 
 import {getNovedades} from '../actions/novedadesAction';
 
+import {getRecordsInicio} from '../selectors/inicio';
+
 import {Card} from 'antd';
-import FormBusqueda from '../components/FormBusqueda';
+import Busqueda from '../containers/Busqueda';
 import MainContent from '../components/MainContent';
 import withProfile from '../hoc/withProfile';
 import Novedades from '../components/Novedades';
@@ -21,7 +23,7 @@ class NovedadesHome extends Component {
     return (
       <MainContent>
         <Card className={'margin-10p'}>
-          <FormBusqueda />
+          <Busqueda />
         </Card>
         <Novedades records={records} />
       </MainContent>
@@ -30,7 +32,7 @@ class NovedadesHome extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  records: state.novedadesReducer.records
+  records: getRecordsInicio(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

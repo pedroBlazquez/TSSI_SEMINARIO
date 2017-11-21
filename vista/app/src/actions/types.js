@@ -44,3 +44,8 @@ export const SEND_COMPARTIR       = 'SEND_COMPARTIR';
 
 // Like
 export const SEND_LIKE            = 'SEND_LIKE';
+
+
+// BUSCAR
+export const BUSCAR               = 'BUSCAR';
+export const SET_BUSQUEDA         = 'SET_BUSQUEDA';
