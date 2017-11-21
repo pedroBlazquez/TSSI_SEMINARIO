@@ -33,11 +33,12 @@ const getOptions = (profileId, esArtista) => {
 class PerfilSideBar extends Component {
   render () {
     const {esArtista, esPerfilPropio, user, profileId} = this.props;
+    const userName = esArtista ? user.artista[0].nombreFantasia : `${user.nombre}, ${user.apellido}`;
     return (
       <PerfilWrapper>
         <div className={'side-bar-container relative'}>
           <img className={'img-circle'} src={NoImage}/>
-          <h3 className={'profile-title'}>{'Fulano Perez'}</h3>
+          <h3 className={'profile-title'}>{userName}</h3>
           <VerticalMenu options={getOptions(profileId, esArtista)} />
           <div className={'margin-5p'}>
             {esPerfilPropio && 

@@ -9,7 +9,7 @@ import NavBar from '../containers/UserNavBarContainer';
 import LoginForm from '../containers/LoginContainer';
 import RegistroUsuario from '../containers/RegistroUsuarioContainer';
 import Perfil from './Perfil';
-import Novedades from '../components/Novedades'; 
+import NovedadesHome from '../containers/NovedadesHome'; 
 
 
 // TODO: Cambiar las rutas para un mejor approach
@@ -20,7 +20,7 @@ const MainRoute = ({isLogged}) => (
     footer={'(C) Copyright MusicApp 2017'}
   >
     {isLogged && <NavBar/>}
-    <AuthRoute authorized={isLogged} redirectTo="/login" path="/" exact component={Novedades}/>
+    <AuthRoute authorized={isLogged} redirectTo="/login" path="/" exact component={NovedadesHome}/>
     <AuthRoute authorized={isLogged} redirectTo="/login" path="/perfil/:profileId" component={Perfil}/>
     <Route component={LoginForm} path="/login" />
     <Route component={RegistroUsuario} path="/registrarse"/>

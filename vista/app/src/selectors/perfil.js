@@ -37,3 +37,13 @@ export const getLoadingPerfil = createSelector(
   [getPerfil],
   perfil => perfil.loadingStatus
 );
+
+export const getSeguidosPerfil = createSelector(
+  [getPerfil],
+  perfil => perfil.seguidos
+);
+
+export const getSeguidoresPerfil = createSelector(
+  [getPerfil],
+  perfil => perfil.seguidores
+);

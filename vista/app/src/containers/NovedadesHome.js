@@ -5,43 +5,41 @@ import {connect} from 'react-redux';
 
 import {getNovedades} from '../actions/novedadesAction';
 
+import {getRecordsInicio} from '../selectors/inicio';
+
 import {Card} from 'antd';
+import Busqueda from '../containers/Busqueda';
 import MainContent from '../components/MainContent';
-import FormNuevaPublicacion from '../components/FormNuevaPublicacion';
 import withProfile from '../hoc/withProfile';
 import Novedades from '../components/Novedades';
 
-class NovedadesPerfil extends Component {
+class NovedadesHome extends Component {
   componentWillMount() {
-    this.props.getUltimasPublicaciones();
+    this.props.getNovedades();
   }
 
   render () {
-    const {esPerfilPropio, records} = this.props;
+    const {records} = this.props;
     return (
       <MainContent>
-       {esPerfilPropio ?
-          <Card className={'margin-10p'} title={'Publicá un mensaje!'}>
-            <FormNuevaPublicacion />
-          </Card> : 
-          null
-        }
-        <Novedades conPublicacion={esPerfilPropio} records={records} />
+        <Card className={'margin-10p'}>
+          <Busqueda />
+        </Card>
+        <Novedades records={records} />
       </MainContent>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  records: state.novedadesReducer.records
+  records: getRecordsInicio(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getUltimasPublicaciones: bindActionCreators(getNovedades, dispatch)
+  getNovedades: bindActionCreators(getNovedades, dispatch)
 });
 
-export default withRouter(withProfile(connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NovedadesPerfil)
-));
+)(NovedadesHome);
