@@ -101,7 +101,7 @@ public class UsuarioNegocio {
         return true;
     }
     
-    public static List<JSONObject> setData(Usuario usuario,String usermail) throws JsonProcessingException, JSONException
+    /*public static List<JSONObject> setData(Usuario usuario,String usermail) throws JsonProcessingException, JSONException
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -128,9 +128,44 @@ public class UsuarioNegocio {
         
         cn.cerrarConexion();
         return list;
+    }*/
+    
+    public static List<JSONObject> setData(List<Usuario> usuarios,String usermail) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        
+        
+        
+        for(Usuario usuario : usuarios)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(usuario);
+            int idUsuario = usuario.getId();
+            if(usuario.getUsuarioTipo().getId() != 1)
+            {
+                List<Artista> artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idUsuario);
+                if(!artista.isEmpty()) //es artista
+                {
+                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail,false)));
+                }
+            }
+            else
+            {
+                jobj.put("seguidores", SeguidosNegocio.getSeguidores(idUsuario).size());
+                jobj.put("seguido", SeguidosNegocio.getSeguimiento(idUsuario,usermail));
+            }
+            jobj.put("object_type", "Usuario");
+            list.add(jobj);
+    
+            
+        }
+        cn.cerrarConexion();
+        return list;
     }
+    
   
-    public static List<JSONObject> setData(List<Usuario> usuarios,String usermail,boolean only_oyente) throws JsonProcessingException, JSONException
+    /*public static List<JSONObject> setData(List<Usuario> usuarios,String usermail,boolean only_oyente) throws JsonProcessingException, JSONException
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -171,6 +206,6 @@ public class UsuarioNegocio {
         }
         cn.cerrarConexion();
         return list;
-    }
+    }*/
     
 }

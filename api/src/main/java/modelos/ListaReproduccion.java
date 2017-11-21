@@ -30,7 +30,8 @@ public class ListaReproduccion {
     private boolean privacidad = false; // false = publica
 
     // FK
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuario")
     private Usuario usuario;
 

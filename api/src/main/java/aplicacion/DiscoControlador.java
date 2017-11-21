@@ -31,7 +31,7 @@ public class DiscoControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Disco> discos = cn.getListQuery("from modelos.Disco WHERE id = "+iddisco);
+            List<Disco> discos = cn.getListQuery("from modelos.Disco d JOIN FETCH d.artista a WHERE d.id = "+iddisco);
             cn.cerrarConexion();
             if (discos.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
@@ -39,7 +39,7 @@ public class DiscoControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = DiscoNegocio.setData(discos, usermail,true);
+            List<JSONObject> jobj_list = DiscoNegocio.setData(discos, usermail,true,true);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -61,7 +61,7 @@ public class DiscoControlador {
             }
             
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = DiscoNegocio.setData(discos, usermail,true);
+            List<JSONObject> jobj_list = DiscoNegocio.setData(discos, usermail,true,false);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {

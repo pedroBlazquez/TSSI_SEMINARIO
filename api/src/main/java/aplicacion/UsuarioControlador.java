@@ -119,10 +119,11 @@ public class UsuarioControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
+            List<Usuario> lu = new ArrayList<Usuario>();
+            lu.add(u);
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(lu, usermail);
             
-            List<JSONObject> jobj_list = UsuarioNegocio.setData(u, usermail);
-            
-            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
+            return new ResponseEntity<Object>(jobj_list.get(0).toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

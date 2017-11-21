@@ -31,7 +31,7 @@ public class EventoControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE id = "+idevento);
+            List<Evento> eventos = cn.getListQuery("from modelos.Evento e JOIN FETCH e.artista a WHERE e.id = "+idevento);
             cn.cerrarConexion();
             if (eventos.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
@@ -39,7 +39,7 @@ public class EventoControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail);
+            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail,true);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -60,7 +60,7 @@ public class EventoControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail);
+            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail,false);
             
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {

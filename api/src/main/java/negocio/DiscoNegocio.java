@@ -141,7 +141,7 @@ public class DiscoNegocio {
         cn.cerrarConexion();
         return list;
     }
-    public static List<JSONObject> setData(List<Disco> discos,String usermail,boolean w_generocancion) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(List<Disco> discos,String usermail,boolean w_generocancion,boolean w_artista) throws JsonProcessingException, JSONException
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
@@ -160,7 +160,10 @@ public class DiscoNegocio {
                 canciones_w_genero = Tools.convertList_toJSON(canciones);
             jobj.put("canciones", canciones_w_genero);
             
-           
+            if(w_artista)
+                jobj.put("artista", Tools.convertObj_toJSON(a.getArtista()));
+            
+            
             List<Genero> generos = cn.getListQuery("select gc.idGeneroDisco.genero from modelos.GeneroDisco gc WHERE gc.idGeneroDisco.disco.id = "+idDisco);
             jobj.put("genero", Tools.convertObj_toJSON(generos.get(0)));
             
