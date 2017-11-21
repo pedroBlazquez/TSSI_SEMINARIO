@@ -25,7 +25,7 @@ export function* traerPerfil(action) {
 
     // Traemos los datos del usuario que estamos viendo actualmente
     const usuarioData = yield call(_get, `/usuario/${idPerfil}`, headers);
-    const usuario = usuarioData.data[0];
+    const usuario = usuarioData.data;
     const idUsuario = usuario.id;
     const esArtista = usuario.tipoUsuario !== USUARIO_OYENTE.id;
 

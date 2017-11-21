@@ -15,7 +15,7 @@ export function* requestLoginSaga(action) {
     const {token, usuario} = response.data;
     yield call(setAuthToken, token);
     const usuarioData = yield call(_get, `/usuario/${usuario.id}`, config());
-    yield put(successLogin(usuarioData.data[0]));
+    yield put(successLogin(usuarioData.data));
   } catch (e) {
     yield put(errorLogin('Usuario o password incorrectos'));
   }
@@ -28,7 +28,7 @@ export function* checkToken(action) {
     if (token) {
       const headers = config();
       const response = yield call(_get, '/usuario/0', headers);
-      const usuario = response.data[0];
+      const usuario = response.data;
       yield put(successLogin(usuario));
     }
   } catch (e) {
