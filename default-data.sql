@@ -269,7 +269,7 @@ insert into artistas(descripcion,fechaInicio,nombreFantasia,idUsuario) values ("
 
 insert into integrantesartista(nombres,apellido,fechaNacimiento, idArtista, idRol) values ("Eelke","Kleijn","1995-03-27",1,5);
 
-insert into generosartista(idArtista,idGenero) values (1,4);
+insert into generosartista(idArtista,idGenero) values (4,1);
 
 
 insert into canciones(nombre, idArtista, archivo,fechaPublicacion) values ("Mistakes I've Made",4,"/path","2015-01-01");
