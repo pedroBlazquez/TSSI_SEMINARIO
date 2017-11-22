@@ -12,6 +12,7 @@ import Busqueda from '../containers/Busqueda';
 import MainContent from '../components/MainContent';
 import withProfile from '../hoc/withProfile';
 import Novedades from '../components/Novedades';
+import Reproductor from '../components/Reproductor';
 
 class NovedadesHome extends Component {
   componentWillMount() {

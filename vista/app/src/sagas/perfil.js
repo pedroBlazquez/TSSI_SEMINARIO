@@ -1,6 +1,7 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 
 import {_get, config} from '../utils/api';
+import {agregarArtista} from '../utils/utils';
 import {USUARIO_OYENTE} from '../utils/constants';
 import {TRAER_PERFIL} from '../actions/types';
 import {
@@ -25,7 +26,7 @@ export function* traerPerfil(action) {
 
     // Traemos los datos del usuario que estamos viendo actualmente
     const usuarioData = yield call(_get, `/usuario/${idPerfil}`, headers);
-    const usuario = usuarioData.data[0];
+    const usuario = usuarioData.data;
     const idUsuario = usuario.id;
     const esArtista = usuario.tipoUsuario !== USUARIO_OYENTE.id;
 
@@ -44,11 +45,11 @@ export function* traerPerfil(action) {
       const albumes = yield call(_get, `/albums/getArtista/${idArtista}`, headers);
       const eventos = yield call(_get, `/eventos/getArtista/${idArtista}`, headers);
 
-      yield put(setPublicacionesPerfil(publicaciones.data));
-      yield put(setCancionesPerfil(canciones.data));
-      yield put(setDiscosPerfil(discos.data));
-      yield put(setAlbumesPerfil(albumes.data));
-      yield put(setEventosPerfil(eventos.data));
+      yield put(setPublicacionesPerfil(agregarArtista(publicaciones.data, artista)));
+      yield put(setCancionesPerfil(agregarArtista(canciones.data, artista)));
+      yield put(setDiscosPerfil(agregarArtista(discos.data, artista)));
+      yield put(setAlbumesPerfil(agregarArtista(albumes.data, artista)));
+      yield put(setEventosPerfil(agregarArtista(eventos.data, artista)));
     } else {
       const publicaciones = yield call(_get, `/compartir/getCompartidos/${idUsuario}`, headers);
       yield put(setPublicacionesPerfil(publicaciones.data));
