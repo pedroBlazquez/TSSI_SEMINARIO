@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "Discos")
@@ -22,8 +23,12 @@ public class Disco {
     @Column(name = "fechaPublicacion", nullable = false)
     private Date fechaPublicacion;
 
+    @Column(name = "portada")
+    private String portada;
+
     // FK
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
@@ -112,6 +117,14 @@ public class Disco {
 
     public void setAcciones(List<AccionLikeCompartir> acciones) {
         this.acciones = acciones;
+    }
+
+    public String getPortada() {
+        return portada;
+    }
+
+    public void setPortada(String portada) {
+        this.portada = portada;
     }
 
 }

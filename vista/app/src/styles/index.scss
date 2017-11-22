@@ -1,6 +1,18 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
-  height: 100vh;
+}
+
+.main-content {
+  height: 100%;
+  max-height: calc(100vh - 175px);
+  overflow-y: auto;
+  width: 600px;
+  margin: 0 auto;
+  padding-top: 10px;
 }

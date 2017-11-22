@@ -34,8 +34,12 @@ public class Evento {
     @Column(name = "fechaPublicacion", nullable = false)
     private Date fechaPublicacion;
 
+    @Column(name = "imagen", nullable = true)
+    private String imagen;
+
     // FK
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idArtista")
     private Artista artista;
 
@@ -125,6 +129,14 @@ public class Evento {
 
     public int getId() {
         return id;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
 }

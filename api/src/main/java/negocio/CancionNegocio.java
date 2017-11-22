@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Artista;
 import modelos.Cancion;
@@ -92,4 +97,51 @@ public class CancionNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
+
+    public static List<JSONObject> setGenero(List<Cancion> canciones) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Cancion c : canciones)
+        {
+            List<Genero> generos = cn.getListQuery("select gc.idGeneroCancion.genero from modelos.GeneroCancion gc WHERE gc.idGeneroCancion.cancion.id = "+c.getId());
+            JSONObject jobj = Tools.convertObj_toJSON(c);
+            jobj.put("genero", Tools.convertObj_toJSON(generos.get(0)));
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
+    }
+    public static List<JSONObject> setData(List<Cancion> canciones,String usermail,boolean w_artista) throws JsonProcessingException, JSONException
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for(Cancion a : canciones)
+        {
+            JSONObject jobj = Tools.convertObj_toJSON(a);
+            
+            String idc = String.valueOf(a.getId());
+            
+            List<Genero> generos = cn.getListQuery("select gc.idGeneroCancion.genero from modelos.GeneroCancion gc WHERE gc.idGeneroCancion.cancion.id = "+idc);
+            jobj.put("genero", Tools.convertObj_toJSON(generos.get(0)));
+            
+            if(w_artista)
+                jobj.put("artista", Tools.convertObj_toJSON(a.getArtista()));
+            
+            jobj.put("likes", LikeNegocio.getLikeCount("Cancion",idc));
+            
+            jobj.put("liked", LikeNegocio.getUserLike("Cancion",idc,usermail));
+            
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Cancion",idc,usermail));
+            
+            jobj.put("object_type", "Cancion");
+            
+            list.add(jobj);
+        }
+        cn.cerrarConexion();
+        return list;
+    }
+    
 }

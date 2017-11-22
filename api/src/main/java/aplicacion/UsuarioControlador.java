@@ -1,10 +1,13 @@
 package aplicacion;
 
 
+import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
@@ -12,13 +15,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import aplicacion.autenticacion.Token;
+import conexion.Conexion;
 import modelos.IntegranteArtista;
+import modelos.Usuario;
 import negocio.ArtistaNegocio;
 import negocio.IntegranteArtistaNegocio;
 import negocio.UsuarioNegocio;
@@ -89,6 +97,36 @@ public class UsuarioControlador {
         JSONObject json = new JSONObject(httpEntity.getBody());
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         return usuarioNegocio.checkMail(json.getString("mail"));
+    }
+    
+    @RequestMapping(value = "/{idusuario}", method = RequestMethod.GET)
+    public ResponseEntity<?> getUsuario(@PathVariable("idusuario") long idusuario, HttpServletRequest request) {
+        try {
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            Usuario u = new Usuario();
+            if(idusuario == 0)
+            {
+                Conexion cn = new Conexion();
+                cn.abrirConexion();
+                List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
+                cn.cerrarConexion();
+                u = usuarios.get(0);
+            }
+            else
+                u = UsuarioNegocio.getById((int)idusuario);
+                
+            if (u == null) {
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+                // You many decide to return HttpStatus.NOT_FOUND
+            }
+            List<Usuario> lu = new ArrayList<Usuario>();
+            lu.add(u);
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(lu, usermail);
+            
+            return new ResponseEntity<Object>(jobj_list.get(0).toString(), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 

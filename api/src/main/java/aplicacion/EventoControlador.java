@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import aplicacion.autenticacion.Token;
 import modelos.Evento;
 import negocio.EventoNegocio;
+import negocio.PublicacionNegocio;
 import conexion.Conexion;
 
 import org.json.JSONException;
@@ -26,24 +27,28 @@ import javax.servlet.http.HttpServletRequest;
 public class EventoControlador {
 
     @RequestMapping(value = "/{evento}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEvento(@PathVariable("evento") long idevento) {
+    public ResponseEntity<?> getEvento(@PathVariable("evento") long idevento, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE id = "+idevento);
+            List<Evento> eventos = cn.getListQuery("from modelos.Evento e JOIN FETCH e.artista a WHERE e.id = "+idevento);
             cn.cerrarConexion();
             if (eventos.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Evento>(eventos.get(0), HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail,true);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEventosArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getEventosArtista(@PathVariable("artista") long idartista, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -53,7 +58,11 @@ public class EventoControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<Evento>>(eventos, HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail,false);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -86,7 +95,7 @@ public class EventoControlador {
  
     // -------------------Update-------------------------------------------
     
-    @RequestMapping(value = "/update", method = RequestMethod.POST) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.PUT) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> updateEvento(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
@@ -107,7 +116,7 @@ public class EventoControlador {
     
     // -------------------Delete-------------------------------------------
     
-    @RequestMapping(value = "/delete", method = RequestMethod.POST) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.DELETE) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> deleteEvento(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json

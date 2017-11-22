@@ -25,24 +25,28 @@ import javax.servlet.http.HttpServletRequest;
 public class PublicacionControlador {
 
     @RequestMapping(value = "/{publicacion}", method = RequestMethod.GET)
-    public ResponseEntity<?> getPublicacion(@PathVariable("publicacion") long idpublicacion) {
+    public ResponseEntity<?> getPublicacion(@PathVariable("publicacion") long idpublicacion, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion WHERE id = "+idpublicacion);
+            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion p JOIN FETCH p.artista a WHERE p.id = "+idpublicacion);
             cn.cerrarConexion();
             if (publicaciones.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Publicacion>(publicaciones.get(0), HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail,true);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getPublicacionesArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getPublicacionesArtista(@PathVariable("artista") long idartista, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -52,7 +56,11 @@ public class PublicacionControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<List<Publicacion>>(publicaciones, HttpStatus.OK);
+            
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail,false);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -81,7 +89,7 @@ public class PublicacionControlador {
  
     // -------------------Update-------------------------------------------
     
-    @RequestMapping(value = "/update", method = RequestMethod.POST) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.PUT) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> updatePublicacion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
@@ -98,7 +106,7 @@ public class PublicacionControlador {
     
     // -------------------Delete-------------------------------------------
     
-    @RequestMapping(value = "/delete", method = RequestMethod.POST) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.DELETE) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> deletePublicacion(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json

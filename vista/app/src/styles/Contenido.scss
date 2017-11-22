@@ -1,0 +1,46 @@
+@import 'variables';
+
+.contenido-container {
+  width: 80%;
+  max-width: 450px;
+  margin: 0 auto;
+
+  .items-container {
+    border: $border-light-gray;
+
+    .item {
+      min-height: 25px;
+      padding: 0 10px;
+      border-bottom: $border-light-gray;
+
+      .descripcion {
+        font-size: 18px;
+      }
+
+      &:hover {
+        background-color: $light-gray;
+        .descripcion {
+          font-weight: bolder;
+          color: white;
+        }
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+  }
+}
+
+.selectable {
+  cursor: pointer;
+}
+
+.selected {
+  background-color: $light-gray;
+  .descripcion {
+    font-weight: bolder;
+    color: white;
+  }
+}

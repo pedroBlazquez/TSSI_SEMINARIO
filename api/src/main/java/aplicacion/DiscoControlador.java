@@ -27,24 +27,29 @@ import javax.servlet.http.HttpServletRequest;
 public class DiscoControlador {
 
     @RequestMapping(value = "/{disco}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCancion(@PathVariable("disco") long iddisco) {
+    public ResponseEntity<?> getCancion(@PathVariable("disco") long iddisco, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Disco> discos = cn.getListQuery("from modelos.Disco WHERE id = "+iddisco);
+            List<Disco> discos = cn.getListQuery("from modelos.Disco d JOIN FETCH d.artista a WHERE d.id = "+iddisco);
             cn.cerrarConexion();
             if (discos.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Disco>(discos.get(0), HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = DiscoNegocio.setData(discos, usermail,true,true);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getDiscoArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getDiscoArtista(@PathVariable("artista") long idartista, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -54,7 +59,11 @@ public class DiscoControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Object>(discos, HttpStatus.OK);
+            
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = DiscoNegocio.setData(discos, usermail,true,false);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -103,7 +112,7 @@ public class DiscoControlador {
  
     // -------------------Update-------------------------------------------
     
-    @RequestMapping(value = "/update", method = RequestMethod.POST) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.PUT) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> updateDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
@@ -122,7 +131,7 @@ public class DiscoControlador {
     
     // -------------------Delete-------------------------------------------
     
-    @RequestMapping(value = "/delete", method = RequestMethod.POST) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.DELETE) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> deleteDisco(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json

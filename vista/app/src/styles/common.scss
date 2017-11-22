@@ -1,13 +1,34 @@
 @import 'variables';
 
-.full-width {
-  width: 100%;
+.full-width { width: 100%;}
+.full-height {height: 100%;}
+
+.main-container {
+  background-color: $light-gray;
 }
+
+// Position
+.relative {position: relative};
+.absolute {position: absolute};
 
 // Flex
 .flex {display: flex;}
 .flex-row {flex-direction: row;}
+.flex-col {flex-direction: column;}
 .flex-space-between {justify-content: space-between;}
+.flex-align-baseline {align-items: baseline;}
 
 // Margins
+.autoalign {margin: 0 auto;}
 .margin-5p {margin: 5px;}
+.margin-5p-top {margin-top: 5px};
+.margin-5p-bottom {margin-bottom: 5px};
+.margin-5p-left {margin-left: 5px};
+.margin-10p {margin: 10px};
+.margin-10p-top {margin-top: 10px};
+.padding-10p {padding: 10px};
+
+
+// Backgrounds
+.bg-color-light-gray {background-color: $light-gray;}
+.bg-color-white {background-color: white;}

@@ -85,33 +85,33 @@ public class LikeNegocio {
         }
     }
     
-    public static ResponseEntity<Object> getUserLike(String Tipo,String id,String usermail)
+    public static boolean getUserLike(String Tipo,String id,String usermail)
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
-        
-        List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
-        Usuario usuario = usuarios.get(0);
+
+        List<Integer> usuarios = cn.getListQuery("select u.id from modelos.Usuario u WHERE u.mail = '"+usermail+"'");
+        Integer usuario = usuarios.get(0);
         List<modelos.Like> list_exists = new ArrayList<Like>();
         //chequea existencia
         if(Tipo.equals("Album"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.album.id = "+id+" and usuario.id = "+usuario.getId());
+            list_exists = cn.getListQuery("SELECT l.id from modelos.Like l WHERE l.accion.album.id = "+id+" and l.usuario.id = "+usuario,1);
         else if(Tipo.equals("Artista"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.artista.id = "+id+" and usuario.id = "+usuario.getId());
+            list_exists = cn.getListQuery("SELECT l.id from modelos.Like l WHERE l.accion.artista.id = "+id+" and l.usuario.id = "+usuario,1);
         else if(Tipo.equals("Cancion"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.cancion.id = "+id+" and usuario.id = "+usuario.getId());
+            list_exists = cn.getListQuery("SELECT l.id from modelos.Like l WHERE l.accion.cancion.id = "+id+" and l.usuario.id = "+usuario,1);
         else if(Tipo.equals("Disco"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.disco.id = "+id+" and usuario.id = "+usuario.getId());
+            list_exists = cn.getListQuery("SELECT l.id from modelos.Like l WHERE l.accion.disco.id = "+id+" and l.usuario.id = "+usuario,1);
         else if(Tipo.equals("Evento"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.evento.id = "+id+" and usuario.id = "+usuario.getId());
+            list_exists = cn.getListQuery("SELECT l.id from modelos.Like l WHERE l.accion.evento.id = "+id+" and l.usuario.id = "+usuario,1);
         else if(Tipo.equals("Publicacion"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.publicacion.id = "+id+" and usuario.id = "+usuario.getId());
+            list_exists = cn.getListQuery("SELECT l.id from modelos.Like l WHERE l.accion.publicacion.id = "+id+" and l.usuario.id = "+usuario,1);
         
         cn.cerrarConexion();
         if(list_exists.isEmpty())
-            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+            return false;
         else
-            return new ResponseEntity<Object>(HttpStatus.OK);
+            return true;
         
     }
     
@@ -120,9 +120,9 @@ public class LikeNegocio {
         Conexion cn = new Conexion();
         cn.abrirConexion();
         
-        List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
-        Usuario usuario = usuarios.get(0);
-        List<modelos.Like> list = cn.getListQuery("from modelos.Like WHERE usuario.id = "+usuario.getId());
+        List<Integer> usuarios = cn.getListQuery("select u.id from modelos.Usuario u WHERE u.mail = '"+usermail+"'");
+        Integer usuario = usuarios.get(0);
+        List<modelos.Like> list = cn.getListQuery("from modelos.Like WHERE usuario.id = "+usuario);
         
         cn.cerrarConexion();
         if(list.isEmpty())
@@ -132,32 +132,28 @@ public class LikeNegocio {
         
     }
     
-    public static ResponseEntity<Object> getLikeCount(String Tipo,String id)
+    public static int getLikeCount(String Tipo,String id)
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
         
-        List<modelos.Like> list_exists = new ArrayList<Like>();
+        List<Long> list_exists = new ArrayList<Long>();
         //chequea existencia
         if(Tipo.equals("Album"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.album.id = "+id);
+            list_exists = cn.getListQuery("SELECT count(l.id) from modelos.Like l WHERE l.accion.album.id = "+id);
         else if(Tipo.equals("Artista"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.artista.id = "+id);
+            list_exists = cn.getListQuery("SELECT count(l.id) from modelos.Like l WHERE l.accion.artista.id = "+id);
         else if(Tipo.equals("Cancion"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.cancion.id = "+id);
+            list_exists = cn.getListQuery("SELECT count(l.id) from modelos.Like l WHERE l.accion.cancion.id = "+id);
         else if(Tipo.equals("Disco"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.disco.id = "+id);
+            list_exists = cn.getListQuery("SELECT count(l.id) from modelos.Like l WHERE l.accion.disco.id = "+id);
         else if(Tipo.equals("Evento"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.evento.id = "+id);
+            list_exists = cn.getListQuery("SELECT count(l.id) from modelos.Like l WHERE l.accion.evento.id = "+id);
         else if(Tipo.equals("Publicacion"))
-            list_exists = cn.getListQuery("from modelos.Like WHERE accion.publicacion.id = "+id);
+            list_exists = cn.getListQuery("SELECT count(l.id) from modelos.Like l WHERE l.accion.publicacion.id = "+id);
         
         cn.cerrarConexion();
-        if(list_exists.isEmpty())
-            return new ResponseEntity<Object>(list_exists.size(),HttpStatus.NOT_FOUND);
-        else
-            return new ResponseEntity<Object>(list_exists.size(),HttpStatus.OK);
-        
+        return list_exists.get(0) != null ? list_exists.get(0).intValue() : 0;
     }
     
   

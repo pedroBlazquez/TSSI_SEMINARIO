@@ -4,10 +4,14 @@ import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
 import modelos.Album;
+import modelos.Cancion;
 import modelos.Disco;
+import modelos.Genero;
 import negocio.AlbumNegocio;
+import negocio.CancionNegocio;
 import conexion.Conexion;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -27,24 +31,29 @@ import javax.servlet.http.HttpServletRequest;
 public class AlbumControlador {
 
     @RequestMapping(value = "/{album}", method = RequestMethod.GET)
-    public ResponseEntity<?> getAlbum(@PathVariable("album") long idalbum) {
+    public ResponseEntity<?> getAlbum(@PathVariable("album") long idalbum, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Album> albums = cn.getListQuery("from modelos.Album WHERE id = "+idalbum);
+            List<Album> albums = cn.getListQuery("from modelos.Album a JOIN FETCH a.artista ar WHERE a.id = "+idalbum);
             cn.cerrarConexion();
+            
             if (albums.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Album>(albums.get(0), HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true,true);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     @RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
-    public ResponseEntity<?> getAlbumArtista(@PathVariable("artista") long idartista) {
+    public ResponseEntity<?> getAlbumArtista(@PathVariable("artista") long idartista, HttpServletRequest request) {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
@@ -54,7 +63,11 @@ public class AlbumControlador {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
-            return new ResponseEntity<Object>(albums, HttpStatus.OK);
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true,false);
+            
+            return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -102,7 +115,7 @@ public class AlbumControlador {
  
     // -------------------Update-------------------------------------------
     
-    @RequestMapping(value = "/update", method = RequestMethod.POST) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.PUT) //utilizo POST para testear, porque el PUT me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> updateAlbum(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
@@ -120,7 +133,7 @@ public class AlbumControlador {
     
     // -------------------Delete-------------------------------------------
     
-    @RequestMapping(value = "/delete", method = RequestMethod.POST) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
+    @RequestMapping(value = "/", method = RequestMethod.DELETE) //utilizo POST para testear, porque el DELETE me esta tirando 403 Invalid CORS request en PostMan
     public ResponseEntity<?> deleteAlbum(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException, IOException {
         try {
             //obtiene objeto json
