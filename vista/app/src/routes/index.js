@@ -10,7 +10,7 @@ import LoginForm from '../containers/LoginContainer';
 import RegistroUsuario from '../containers/RegistroUsuarioContainer';
 import Perfil from './Perfil';
 import NovedadesHome from '../containers/NovedadesHome'; 
-import Reproductor from '../components/Reproductor';
+import Reproductor from '../containers/ReproductorContainer';
 
 
 // TODO: Cambiar las rutas para un mejor approach

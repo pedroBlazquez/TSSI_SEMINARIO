@@ -8,7 +8,18 @@ import {
 
 const initialState = {
   current: -1,
-  queue: []
+  queue: [
+    // HARDCODEADAS LAS CANCIONES CON MOTIVOS DE TESTING
+    {
+      path: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' 
+    },
+    {
+      path: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' 
+    },
+    {
+      path: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' 
+    }
+  ]
 }
 
 export default function (state = initialState, action = {}) {
@@ -16,19 +27,19 @@ export default function (state = initialState, action = {}) {
     case REPRODUCIR:
      return {current: 0, queue: [action.cancion]};
     case AGREGAR_A_COLA:
-     return {queue: state.queue.concat([action.cancion]), ...state};
+     return {...state, queue: state.queue.concat([action.cancion])};
     case SET_COLA:
       return {queue: action.queue, current: 0};
     case REPRODUCIR_SIGUIENTE:
       const siguiente = state.current + 1;
       if (siguiente < state.queue.length) {
-        return {current: siguiente, ...state};
+        return {...state, current: siguiente};
       }
       return state;
     case REPRODUCIR_ANTERIOR: 
       const anterior = state.current - 1;
       if (anterior >= 0) {
-        return {current: anterior, ...state};
+        return {...state, current: anterior};
       }
       return state;
     default:

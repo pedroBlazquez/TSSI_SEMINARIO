@@ -4,7 +4,7 @@ import {
   REPRODUCIR_ANTERIOR,
   SET_COLA,
   AGREGAR_A_COLA
-} from '../types';
+} from './types';
 
 export const reproducir = (cancion) => ({type: REPRODUCIR, cancion});
 export const siguiente = () => ({type: REPRODUCIR_SIGUIENTE});
