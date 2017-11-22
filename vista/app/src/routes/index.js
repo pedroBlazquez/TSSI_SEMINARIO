@@ -10,6 +10,7 @@ import LoginForm from '../containers/LoginContainer';
 import RegistroUsuario from '../containers/RegistroUsuarioContainer';
 import Perfil from './Perfil';
 import NovedadesHome from '../containers/NovedadesHome'; 
+import Reproductor from '../components/Reproductor';
 
 
 // TODO: Cambiar las rutas para un mejor approach
@@ -24,6 +25,11 @@ const MainRoute = ({isLogged}) => (
     <AuthRoute authorized={isLogged} redirectTo="/login" path="/perfil/:profileId" component={Perfil}/>
     <Route component={LoginForm} path="/login" />
     <Route component={RegistroUsuario} path="/registrarse"/>
+    {isLogged && 
+      <div style={{position: 'fixed', bottom: 25, width: '100%'}}>
+        <Reproductor style={{position: 'relative', width: 580, left: 385}}/>
+      </div>
+    }
   </MainLayout>
 );
 

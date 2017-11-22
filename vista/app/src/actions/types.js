@@ -49,3 +49,11 @@ export const SEND_LIKE            = 'SEND_LIKE';
 // BUSCAR
 export const BUSCAR               = 'BUSCAR';
 export const SET_BUSQUEDA         = 'SET_BUSQUEDA';
+
+
+// REPRODUCTOR
+export const REPRODUCIR           = 'REPRODUCIR';
+export const AGREGAR_A_COLA       = 'AGREGAR_A_COLA';
+export const SET_COLA             = 'SET_COLA';
+export const REPRODUCIR_SIGUIENTE = 'REPRODUCIR_SIGUIENTE';
+export const REPRODUCIR_ANTERIOR  = 'REPRODUCIR_ANTERIOR';

@@ -27,7 +27,6 @@ class NovedadesHome extends Component {
           <Busqueda />
         </Card>
         <Novedades records={records} />
-        <Reproductor />
       </MainContent>
     );
   }
