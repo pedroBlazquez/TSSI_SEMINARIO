@@ -126,10 +126,10 @@ public class DiscoNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static List<JSONObject> setGenero(List<Disco> discos) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setGenero(Conexion cn,List<Disco> discos) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         for(Disco c : discos)
         {
@@ -138,13 +138,13 @@ public class DiscoNegocio {
             jobj.put("genero", Tools.convertObj_toJSON(generos.get(0)));
             list.add(jobj);
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
-    public static List<JSONObject> setData(List<Disco> discos,String usermail,boolean w_generocancion,boolean w_artista) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn,List<Disco> discos,String usermail,boolean w_generocancion,boolean w_artista) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         for(Disco a : discos)
         {
@@ -155,7 +155,7 @@ public class DiscoNegocio {
             List<Cancion> canciones = cn.getListQuery("select cd.idCancionDisco.cancion from modelos.CancionDisco cd WHERE cd.idCancionDisco.disco.id = "+idDisco);
             JSONArray canciones_w_genero = null;
             if(w_generocancion)
-                canciones_w_genero = new JSONArray(CancionNegocio.setGenero(canciones));
+                canciones_w_genero = new JSONArray(CancionNegocio.setGenero(cn,canciones));
             else
                 canciones_w_genero = Tools.convertList_toJSON(canciones);
             jobj.put("canciones", canciones_w_genero);
@@ -167,17 +167,17 @@ public class DiscoNegocio {
             List<Genero> generos = cn.getListQuery("select gc.idGeneroDisco.genero from modelos.GeneroDisco gc WHERE gc.idGeneroDisco.disco.id = "+idDisco);
             jobj.put("genero", Tools.convertObj_toJSON(generos.get(0)));
             
-            jobj.put("likes", LikeNegocio.getLikeCount("Disco",idDisco));
+            jobj.put("likes", LikeNegocio.getLikeCount(cn,"Disco",idDisco));
             
-            jobj.put("liked", LikeNegocio.getUserLike("Disco",idDisco,usermail));
+            jobj.put("liked", LikeNegocio.getUserLike(cn,"Disco",idDisco,usermail));
             
-            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Disco",idDisco,usermail));
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario(cn,"Disco",idDisco,usermail));
 
             jobj.put("object_type", "Disco");
             
             list.add(jobj);
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
     

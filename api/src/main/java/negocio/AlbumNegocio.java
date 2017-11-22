@@ -28,9 +28,9 @@ public class AlbumNegocio {
         try
         {
             Conexion cn = new Conexion();
-            cn.abrirConexion();
+            //cn.abrirConexion();
             String INdiscos = Tools.Convert_Array_toStringComma(discos);
-            
+          
             List<Disco> list_discos = cn.getListQuery("from modelos.Disco WHERE id IN ("+INdiscos+")");
             
             List<Artista> list_artistas = cn.getListQuery("from modelos.Artista WHERE usuario.mail = '"+usermail+"'");
@@ -120,10 +120,10 @@ public class AlbumNegocio {
         cn.cerrarConexion();
         return list;
     }*/
-    public static List<JSONObject> setData(List<Album> albums,String usermail,boolean w_generodisco,boolean w_artista) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn,List<Album> albums,String usermail,boolean w_generodisco,boolean w_artista) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         for(Album a : albums)
         {
@@ -134,7 +134,7 @@ public class AlbumNegocio {
             List<Disco> discos = cn.getListQuery("select cd.idDiscoAlbum.disco from modelos.DiscoAlbum cd WHERE cd.idDiscoAlbum.album.id = "+a.getId());
             JSONArray discos_w_genero = null;
             if(w_generodisco)
-                discos_w_genero = new JSONArray(DiscoNegocio.setGenero(discos));
+                discos_w_genero = new JSONArray(DiscoNegocio.setGenero(cn,discos));
             else
                 discos_w_genero = Tools.convertList_toJSON(discos);
                 
@@ -144,17 +144,17 @@ public class AlbumNegocio {
             
             jobj.put("discos", discos_w_genero);
                 
-            jobj.put("likes", LikeNegocio.getLikeCount("Album",idAlbum));
+            jobj.put("likes", LikeNegocio.getLikeCount(cn,"Album",idAlbum));
             
-            jobj.put("liked", LikeNegocio.getUserLike("Album",idAlbum,usermail));
+            jobj.put("liked", LikeNegocio.getUserLike(cn,"Album",idAlbum,usermail));
             
-            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Album",idAlbum,usermail));
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario(cn,"Album",idAlbum,usermail));
 
             jobj.put("object_type", "Album");
             
             list.add(jobj);
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
 }

@@ -83,10 +83,10 @@ public class PublicacionNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static List<JSONObject> setData(List<Publicacion> publicaciones,String usermail,boolean w_artista) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn,List<Publicacion> publicaciones,String usermail,boolean w_artista) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         for(Publicacion a : publicaciones)
         {
@@ -98,17 +98,17 @@ public class PublicacionNegocio {
             if(w_artista)
                 jobj.put("artista", Tools.convertObj_toJSON(a.getArtista()));
             
-            jobj.put("likes", LikeNegocio.getLikeCount("Publicacion",idPublicacion));
+            jobj.put("likes", LikeNegocio.getLikeCount(cn,"Publicacion",idPublicacion));
             
-            jobj.put("liked", LikeNegocio.getUserLike("Publicacion",idPublicacion,usermail));
+            jobj.put("liked", LikeNegocio.getUserLike(cn,"Publicacion",idPublicacion,usermail));
             
-            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Publicacion",idPublicacion,usermail));
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario(cn,"Publicacion",idPublicacion,usermail));
 
             jobj.put("object_type", "Publicacion");
             
             list.add(jobj);
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
 }

@@ -98,10 +98,10 @@ public class CancionNegocio {
         }
     }
 
-    public static List<JSONObject> setGenero(List<Cancion> canciones) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setGenero(Conexion cn,List<Cancion> canciones) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         for(Cancion c : canciones)
         {
@@ -110,13 +110,13 @@ public class CancionNegocio {
             jobj.put("genero", Tools.convertObj_toJSON(generos.get(0)));
             list.add(jobj);
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
-    public static List<JSONObject> setData(List<Cancion> canciones,String usermail,boolean w_artista) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn,List<Cancion> canciones,String usermail,boolean w_artista) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         for(Cancion a : canciones)
         {
@@ -130,17 +130,17 @@ public class CancionNegocio {
             if(w_artista)
                 jobj.put("artista", Tools.convertObj_toJSON(a.getArtista()));
             
-            jobj.put("likes", LikeNegocio.getLikeCount("Cancion",idc));
+            jobj.put("likes", LikeNegocio.getLikeCount(cn,"Cancion",idc));
             
-            jobj.put("liked", LikeNegocio.getUserLike("Cancion",idc,usermail));
+            jobj.put("liked", LikeNegocio.getUserLike(cn,"Cancion",idc,usermail));
             
-            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Cancion",idc,usermail));
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario(cn,"Cancion",idc,usermail));
             
             jobj.put("object_type", "Cancion");
             
             list.add(jobj);
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
     

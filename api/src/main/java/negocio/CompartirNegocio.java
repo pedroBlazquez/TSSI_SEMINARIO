@@ -34,9 +34,7 @@ public class CompartirNegocio {
             Conexion cn = new Conexion();
             cn.abrirConexion();
 
-            List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
-            Usuario usuario = usuarios.get(0);
-            
+            Usuario usuario = UsuarioNegocio.getUsuarioByMail(cn, usermail);
             List<modelos.Compartido> list_exists = new ArrayList<Compartido>();
             
             //chequea existencia
@@ -91,16 +89,13 @@ public class CompartirNegocio {
         }
     }
     
-    public static ResponseEntity<Object> getCompartidosUsuario(int idUsuario,String usermail) throws JsonProcessingException, JSONException
+    public static ResponseEntity<Object> getCompartidosUsuario(Conexion cn,int idUsuario,String usermail) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         
         if(idUsuario == 0)
-        {
-            List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
-            idUsuario = usuarios.get(0).getId();
-        }
+            idUsuario = UsuarioNegocio.getIdUsuarioByMail(cn, usermail);
         
         List<modelos.Compartido> list = cn.getListQuery("from modelos.Compartido c "
                 + " LEFT JOIN FETCH c.accion.cancion.artista ca "
@@ -110,23 +105,22 @@ public class CompartirNegocio {
                 + " LEFT JOIN FETCH c.accion.evento.artista ea "
                 + " WHERE c.usuario.id = "+idUsuario+ " order by c.accion.fechaAccion desc");
         
-        List<JSONObject> jobj_list = setData(list,usermail);
+        List<JSONObject> jobj_list = setData(cn,list,usermail);
         
         
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         if(list.isEmpty())
             return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
         else
             return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
         
     }
-    public static boolean getCompartidoUsuario(String Tipo,String id,String usermail)
+    public static boolean getCompartidoUsuario(Conexion cn,String Tipo,String id,String usermail)
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         
-        List<Integer> usuarios = cn.getListQuery("select u.id from modelos.Usuario u WHERE u.mail = '"+usermail+"'");
-        Integer usuario = usuarios.get(0);
+        Integer usuario = UsuarioNegocio.getIdUsuarioByMail(cn, usermail);
         List<Integer> list_exists = new ArrayList<Integer>();
         //chequea existencia
         if(Tipo.equals("Album"))
@@ -142,17 +136,17 @@ public class CompartirNegocio {
         else if(Tipo.equals("Publicacion"))
             list_exists = cn.getListQuery("select c.id from modelos.Compartido c WHERE c.accion.publicacion.id = "+id+" and c.usuario.id = "+usuario,1);
         
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         if(list_exists.isEmpty())
             return false;
         else
             return true;
         
     }
-    public static List<JSONObject> setData(List<Compartido> compartidos,String usermail) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn,List<Compartido> compartidos,String usermail) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         for(Compartido c : compartidos)
         {
@@ -169,7 +163,7 @@ public class CompartirNegocio {
                     List<Album> aux_list = new ArrayList<Album>();
                     aux_list.add(album);
                     jobj.put("object_type", "Album");
-                    jobj.put("album", AlbumNegocio.setData(aux_list, usermail, false, true).get(0));
+                    jobj.put("album", AlbumNegocio.setData(cn,aux_list, usermail, false, true).get(0));
                 }
             }
             if(!found)
@@ -181,7 +175,7 @@ public class CompartirNegocio {
                     List<Artista> aux_list = new ArrayList<Artista>();
                     aux_list.add(artista);
                     jobj.put("object_type", "Artista");
-                    jobj.put("artista", ArtistaNegocio.setData(aux_list, usermail, false).get(0));
+                    jobj.put("artista", ArtistaNegocio.setData(cn,aux_list, usermail, false).get(0));
                 }
             }
             if(!found)
@@ -193,7 +187,7 @@ public class CompartirNegocio {
                     List<Cancion> aux_list = new ArrayList<Cancion>();
                     aux_list.add(cancion);
                     jobj.put("object_type", "Cancion");
-                    jobj.put("cancion", CancionNegocio.setData(aux_list, usermail, true).get(0));
+                    jobj.put("cancion", CancionNegocio.setData(cn,aux_list, usermail, true).get(0));
                 }
             }
             if(!found)
@@ -205,7 +199,7 @@ public class CompartirNegocio {
                     List<Disco> aux_list = new ArrayList<Disco>();
                     aux_list.add(disco);
                     jobj.put("object_type", "Disco");
-                    jobj.put("disco", DiscoNegocio.setData(aux_list, usermail,false, true).get(0));
+                    jobj.put("disco", DiscoNegocio.setData(cn,aux_list, usermail,false, true).get(0));
                 }
             }
             if(!found)
@@ -217,7 +211,7 @@ public class CompartirNegocio {
                     List<Publicacion> aux_list = new ArrayList<Publicacion>();
                     aux_list.add(publicacion);
                     jobj.put("object_type", "Publicacion");
-                    jobj.put("publicacion", PublicacionNegocio.setData(aux_list, usermail, true).get(0));
+                    jobj.put("publicacion", PublicacionNegocio.setData(cn,aux_list, usermail, true).get(0));
                 }
             }
             if(!found)
@@ -229,13 +223,13 @@ public class CompartirNegocio {
                     List<Evento> aux_list = new ArrayList<Evento>();
                     aux_list.add(evento);
                     jobj.put("object_type", "Evento");
-                    jobj.put("evento", EventoNegocio.setData(aux_list, usermail, true).get(0));
+                    jobj.put("evento", EventoNegocio.setData(cn,aux_list, usermail, true).get(0));
                 }
             }
             
             list.add(jobj);
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
     

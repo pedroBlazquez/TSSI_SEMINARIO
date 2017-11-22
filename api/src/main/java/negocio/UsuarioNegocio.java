@@ -55,10 +55,10 @@ public class UsuarioNegocio {
         return true;
     }
 
-    public Usuario getUsuarioByMail(String mail) {
-        Conexion cn = new Conexion();
+    public static Usuario getUsuarioByMail(Conexion cn,String mail) {
+        //Conexion cn = new Conexion();
         Usuario u = null;
-        cn.abrirConexion();
+        //cn.abrirConexion();
 
         List<Object> usuarioLista = cn.getListQuery("FROM Usuario WHERE mail = '" + mail + "'");
 
@@ -69,10 +69,24 @@ public class UsuarioNegocio {
         return u;
     }
     
-    public static Usuario getById(int id) {
-        Conexion cn = new Conexion();
+    public static Integer getIdUsuarioByMail(Conexion cn,String mail) {
+        //Conexion cn = new Conexion();
+        Integer u = null;
+        //cn.abrirConexion();
+
+        List<Integer> usuarioLista = cn.getListQuery("select u.id FROM Usuario u WHERE u.mail = '" + mail + "'");
+
+        if (!usuarioLista.isEmpty()) {
+            u = (Integer) usuarioLista.get(0);
+        }
+
+        return u;
+    }
+    
+    public static Usuario getById(Conexion cn,int id) {
+        //Conexion cn = new Conexion();
         Usuario u = null;
-        cn.abrirConexion();
+        //cn.abrirConexion();
 
         List<Object> usuarioLista = cn.getListQuery("FROM Usuario WHERE id = " + id);
 
@@ -86,18 +100,20 @@ public class UsuarioNegocio {
     //Esto no es una baja logica, es una eliminacion permanente del registro
     public boolean eliminarUsuario(String mail){
         Conexion cn = new Conexion();
-        Usuario u = this.getUsuarioByMail(mail);
+        cn.abrirConexion();
+        Usuario u = this.getUsuarioByMail(cn,mail);
 
         try {
             u.setMail(mail);
-            cn.abrirConexion();
             cn.delete(u);
-            cn.cerrarConexion();
         } catch (Exception e) {
             e.printStackTrace();
+
+            cn.cerrarConexion();
             return false;
         }
 
+        cn.cerrarConexion();
         return true;
     }
     
@@ -130,10 +146,10 @@ public class UsuarioNegocio {
         return list;
     }*/
     
-    public static List<JSONObject> setData(List<Usuario> usuarios,String usermail) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn,List<Usuario> usuarios,String usermail) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         
         
@@ -147,20 +163,20 @@ public class UsuarioNegocio {
                 List<Artista> artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idUsuario);
                 if(!artista.isEmpty()) //es artista
                 {
-                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(artista,usermail,false)));
+                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(cn,artista,usermail,false)));
                 }
             }
             else
             {
-                jobj.put("seguidores", SeguidosNegocio.getSeguidores(idUsuario).size());
-                jobj.put("seguido", SeguidosNegocio.getSeguimiento(idUsuario,usermail));
+                jobj.put("seguidores", SeguidosNegocio.getSeguidores(cn,idUsuario).size());
+                jobj.put("seguido", SeguidosNegocio.getSeguimiento(cn,idUsuario,usermail));
             }
             jobj.put("object_type", "Usuario");
             list.add(jobj);
     
             
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
     
