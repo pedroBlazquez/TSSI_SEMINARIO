@@ -52,7 +52,7 @@ public class EventoControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE artista.id = "+idartista);
+            List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE artista.id = "+idartista+ " order by fechaEvento desc");//and fechaEvento > '"+Tools.DateFormatter(new Date())+"'
             cn.cerrarConexion();
             if (eventos.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);

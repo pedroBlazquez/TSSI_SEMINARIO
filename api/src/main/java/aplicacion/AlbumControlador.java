@@ -57,7 +57,7 @@ public class AlbumControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Album> albums = cn.getListQuery("from modelos.Album WHERE artista.id = "+idartista);
+            List<Album> albums = cn.getListQuery("from modelos.Album WHERE artista.id = "+idartista+ " order by fechaPublicacion desc");
             cn.cerrarConexion();
             if (albums.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);

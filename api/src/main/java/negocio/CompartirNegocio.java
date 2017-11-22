@@ -108,7 +108,7 @@ public class CompartirNegocio {
                 + " LEFT JOIN FETCH c.accion.album.artista aa "
                 + " LEFT JOIN FETCH c.accion.publicacion.artista pa "
                 + " LEFT JOIN FETCH c.accion.evento.artista ea "
-                + " WHERE c.usuario.id = "+idUsuario);
+                + " WHERE c.usuario.id = "+idUsuario+ " order by c.accion.fechaAccion desc");
         
         List<JSONObject> jobj_list = setData(list,usermail);
         
