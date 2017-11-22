@@ -37,7 +37,7 @@ public class CancionControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Cancion> canciones = cn.getListQuery("select c from modelos.Cancion c JOIN FETCH c.artista a WHERE c.id = "+idcancion,1);
+            List<Cancion> canciones = cn.getListQuery("select c from modelos.Cancion c JOIN FETCH c.artista a WHERE c.id = "+idcancion,1 );
             cn.cerrarConexion();
             
             if (canciones.isEmpty()) {
@@ -59,7 +59,7 @@ public class CancionControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE artista.id = "+idartista);
+            List<Cancion> canciones = cn.getListQuery("from modelos.Cancion WHERE artista.id = "+idartista+ " order by fechaPublicacion desc");
             cn.cerrarConexion();
             if (canciones.isEmpty()) {
                 cn.cerrarConexion();
@@ -82,7 +82,7 @@ public class CancionControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Disco> cd = cn.getListQuery("select cd.idCancionDisco.disco from modelos.CancionDisco cd WHERE cd.idCancionDisco.cancion.id = "+(int)idCancion);
+            List<Disco> cd = cn.getListQuery("select cd.idCancionDisco.disco from modelos.CancionDisco cd WHERE cd.idCancionDisco.cancion.id = "+(int)idCancion+ " order by fechaPublicacion desc");
             
             
             List<JSONObject> jobj_list = Tools.convertList_toListJSON(cd);

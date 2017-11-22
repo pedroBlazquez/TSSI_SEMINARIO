@@ -50,7 +50,7 @@ public class PublicacionControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion WHERE artista.id = "+idartista);
+            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion WHERE artista.id = "+idartista + " order by fechaPublicacion desc");
             cn.cerrarConexion();
             if (publicaciones.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);

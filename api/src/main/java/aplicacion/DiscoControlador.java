@@ -53,7 +53,7 @@ public class DiscoControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Disco> discos = cn.getListQuery("from modelos.Disco WHERE artista.id = "+idartista);
+            List<Disco> discos = cn.getListQuery("from modelos.Disco WHERE artista.id = "+idartista+ " order by fechaPublicacion desc");
             cn.cerrarConexion();
             if (discos.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);

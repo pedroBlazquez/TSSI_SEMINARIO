@@ -63,53 +63,50 @@ public class SeguidosNegocio {
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
-        
-        
         List<Integer> usuarios_seguido = cn.getListQuery("select u.id from modelos.Usuario u WHERE u.mail = '"+usermail_seguido+"'",1);
         Integer seguido = usuarios_seguido.get(0);
-        
-        List<Usuario> seguidores = cn.getListQuery("select s.idSeguidos.seguidor from modelos.Seguidos s WHERE s.idSeguidos.seguido.id = "+seguido);
-       
         cn.cerrarConexion();
-        return seguidores;
+        
+        return getSeguidores_query(seguido);
     }
     
     public static List<Usuario> getSeguidos(String usermail_seguidor)
     {
         Conexion cn = new Conexion();
         cn.abrirConexion();
-        
         List<Integer> usuarios_seguidor = cn.getListQuery("select u.id from modelos.Usuario u WHERE u.mail = '"+usermail_seguidor+"'",1);
         Integer seguidor = usuarios_seguidor.get(0);
-        
-        List<Usuario> seguidos = cn.getListQuery("select s.idSeguidos.seguido from modelos.Seguidos s WHERE s.idSeguidos.seguidor.id = "+seguidor);
-       
         cn.cerrarConexion();
-        return seguidos;
+        
+        return getSeguidos_query(seguidor);
     }
     
     public static List<Usuario> getSeguidores(int idUsuario_seguido)
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
-        
-        List<Usuario> seguidores = cn.getListQuery("select s.idSeguidos.seguidor from modelos.Seguidos s WHERE s.idSeguidos.seguido.id = "+idUsuario_seguido);
-       
-        cn.cerrarConexion();
-        return seguidores;
+        return getSeguidores_query(idUsuario_seguido);
     }
     
     public static List<Usuario> getSeguidos(int idUsuario_seguidor)
     {
+        return getSeguidos_query(idUsuario_seguidor);
+    }
+    
+    private static List<Usuario> getSeguidores_query(int idUsuario_seguido)
+    {
         Conexion cn = new Conexion();
         cn.abrirConexion();
-        
+        List<Usuario> seguidores = cn.getListQuery("select s.idSeguidos.seguidor from modelos.Seguidos s WHERE s.idSeguidos.seguido.id = "+idUsuario_seguido);
+        cn.cerrarConexion();
+        return seguidores;
+    }
+  
+    private static List<Usuario> getSeguidos_query(int idUsuario_seguidor)
+    {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
         List<Usuario> seguidos = cn.getListQuery("select s.idSeguidos.seguido from modelos.Seguidos s WHERE s.idSeguidos.seguidor.id = "+idUsuario_seguidor);
-       
         cn.cerrarConexion();
         return seguidos;
     }
-    
-  
     
 }

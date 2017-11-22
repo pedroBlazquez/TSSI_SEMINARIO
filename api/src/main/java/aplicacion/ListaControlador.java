@@ -58,7 +58,7 @@ public class ListaControlador {
             List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
             Usuario usuario = usuarios.get(0);
             
-            List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE usuario.id = "+usuario.getId());
+            List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE usuario.id = "+usuario.getId() + " order by fechaAlta desc");
             cn.cerrarConexion();
             if (listas.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
@@ -78,7 +78,7 @@ public class ListaControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE privacidad = false and usuario.id = "+idusuario);
+            List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE privacidad = false and usuario.id = "+idusuario + " order by fechaAlta desc");
             cn.cerrarConexion();
             if (listas.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
