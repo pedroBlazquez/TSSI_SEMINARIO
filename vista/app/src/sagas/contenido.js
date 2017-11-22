@@ -2,6 +2,7 @@ import { put, takeEvery, call, select } from 'redux-saga/effects';
 
 import {_post, _put, _delete, _get, config} from '../utils/api';
 import {getAuthToken} from '../utils/storage';
+import {agregarArtista} from '../utils/utils';
 import {GENEROS} from '../utils/constants';
 import {
   ALTA_CANCION,
@@ -38,7 +39,7 @@ export function* altaCancion(action) {
     
     // Despues de hacer el alta, buscamos las canciones actualizadas
     const cancionesActualizadas = yield call(_get, `/canciones/getArtista/${artista.id}`, headers);
-    yield put(setCancionesPerfil(cancionesActualizadas.data));
+    yield put(setCancionesPerfil(agregarArtista(cancionesActualizadas.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -54,7 +55,7 @@ export function* bajaCancion(action) {
 
     // Despues de hacer la baja, buscamos las canciones actualizadas
     const cancionesActualizadas = yield call(_get, `/canciones/getArtista/${artista.id}`, headers);
-    yield put(setCancionesPerfil(cancionesActualizadas.data));
+    yield put(setCancionesPerfil(agregarArtista(cancionesActualizadas.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -70,7 +71,7 @@ export function* modificarCancion(action) {
     
     // Despues de hacer la baja, buscamos las canciones actualizadas
     const cancionesActualizadas = yield call(_get, `/canciones/getArtista/${artista.id}`, headers);
-    yield put(setCancionesPerfil(cancionesActualizadas.data));
+    yield put(setCancionesPerfil(agregarArtista(cancionesActualizadas.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -91,7 +92,7 @@ export function* altaDisco(action) {
     
     // Despues de hacer la baja, buscamos las canciones actualizadas
     const discosActualizados = yield call(_get, `/discos/getArtista/${artista.id}`, headers);
-    yield put(setDiscosPerfil(discosActualizados.data));
+    yield put(setDiscosPerfil(agregarArtista(discosActualizados.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -107,7 +108,7 @@ export function* bajaDisco(action) {
 
     // Despues de hacer la baja, buscamos las canciones actualizadas
     const discosActualizados = yield call(_get, `/discos/getArtista/${artista.id}`, headers);
-    yield put(setDiscosPerfil(discosActualizados.data));
+    yield put(setDiscosPerfil(agregarArtista(discosActualizados.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -122,7 +123,7 @@ export function* modificarDisco(action) {
     yield call(_put, '/discos/', {...disco}, headers);
     
     const discosActualizados = yield call(_get, `/discos/getArtista/${artista.id}`, headers);
-    yield put(setDiscosPerfil(discosActualizados.data));
+    yield put(setDiscosPerfil(agregarArtista(discosActualizados.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -141,7 +142,7 @@ export function* altaAlbum(action) {
     yield call(_post, '/albums/', {...payload}, headers);
     
     const albumsActualizados = yield call(_get, `/albums/getArtista/${artista.id}`, headers);
-    yield put(setAlbumesPerfil(albumsActualizados.data));
+    yield put(setAlbumesPerfil(agregarArtista(albumsActualizados.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -156,7 +157,7 @@ export function* bajaAlbum(action) {
     yield call(_delete, '/albums/', {data: {idAlbum: album.toString()}, ...headers});
 
     const albumsActualizados = yield call(_get, `/albums/getArtista/${artista.id}`, headers);
-    yield put(setAlbumesPerfil(albumsActualizados.data));
+    yield put(setAlbumesPerfil(agregarArtista(albumsActualizados.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -171,7 +172,7 @@ export function* modificarAlbum(action) {
     yield call(_put, '/albums/', {...album}, headers);
     
     const albumsActualizados = yield call(_get, `/albums/getArtista/${artista.id}`, headers);
-    yield put(setAlbumesPerfil(albumsActualizados.data));
+    yield put(setAlbumesPerfil(agregarArtista(albumsActualizados.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -190,7 +191,7 @@ export function* altaEvento(action) {
     yield call(_post, '/eventos/', {...payload}, headers);
     
     const eventosActualizados = yield call(_get, `/eventos/getArtista/${artista.id}`, headers);
-    yield put(setEventosPerfil(eventosActualizados.data));
+    yield put(setEventosPerfil(agregarArtista(eventosActualizados.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -205,7 +206,7 @@ export function* bajaEvento(action) {
     yield call(_delete, '/eventos/', {data: {idEvento: evento.toString()}, ...headers});
 
     const eventosActualizados = yield call(_get, `/eventos/getArtista/${artista.id}`, headers);
-    yield put(setEventosPerfil(eventosActualizados.data));
+    yield put(setEventosPerfil(agregarArtista(eventosActualizados.data, artista)));
   } catch (e) {
     console.log(e);
   }
@@ -224,7 +225,7 @@ export function* modificarEvento(action) {
     yield call(_put, '/eventos/', {...payload}, headers);
     
     const eventosActualizados = yield call(_get, `/eventos/getArtista/${artista.id}`, headers);
-    yield put(setEventosPerfil(eventosActualizados.data));
+    yield put(setEventosPerfil(agregarArtista(eventosActualizados.data, artista)));
   } catch (e) {
     console.log(e);
   }
