@@ -311,8 +311,8 @@ insert into eventos(costo, descripcion,direccion,fechaEvento,fechaPublicacion,no
 
 -- --------------------------------------------------------------------------------------------------------------------------------------
 
-insert into generoscancion (idCancion,idGenero) select a.idCancion,b.idGenero from canciones a inner join generosartista b on a.idArtista = b.idArtista;
-insert into generosdisco (idDisco,idGenero) select a.idDisco,b.idGenero from discos a inner join generosartista b on a.idArtista = b.idArtista;
+insert into generoscancion (idCancion,idGenero) select a.idCancion, 1 from canciones a; -- -cambiar genero
+insert into generosdisco (idDisco,idGenero) select a.idDisco, 1 from discos a; -- -cambiar genero
 
 
 
