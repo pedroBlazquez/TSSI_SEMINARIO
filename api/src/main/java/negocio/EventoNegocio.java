@@ -65,28 +65,32 @@ public class EventoNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static List<JSONObject> setData(List<Evento> eventos,String usermail) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn,List<Evento> eventos,String usermail,boolean w_artista) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         for(Evento a : eventos)
         {
             JSONObject jobj = Tools.convertObj_toJSON(a);
             
             String idEvento = String.valueOf(a.getId());
+
             
-            jobj.put("likes", LikeNegocio.getLikeCount("Evento",idEvento));
+            if(w_artista)
+                jobj.put("artista", Tools.convertObj_toJSON(a.getArtista()));
             
-            jobj.put("liked", LikeNegocio.getUserLike("Evento",idEvento,usermail));
+            jobj.put("likes", LikeNegocio.getLikeCount(cn,"Evento",idEvento));
             
-            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario("Evento",idEvento,usermail));
+            jobj.put("liked", LikeNegocio.getUserLike(cn,"Evento",idEvento,usermail));
+            
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario(cn,"Evento",idEvento,usermail));
 
             jobj.put("object_type", "Evento");
             
             list.add(jobj);
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
     

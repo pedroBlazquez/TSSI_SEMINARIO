@@ -31,16 +31,17 @@ public class EventoControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE id = "+idevento);
-            cn.cerrarConexion();
+            List<Evento> eventos = cn.getListQuery("from modelos.Evento e JOIN FETCH e.artista a WHERE e.id = "+idevento);
+            
             if (eventos.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail);
-            
+            List<JSONObject> jobj_list = EventoNegocio.setData(cn,eventos, usermail,true);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -52,16 +53,17 @@ public class EventoControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE artista.id = "+idartista);
-            cn.cerrarConexion();
+            List<Evento> eventos = cn.getListQuery("from modelos.Evento WHERE artista.id = "+idartista+ " order by fechaEvento desc");//and fechaEvento > '"+Tools.DateFormatter(new Date())+"'
+            
             if (eventos.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = EventoNegocio.setData(eventos, usermail);
-            
+            List<JSONObject> jobj_list = EventoNegocio.setData(cn,eventos, usermail,false);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);

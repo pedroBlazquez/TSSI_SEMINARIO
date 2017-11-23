@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import aplicacion.autenticacion.Token;
+import conexion.Conexion;
 import negocio.LikeNegocio;
 
 @RestController
@@ -47,8 +48,10 @@ public class LikeControlador {
             JSONObject json = new JSONObject(httpEntity.getBody());  
             String id= json.getString("id");
             String tipo= json.getString("tipo");
-            int cant_likes = LikeNegocio.getLikeCount(tipo,id);
-
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            int cant_likes = LikeNegocio.getLikeCount(cn,tipo,id);
+            cn.cerrarConexion();
             if(cant_likes == 0)
                 return new ResponseEntity<Object>(cant_likes,HttpStatus.NOT_FOUND);
             else
@@ -65,8 +68,10 @@ public class LikeControlador {
             JSONObject json = new JSONObject(httpEntity.getBody());  
             String id= json.getString("id");
             String tipo= json.getString("tipo");
-            boolean exists = LikeNegocio.getUserLike(tipo,id,usermail);
-            
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            boolean exists = LikeNegocio.getUserLike(cn,tipo,id,usermail);
+            cn.cerrarConexion();
             if(!exists)
                 return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
             else

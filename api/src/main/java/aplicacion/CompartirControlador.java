@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import aplicacion.autenticacion.Token;
+import conexion.Conexion;
 import negocio.CompartirNegocio;
 
 @RestController
@@ -47,9 +48,11 @@ public class CompartirControlador {
         try {
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            
-            
-            return CompartirNegocio.getCompartidosUsuario((int)idUsuario,usermail);
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            ResponseEntity<Object> response = CompartirNegocio.getCompartidosUsuario(cn,(int)idUsuario,usermail);
+            cn.cerrarConexion();
+            return response;
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,7 +67,10 @@ public class CompartirControlador {
             JSONObject json = new JSONObject(httpEntity.getBody());  
             String id= json.getString("id");
             String tipo= json.getString("tipo");
-            boolean exists = CompartirNegocio.getCompartidoUsuario(tipo,id,usermail);
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            boolean exists = CompartirNegocio.getCompartidoUsuario(cn,tipo,id,usermail);
+            cn.cerrarConexion();
             if(!exists)
                 return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
             else

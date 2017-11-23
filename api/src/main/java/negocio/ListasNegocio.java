@@ -34,8 +34,7 @@ public class ListasNegocio {
             
             List<Cancion> list_canciones = cn.getListQuery("from modelos.Cancion WHERE id IN ("+INcanciones+")");
 
-            List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
-            Usuario usuario = usuarios.get(0);
+            Usuario usuario = UsuarioNegocio.getUsuarioByMail(cn, usermail);
             
             ListaReproduccion new_ListaReproduccion = new ListaReproduccion(nombre,new Date(),false,privacidad,usuario);
             
@@ -134,10 +133,10 @@ public class ListasNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static List<JSONObject> setData(List<ListaReproduccion> listas,String usermail) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn, List<ListaReproduccion> listas,String usermail) throws JsonProcessingException, JSONException
     {
-        Conexion cn = new Conexion();
-        cn.abrirConexion();
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
         List<JSONObject> list = new ArrayList<JSONObject>();
         for(ListaReproduccion a : listas)
         {
@@ -145,14 +144,14 @@ public class ListasNegocio {
             
             String idListaReproduccion = String.valueOf(a.getId());
             
-            List<Cancion> canciones = cn.getListQuery("select cd.idCancionLista.cancion from modelos.CancionLista cd WHERE cd.idCancionLista.lista.id = "+idListaReproduccion);
-            jobj.put("canciones", new JSONArray(CancionNegocio.setGenero(canciones)));
+            List<Cancion> canciones = cn.getListQuery("select cd.idCancionLista.cancion from modelos.CancionLista cd JOIN FETCH cd.idCancionLista.cancion.artista a WHERE cd.idCancionLista.lista.id = "+idListaReproduccion);
+            jobj.put("canciones", new JSONArray(CancionNegocio.setData(cn,canciones,usermail,true)));
 
             jobj.put("object_type", "Lista");
             
             list.add(jobj);
         }
-        cn.cerrarConexion();
+        //cn.cerrarConexion();
         return list;
     }
 }

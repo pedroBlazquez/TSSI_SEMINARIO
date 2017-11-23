@@ -29,16 +29,17 @@ public class PublicacionControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion WHERE id = "+idpublicacion);
-            cn.cerrarConexion();
+            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion p JOIN FETCH p.artista a WHERE p.id = "+idpublicacion);
+            
             if (publicaciones.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail);
-            
+            List<JSONObject> jobj_list = PublicacionNegocio.setData(cn,publicaciones, usermail,true);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,16 +51,17 @@ public class PublicacionControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion WHERE artista.id = "+idartista);
-            cn.cerrarConexion();
+            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion WHERE artista.id = "+idartista + " order by fechaPublicacion desc");
+            
             if (publicaciones.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = PublicacionNegocio.setData(publicaciones, usermail);
-            
+            List<JSONObject> jobj_list = PublicacionNegocio.setData(cn,publicaciones, usermail,false);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
+import conexion.Conexion;
 import negocio.InicioNegocio;
 
 import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
@@ -35,8 +36,10 @@ public class InicioControlador {
     public ResponseEntity<Object> getNovedades(HttpServletRequest request) {
         try {
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> list = InicioNegocio.getNovedades(usermail);
-            
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            List<JSONObject> list = InicioNegocio.getNovedades(cn,usermail);
+            cn.cerrarConexion();
             if (list.isEmpty()) {
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
@@ -62,8 +65,11 @@ public class InicioControlador {
            
             //busca mail de usuario
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            
-            return InicioNegocio.Buscar(busqueda,genero,artista,direccion,desdehasta,fecha,usermail);
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            ResponseEntity<Object> response = InicioNegocio.Buscar(cn,busqueda,genero,artista,direccion,desdehasta,fecha,usermail);
+            cn.cerrarConexion();
+            return response;
             
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);

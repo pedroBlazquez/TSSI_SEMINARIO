@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import Novedades from '../components/Novedades';
+import MainContent from '../components/MainContent';
 
 import {getDiscosPerfil} from '../selectors/perfil';
 
@@ -9,9 +10,9 @@ export class DiscosPerfil extends Component {
   render () {
     const {discos} = this.props;
     return (
-      <div className={'main-content'}>
-        {!!discos && <Novedades records={discos}/>}
-      </div>
+      <MainContent>
+        {<Novedades records={discos}/>}
+      </MainContent>
     );
   }
 }

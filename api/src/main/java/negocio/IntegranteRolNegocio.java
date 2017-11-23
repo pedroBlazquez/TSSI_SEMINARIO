@@ -17,7 +17,7 @@ public class IntegranteRolNegocio {
         if (!rol.isEmpty()) {
             ir = (IntegranteRol) rol.get(0);
         }
-        
+        cn.cerrarConexion();
         return ir;
     }
     

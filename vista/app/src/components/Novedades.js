@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-
 import {Card} from 'antd';
+
 import Publicacion from './Publicacion';
-import FormNuevaPublicacion from './FormNuevaPublicacion';
 import Evento from './Evento';
 import Artista from './Artista';
 import Cancion from './Cancion';
@@ -43,21 +42,13 @@ export default class Novedades extends Component {
   }
 
   render () {
-    const {conPublicacion, records, conBusqueda} = this.props;
-
+    const {records} = this.props;
     return (
-      <div className={'main-content'}>
-        { conBusqueda && <div>{'Aca va la busqueda'}</div>}
-        { conPublicacion &&
-          <Card className={'margin-10p'} title={'Publicá un mensaje!'}>
-            <FormNuevaPublicacion />
-          </Card>
-        }
-        { !!records.length ?
+      <div>
+        { !!records && !!records.length ?
           this.getElements() :
           <Card className={'margin-10p'}>{'No hay elementos para mostrar'}</Card>
         }
-
       </div>
     );
   }

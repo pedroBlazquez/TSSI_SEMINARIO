@@ -35,17 +35,19 @@ public class AlbumControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Album> albums = cn.getListQuery("from modelos.Album WHERE id = "+idalbum);
-            cn.cerrarConexion();
+            List<Album> albums = cn.getListQuery("from modelos.Album a JOIN FETCH a.artista ar WHERE a.id = "+idalbum);
+            
             
             if (albums.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true);
+            List<JSONObject> jobj_list = AlbumNegocio.setData(cn,albums,usermail,true,true);
             
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -57,16 +59,17 @@ public class AlbumControlador {
         try {
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<Album> albums = cn.getListQuery("from modelos.Album WHERE artista.id = "+idartista);
-            cn.cerrarConexion();
+            List<Album> albums = cn.getListQuery("from modelos.Album WHERE artista.id = "+idartista+ " order by fechaPublicacion desc");
+            
             if (albums.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = AlbumNegocio.setData(albums,usermail,true);
-            
+            List<JSONObject> jobj_list = AlbumNegocio.setData(cn,albums,usermail,true,false);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
