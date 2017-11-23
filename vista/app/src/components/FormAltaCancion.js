@@ -17,8 +17,7 @@ class FormAltaCancion extends Component {
     super(props);
 
     this.state = {
-      audio: props.audio || '',
-      imagen: props.imagen || ''
+      audio: props.audio || ''
     }
   }
 
@@ -64,18 +63,6 @@ class FormAltaCancion extends Component {
               <Button>
                 <Icon type="upload" /> 
                 {'Subir Canción'}
-              </Button>
-            </Upload>)
-          }
-        </FormItem>
-        <FormItem>
-          {form.getFieldDecorator('imagen', {rules: [{validator: this.validateFile(this.state.imagen)}]})
-            (<Upload
-                accept="audio"
-              >
-              <Button>
-                <Icon type="upload" /> 
-                {'Subir imagen'}
               </Button>
             </Upload>)
           }

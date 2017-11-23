@@ -1,6 +1,6 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects';
 
-import {_post, _put, _delete, _get, config} from '../utils/api';
+import {_post, _put, _delete, _get, config, BASE_URL} from '../utils/api';
 import {getAuthToken} from '../utils/storage';
 import {agregarArtista} from '../utils/utils';
 import {GENEROS} from '../utils/constants';
@@ -33,9 +33,13 @@ export function* altaCancion(action) {
     const user = yield select(getCurrentUser);
     const headers = config();
     const artista = user.artista[0]
-    cancion.genero = GENEROS.find(g => g.id === cancion.genero).value;
+    const cancionToSend = {
+      nombre: cancion.nombre,
+      genero: GENEROS.find(g => g.id.toString() === cancion.genero).value,
+      archivo: BASE_URL + cancion.audio.file.response
+    };
 
-    yield call(_post, '/canciones/', {...cancion}, headers);
+    yield call(_post, '/canciones/', {...cancionToSend}, headers);
     
     // Despues de hacer el alta, buscamos las canciones actualizadas
     const cancionesActualizadas = yield call(_get, `/canciones/getArtista/${artista.id}`, headers);
