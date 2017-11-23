@@ -39,7 +39,8 @@ public class GestorArchivo {
             TipoContenido tipoContenido,
             String nombreArchivo
     ) {
-        String path = basePath + "/public/MusicAppArchivos/" + idUsuario + carpetas.get(tipoContenido) + nombreArchivo;
+        long millis = System.currentTimeMillis();
+        String path = basePath + "/public/MusicAppArchivos/" + idUsuario + carpetas.get(tipoContenido) + Long.toString(millis) + nombreArchivo;
 
         return path;
     }
