@@ -44,104 +44,147 @@ public class InicioNegocio {
                 "WHERE s.idSeguidos.seguidor.id = "+usuario+
                 " and s.idSeguidos.seguido.usuarioTipo.id != " + 1); //CAMBIAR NUMERO ACORDE AL USUARIO TIPO OYENTE
             
-            
+
+            //fecha actual
+            String date_now = Tools.DateFormatter(Tools.GetDateDifference(1));
+            //fecha desde la cual se toman novedades
+            String date_novedades = Tools.DateFormatter(Tools.GetDateDifference(5));
+
+            StringBuilder query_artistas_seguidos = new StringBuilder();
+            StringBuilder query_artistas_genero = new StringBuilder();
+                      
             if(!artistas_seguidos.isEmpty())
             {
-                //fecha actual
-                String date_now = Tools.DateFormatter(Tools.GetDateDifference(1));
-                //fecha desde la cual se toman novedades
-                String date_novedades = Tools.DateFormatter(Tools.GetDateDifference(5));
-                
-                //armo query para filtrar por artistas seguidos
-                StringBuilder query_artistas_seguidos = new StringBuilder();
                 for (Integer seguido : artistas_seguidos)
                     query_artistas_seguidos.append(seguido).append(",");
                 query_artistas_seguidos.deleteCharAt(query_artistas_seguidos.length() - 1);
                 
-                //set all to Lazy and use join fetch to get lazy data... SELECT DISTINCT a FROM Author a JOIN FETCH a.books b
-                //use org.hibernate.annotations.Cache 
-                //Query cache is not turned on by default. You'll have to do something like query.setCacheable(true); to ensure that query is cached. Or set the hibernate.cache.use_query_cache property in Hibernate config file.
                 
-                //busco novedades para los artistas seguidos
+                //NOVEDADES DE ARTISTAS SEGUIDOS
                 priority_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("from Cancion c JOIN FETCH c.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and c.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,true,true));
                 priority_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("from Disco d JOIN FETCH d.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and d.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,false,true));
                 priority_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,false,true));
                 priority_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,true));
                 priority_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and e.fechaPublicacion > '"+date_novedades+"' and e.fechaEvento > '"+date_now+"'"+" order by fechaPublicacion desc"), usermail,true));
+
+                //--------------------------------------------------------------------
+                //NOVEDADES DE GENEROS DE ARTISTAS SEGUIDOS + SUGERENCIA DE NUEVOS ARTISTAS DE ESTOS GENEROS
                 
-                /*priority_list.addAll(cn.getListQuery("from Cancion WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
-                priority_list.addAll(cn.getListQuery("from Disco WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
-                priority_list.addAll(cn.getListQuery("from Album WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
-                priority_list.addAll(cn.getListQuery("from Publicacion WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"'"));
-                priority_list.addAll(cn.getListQuery("from Evento WHERE artista.id in ("+query_artistas_seguidos+") and fechaPublicacion > '"+date_novedades+"' and fechaEvento > '"+date_now+"'"));
-                */
-                
-                //obtengo generos de estos artistas, para definir los generos que le gustan al usuario
-                /*Set<Genero> generos1_set = new TreeSet<Genero>(new Comparator<Genero>() {
-                    @Override
-                    public int compare(Genero o1, Genero o2) {
-                        if(o1.getId() == o2.getId())
-                            return 0;
-                        else
-                            return 1;
-                    }
-                });*/
                 Set<Integer> generos1_set = new TreeSet<Integer>();
                 generos1_set.addAll(cn.getListQuery("select distinct ga.idGeneroArtista.genero.id from GeneroArtista ga "
                             + "WHERE ga.idGeneroArtista.artista.id IN ("+query_artistas_seguidos+")"
                             +" order by ga.idGeneroArtista.genero.id"));
                 
-                //armo query para filtrar por generos que le gustan al usuario
-                StringBuilder query_in_generos = new StringBuilder();
-                for (Integer g : generos1_set)
-                    query_in_generos.append(g).append(",");
-                query_in_generos.deleteCharAt(query_in_generos.length() - 1);
-                
-                //busco novedades para Discos y Canciones de los generos que le gustan al usuario
-                general_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("select distinct gc.idGeneroCancion.cancion from GeneroCancion gc JOIN FETCH gc.idGeneroCancion.cancion.artista ar WHERE ar.id not in ("+query_artistas_seguidos+") and gc.idGeneroCancion.genero.id in ("+query_in_generos+") and gc.idGeneroCancion.cancion.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",10), usermail,true,true));
-                general_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("select distinct gd.idGeneroDisco.disco from GeneroDisco gd JOIN FETCH gd.idGeneroDisco.disco.artista ar WHERE ar.id not in ("+query_artistas_seguidos+") and gd.idGeneroDisco.genero.id in ("+query_in_generos+") and gd.idGeneroDisco.disco.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",10), usermail,false,true));
-                
-                //obtengo artistas del genero que le gustan al usuario, pero que no sigue
-                List<Artista> artistas_genero = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE ga.idGeneroArtista.artista.id not in ("+query_artistas_seguidos+") and ga.idGeneroArtista.genero.id in ("+query_in_generos+")");
-                if(!artistas_genero.isEmpty())
+                if(!generos1_set.isEmpty())
                 {
-                    //armo query para filtrar por artistas de los generos
-                    StringBuilder query_artistas_genero = new StringBuilder();
-                    for (Artista a : artistas_genero)
-                        query_artistas_genero.append(a.getId()).append(",");
-                    query_artistas_genero.deleteCharAt(query_artistas_genero.length() - 1);
+                    //lleno query para filtrar por generos que le gustan al usuario
                     
-                    //busco novedades para Album, Publicacion y Evento, de artistas del genero, que no sean seguidos por el usuario
-                    general_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_genero+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",10), usermail,false,true));
-                    general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_artistas_genero+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",10), usermail,true));
-                    general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_genero+") and e.fechaPublicacion > '"+date_novedades+"' and e.fechaEvento > '"+date_now+"'"+" order by fechaPublicacion desc",10), usermail,true));
+                    StringBuilder query_in_generos = new StringBuilder();
+                    for (Integer g : generos1_set)
+                        query_in_generos.append(g).append(",");
+                    query_in_generos.deleteCharAt(query_in_generos.length() - 1);
                     
-                    //agrego aleatoriamente 3 artistas que de los generos que le gustan al usuario
-                    Collections.shuffle(artistas_genero);
-                    int cant_artistas_genero = artistas_genero.size(); 
-                    if(cant_artistas_genero>9)
-                        cant_artistas_genero = 10;
-                    artistas_genero.subList(0,cant_artistas_genero);
+                    int max_result = 10;
                     
-                    List<JSONObject> artistas = ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true);
-                    //Collections.shuffle(artistas);
-                    //int loop_count = 0;
-                    for(JSONObject a : artistas)
+                    //busco novedades para Discos y Canciones de los generos que le gustan al usuario
+                    general_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("select distinct gc.idGeneroCancion.cancion from GeneroCancion gc JOIN FETCH gc.idGeneroCancion.cancion.artista ar WHERE ar.id not in ("+query_artistas_seguidos+") and gc.idGeneroCancion.genero.id in ("+query_in_generos+") and gc.idGeneroCancion.cancion.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,true,true));
+                    general_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("select distinct gd.idGeneroDisco.disco from GeneroDisco gd JOIN FETCH gd.idGeneroDisco.disco.artista ar WHERE ar.id not in ("+query_artistas_seguidos+") and gd.idGeneroDisco.genero.id in ("+query_in_generos+") and gd.idGeneroDisco.disco.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,false,true));
+                    
+                    //obtengo artistas del genero que le gustan al usuario, pero que no sigue
+                    List<Artista> artistas_genero = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE ga.idGeneroArtista.artista.id not in ("+query_artistas_seguidos+") and ga.idGeneroArtista.genero.id in ("+query_in_generos+")");
+                    if(!artistas_genero.isEmpty())
                     {
-                      //  loop_count++;
-                        general_list.add(a);
-                        //if(loop_count == 3)
-                          //  break;
+                        //armo query para filtrar por artistas de los generos
+                        for (Artista a : artistas_genero)
+                            query_artistas_genero.append(a.getId()).append(",");
+                        query_artistas_genero.deleteCharAt(query_artistas_genero.length() - 1);
+                        
+                        //busco novedades para Album, Publicacion y Evento, de artistas del genero, que no sean seguidos por el usuario
+                        general_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_genero+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,false,true));
+                        general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_artistas_genero+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,true));
+                        general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_genero+") and e.fechaPublicacion > '"+date_novedades+"' and e.fechaEvento > '"+date_now+"'"+" order by fechaPublicacion desc",max_result ), usermail,true));
+                        
+                        //agrego aleatoriamente 10 artistas que de los generos que le gustan al usuario
+                        Collections.shuffle(artistas_genero);
+                        int cant_artistas_genero = artistas_genero.size(); 
+                        if(cant_artistas_genero>(max_result-1))
+                            cant_artistas_genero = max_result;
+                        artistas_genero.subList(0,cant_artistas_genero);
+                        List<JSONObject> artistas = ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true);
+                        for(JSONObject a : artistas)
+                        {
+                            general_list.add(a);
+                        }
                     }
                 }
-                //mezclo ambas listas
-                Collections.shuffle(priority_list);
-                Collections.shuffle(general_list);
-                
-                //agrego listas a return list
-                return_list.addAll(priority_list);
-                return_list.addAll(general_list);
             }
+            
+            //--------------------------------------------------------------------
+            //NOVEDADES DE ARTISTAS SEGUIDOS POR LOS USUARIOS SEGUIDOS, (que no se los siga directamente y que no sean de los generos de los seguidos directamente)
+
+            //obtengo usuarios seguidos por los usuarios que sigo
+            List<Integer> usuarios_seguidos = cn.getListQuery(
+                "select s.idSeguidos.seguido.id from modelos.Seguidos s " + 
+                "WHERE s.idSeguidos.seguidor.id = "+usuario); //CAMBIAR NUMERO ACORDE AL USUARIO TIPO OYENTE
+            if(!usuarios_seguidos.isEmpty())
+            {   
+                //armo query para traer seguidos por los usuarios que sigo
+                StringBuilder query_usuarios_seguidos = new StringBuilder();
+                for (Integer seguido : usuarios_seguidos)
+                    query_usuarios_seguidos.append(seguido).append(",");
+                query_usuarios_seguidos.deleteCharAt(query_usuarios_seguidos.length() - 1);
+                
+                String query = "select distinct s.idSeguidos.seguido.artista from modelos.Seguidos s " + 
+                        "WHERE s.idSeguidos.seguidor.id IN ("+query_usuarios_seguidos+")";
+                if(!query_artistas_seguidos.toString().equals(""))
+                    query += " and s.idSeguidos.seguido.artista.id not in ("+query_artistas_seguidos+")";
+                if(!query_artistas_genero.toString().equals(""))
+                    query += " and s.idSeguidos.seguido.artista.id not in ("+query_artistas_genero+")";
+                
+                List<Artista> seguidos_usuarios_seguidos = cn.getListQuery(query);
+                
+                if(!seguidos_usuarios_seguidos.isEmpty())
+                {
+                    //armo query para buscar por los artistas seguidos de los usuarios que sigo
+                    StringBuilder query_seguidos_usuarios_seguidos = new StringBuilder();
+                    for (Artista artista : seguidos_usuarios_seguidos)
+                        query_seguidos_usuarios_seguidos.append(artista.getId()).append(",");
+                    query_seguidos_usuarios_seguidos.deleteCharAt(query_seguidos_usuarios_seguidos.length() - 1);
+                    
+                    
+                    int max_result = 3;
+                    
+                    //busco novedades para los artistas seguidos por mis seguidos
+                    general_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("from Cancion c JOIN FETCH c.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and c.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,true,true));
+                    general_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("from Disco d JOIN FETCH d.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and d.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,false,true));
+                    general_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,false,true));
+                    general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,true));
+                    general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and e.fechaPublicacion > '"+date_novedades+"' and e.fechaEvento > '"+date_now+"'"+" order by fechaPublicacion desc",max_result), usermail,true));
+                    
+                    
+                    
+                    Collections.shuffle(seguidos_usuarios_seguidos);
+                    int cant_artistas_genero = seguidos_usuarios_seguidos.size(); 
+                    if(cant_artistas_genero>(max_result-1))
+                        cant_artistas_genero = max_result;
+                    seguidos_usuarios_seguidos.subList(0,cant_artistas_genero);
+                    List<JSONObject> artistas = ArtistaNegocio.setData(cn,seguidos_usuarios_seguidos, usermail,false,true);
+                    for(JSONObject a : artistas)
+                    {
+                        general_list.add(a);
+                    }
+                }
+            }
+
+            //--------------------------------------------------------------------
+
+            //mezclo ambas listas
+            Collections.shuffle(priority_list);
+            Collections.shuffle(general_list);
+            
+            //agrego listas a return list
+            return_list.addAll(priority_list);
+            return_list.addAll(general_list);
             
             //cn.cerrarConexion();
             return return_list;
