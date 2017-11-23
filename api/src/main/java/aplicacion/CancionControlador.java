@@ -47,7 +47,7 @@ public class CancionControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = CancionNegocio.setData(cn,canciones,usermail,true);
+            List<JSONObject> jobj_list = CancionNegocio.setData(cn,canciones,usermail,true,true);
             cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -69,7 +69,7 @@ public class CancionControlador {
             }
 
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = CancionNegocio.setData(cn,canciones,usermail,false);
+            List<JSONObject> jobj_list = CancionNegocio.setData(cn,canciones,usermail,false,true);
             cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {

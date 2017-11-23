@@ -15,6 +15,7 @@ import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Artista;
 import modelos.Cancion;
+import modelos.Disco;
 import modelos.Genero;
 import modelos.GeneroCancion;
 
@@ -113,7 +114,7 @@ public class CancionNegocio {
         //cn.cerrarConexion();
         return list;
     }
-    public static List<JSONObject> setData(Conexion cn,List<Cancion> canciones,String usermail,boolean w_artista) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn,List<Cancion> canciones,String usermail,boolean w_artista,boolean w_discos) throws JsonProcessingException, JSONException
     {
         //Conexion cn = new Conexion();
         //cn.abrirConexion();
@@ -129,6 +130,11 @@ public class CancionNegocio {
             
             if(w_artista)
                 jobj.put("artista", Tools.convertObj_toJSON(a.getArtista()));
+            
+            if(w_discos)
+                jobj.put("discos", Tools.convertList_toJSON(cn.getListQuery("select cd.idCancionDisco.disco from modelos.CancionDisco cd WHERE cd.idCancionDisco.cancion.id = "+idc+ " order by fechaPublicacion desc")));
+            
+            
             
             jobj.put("likes", LikeNegocio.getLikeCount(cn,"Cancion",idc));
             
