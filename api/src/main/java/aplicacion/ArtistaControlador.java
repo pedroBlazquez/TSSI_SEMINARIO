@@ -27,15 +27,16 @@ public class ArtistaControlador {
             Conexion cn = new Conexion();
             cn.abrirConexion();
             List<Artista> artistas = cn.getListQuery("from modelos.Artista WHERE id = "+idartista);
-            cn.cerrarConexion();
+            
             if (artistas.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = ArtistaNegocio.setData(artistas, usermail,true);
-            
+            List<JSONObject> jobj_list = ArtistaNegocio.setData(cn,artistas, usermail,true,true);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,15 +49,16 @@ public class ArtistaControlador {
             Conexion cn = new Conexion();
             cn.abrirConexion();
             List<Artista> artistas = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idusuario);
-            cn.cerrarConexion();
+            
             if (artistas.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = ArtistaNegocio.setData(artistas, usermail,true);
-            
+            List<JSONObject> jobj_list = ArtistaNegocio.setData(cn,artistas, usermail,true,true);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);

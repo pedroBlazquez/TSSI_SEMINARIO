@@ -104,25 +104,22 @@ public class UsuarioControlador {
         try {
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             Usuario u = new Usuario();
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
             if(idusuario == 0)
-            {
-                Conexion cn = new Conexion();
-                cn.abrirConexion();
-                List<Usuario> usuarios = cn.getListQuery("from modelos.Usuario WHERE mail = '"+usermail+"'");
-                cn.cerrarConexion();
-                u = usuarios.get(0);
-            }
+                u = UsuarioNegocio.getUsuarioByMail(cn,usermail);
             else
-                u = UsuarioNegocio.getById((int)idusuario);
+                u = UsuarioNegocio.getById(cn,(int)idusuario);
                 
             if (u == null) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             List<Usuario> lu = new ArrayList<Usuario>();
             lu.add(u);
-            List<JSONObject> jobj_list = UsuarioNegocio.setData(lu, usermail);
-            
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(cn,lu, usermail);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.get(0).toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);

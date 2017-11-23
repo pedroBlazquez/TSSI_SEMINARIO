@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import aplicacion.autenticacion.Token;
+import conexion.Conexion;
 import modelos.Usuario;
 import negocio.SeguidosNegocio;
 import negocio.UsuarioNegocio;
@@ -50,8 +51,10 @@ public class SeguidosControlador {
     public ResponseEntity<?> Seguir(@PathVariable("idUsuario") long idUsuario, HttpServletRequest request) throws JSONException, IOException {
         try {
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            
-            boolean seguido = SeguidosNegocio.getSeguimiento((int)idUsuario, usermail);
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            boolean seguido = SeguidosNegocio.getSeguimiento(cn,(int)idUsuario, usermail);
+            cn.cerrarConexion();
             if(!seguido)
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
             else 
@@ -66,15 +69,18 @@ public class SeguidosControlador {
         try {
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             List<Usuario> seguidores = new ArrayList<Usuario>();
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
             if((int)idUsuario == 0)
-                seguidores = SeguidosNegocio.getSeguidores(usermail);
+                seguidores = SeguidosNegocio.getSeguidores(cn,usermail);
             else
-                seguidores = SeguidosNegocio.getSeguidores((int)idUsuario);
+                seguidores = SeguidosNegocio.getSeguidores(cn,(int)idUsuario);
                 
-            List<JSONObject> jobj_list = UsuarioNegocio.setData(seguidores, usermail);
-            
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(cn,seguidores, usermail);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -83,15 +89,16 @@ public class SeguidosControlador {
     public ResponseEntity<?> getSeguidos(@PathVariable("idUsuario") long idUsuario, HttpServletRequest request) throws JSONException, IOException {
         try {
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            
             List<Usuario> seguidos = new ArrayList<Usuario>();
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
             if((int)idUsuario == 0)
-                seguidos = SeguidosNegocio.getSeguidos(usermail);
+                seguidos = SeguidosNegocio.getSeguidos(cn,usermail);
             else
-                seguidos = SeguidosNegocio.getSeguidos((int)idUsuario);
+                seguidos = SeguidosNegocio.getSeguidos(cn,(int)idUsuario);
             
-            List<JSONObject> jobj_list = UsuarioNegocio.setData(seguidos, usermail);
-            
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(cn,seguidos, usermail);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
             
         } catch (Exception ex) {

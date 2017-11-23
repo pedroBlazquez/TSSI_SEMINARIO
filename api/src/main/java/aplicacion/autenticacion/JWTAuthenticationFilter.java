@@ -2,6 +2,7 @@ package aplicacion.autenticacion;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import conexion.Conexion;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import modelos.Usuario;
@@ -67,8 +68,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .compact();
         JSONObject json = new JSONObject();
         try {
-            UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-            Usuario usuario = usuarioNegocio.getUsuarioByMail(creds.getMail());
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            Usuario usuario = UsuarioNegocio.getUsuarioByMail(cn,creds.getMail());
+            cn.cerrarConexion();
             json.put("usuario", usuario.toJson());
             json.put("token", token);
         } catch (JSONException e) {

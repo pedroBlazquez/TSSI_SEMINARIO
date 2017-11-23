@@ -34,15 +34,16 @@ public class ListaControlador {
             Conexion cn = new Conexion();
             cn.abrirConexion();
             List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE id = "+idlista);
-            cn.cerrarConexion();
+            
             if (listas.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = ListasNegocio.setData(listas, usermail);
-            
+            List<JSONObject> jobj_list = ListasNegocio.setData(cn,listas, usermail);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -59,14 +60,15 @@ public class ListaControlador {
             Usuario usuario = usuarios.get(0);
             
             List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE usuario.id = "+usuario.getId() + " order by fechaAlta desc");
-            cn.cerrarConexion();
+            
             if (listas.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             
-            List<JSONObject> jobj_list = ListasNegocio.setData(listas, usermail);
-            
+            List<JSONObject> jobj_list = ListasNegocio.setData(cn,listas, usermail);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -79,15 +81,16 @@ public class ListaControlador {
             Conexion cn = new Conexion();
             cn.abrirConexion();
             List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE privacidad = false and usuario.id = "+idusuario + " order by fechaAlta desc");
-            cn.cerrarConexion();
+            
             if (listas.isEmpty()) {
+                cn.cerrarConexion();
                 return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = ListasNegocio.setData(listas, usermail);
-            
+            List<JSONObject> jobj_list = ListasNegocio.setData(cn,listas, usermail);
+            cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
