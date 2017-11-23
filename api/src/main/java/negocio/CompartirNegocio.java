@@ -175,7 +175,7 @@ public class CompartirNegocio {
                     List<Artista> aux_list = new ArrayList<Artista>();
                     aux_list.add(artista);
                     jobj.put("object_type", "Artista");
-                    jobj.put("artista", ArtistaNegocio.setData(cn,aux_list, usermail, false).get(0));
+                    jobj.put("artista", ArtistaNegocio.setData(cn,aux_list, usermail, false,true).get(0));
                 }
             }
             if(!found)

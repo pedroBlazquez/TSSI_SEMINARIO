@@ -80,6 +80,7 @@ public class SeguidosControlador {
             cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

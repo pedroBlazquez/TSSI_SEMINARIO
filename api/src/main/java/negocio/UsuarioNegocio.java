@@ -163,12 +163,12 @@ public class UsuarioNegocio {
                 List<Artista> artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idUsuario);
                 if(!artista.isEmpty()) //es artista
                 {
-                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(cn,artista,usermail,false)));
+                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(cn,artista,usermail,false,false)));
                 }
             }
             else
             {
-                jobj.put("seguidores", SeguidosNegocio.getSeguidores(cn,idUsuario).size());
+                jobj.put("seguidores", SeguidosNegocio.getCountSeguidores(cn,idUsuario));
                 jobj.put("seguido", SeguidosNegocio.getSeguimiento(cn,idUsuario,usermail));
             }
             jobj.put("object_type", "Usuario");

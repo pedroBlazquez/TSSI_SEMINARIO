@@ -48,9 +48,9 @@ public class InicioNegocio {
             if(!artistas_seguidos.isEmpty())
             {
                 //fecha actual
-                String date_now = Tools.DateFormatter(new Date());
+                String date_now = Tools.DateFormatter(Tools.GetDateDifference(1));
                 //fecha desde la cual se toman novedades
-                String date_novedades = Tools.DateFormatter(Tools.GetDateDifference(2));
+                String date_novedades = Tools.DateFormatter(Tools.GetDateDifference(5));
                 
                 //armo query para filtrar por artistas seguidos
                 StringBuilder query_artistas_seguidos = new StringBuilder();
@@ -119,11 +119,11 @@ public class InicioNegocio {
                     //agrego aleatoriamente 3 artistas que de los generos que le gustan al usuario
                     Collections.shuffle(artistas_genero);
                     int cant_artistas_genero = artistas_genero.size(); 
-                    if(cant_artistas_genero>2)
-                        cant_artistas_genero = 3;
+                    if(cant_artistas_genero>9)
+                        cant_artistas_genero = 10;
                     artistas_genero.subList(0,cant_artistas_genero);
                     
-                    List<JSONObject> artistas = ArtistaNegocio.setData(cn,artistas_genero, usermail,false);
+                    List<JSONObject> artistas = ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true);
                     //Collections.shuffle(artistas);
                     //int loop_count = 0;
                     for(JSONObject a : artistas)
@@ -164,11 +164,11 @@ public class InicioNegocio {
             //Integer usuario = usuarios.get(0);
             
             //fecha actual
-            String date_now = Tools.DateFormatter(new Date());
+            String date_now = Tools.DateFormatter(Tools.GetDateDifference(1));
             
-            int top_1 = 10;
-            int top_2 = 2;
-            int top_3 = 1;
+            int top_1 = 20;
+            //int top_2 = 2;
+            //int top_3 = 1;
             
             //creo lista para devolver
             List<JSONObject> return_list = new ArrayList<JSONObject>();
@@ -201,9 +201,9 @@ public class InicioNegocio {
                 String filtro_fechaEvento = " > '"+date_now+"' ";
                 if(fecha != null)
                 {
-                    String signo = ">";
+                    String signo = "<";
                     if(desdehasta.equals("Desde"))
-                        signo = "<";
+                        signo = ">";
                     filtro_fechaEvento += "and fechaEvento "+signo+" '"+Tools.DateFormatter(fecha)+"' ";
                 }
                 String st_nombre = "";
@@ -279,7 +279,7 @@ public class InicioNegocio {
                         
                     }
                     if(!is_evento)
-                        priority_list.addAll(ArtistaNegocio.setData(cn,artistas_genero, usermail,false));
+                        priority_list.addAll(ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true));
                 }
                 else
                 {
@@ -289,7 +289,7 @@ public class InicioNegocio {
                         if(!filtros.equals("") || !filtros.isEmpty())
                         {
                             filtros = filtros.replaceFirst(" and ", "");
-                            filtros = filtros.replaceFirst(" artista.", " ar.");
+                            filtros = filtros.replaceFirst("artista.", "ar.");
                             
                             priority_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("from Cancion c JOIN FETCH c.artista ar WHERE  "+filtros+" order by fechaPublicacion desc",top_1), usermail,true));
                             priority_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("from Disco d JOIN FETCH d.artista ar WHERE  "+filtros+" order by fechaPublicacion desc",top_1), usermail,false,true));
@@ -300,7 +300,7 @@ public class InicioNegocio {
                         if(!filtros.equals("") || !filtros.isEmpty())
                         {
                             filtros = filtros.replaceFirst(" and ", "");
-                            filtros = filtros.replaceFirst(" artista.", " ar.");
+                            filtros = filtros.replaceFirst("artista.", "ar.");
                             priority_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE  "+filtros+" order by fechaPublicacion desc"), usermail,true));
                         }
                         
@@ -312,13 +312,13 @@ public class InicioNegocio {
                         if(!filtro_artista_directo.equals(""))
                         {
                             filtros = filtro_artista_directo.replaceFirst(" and ", "").replaceFirst(" or ", "").replaceFirst("artista.", "");
-                            priority_list.addAll(ArtistaNegocio.setData(cn,cn.getListQuery("from Artista WHERE "+filtros,top_1),usermail,false));
+                            priority_list.addAll(ArtistaNegocio.setData(cn,cn.getListQuery("from Artista WHERE "+filtros,top_1),usermail,false,true));
                         }
                     }
                     String filtros = st_nombre+filtro_artista_directo;
                     if(!filtros.equals("") || !filtros.isEmpty())
                     {
-                        filtros = filtros.replaceFirst(" artista.", " ar.");
+                        filtros = filtros.replaceFirst("artista.", "ar.");
                     }
                     priority_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE e.fechaEvento "+filtro_fechaEvento+" "+filtros+filtro_direccion+" order by e.fechaEvento desc",top_1), usermail,true));
                     

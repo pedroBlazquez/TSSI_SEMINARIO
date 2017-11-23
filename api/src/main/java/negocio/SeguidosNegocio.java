@@ -80,6 +80,10 @@ public class SeguidosNegocio {
     {
         return getSeguidores_query(cn,idUsuario_seguido);
     }
+    public static Integer getCountSeguidores(Conexion cn, int idUsuario_seguido)
+    {
+        return getCountSeguidores_query(cn,idUsuario_seguido);
+    }
     
     public static List<Usuario> getSeguidos(Conexion cn,int idUsuario_seguidor)
     {
@@ -93,6 +97,15 @@ public class SeguidosNegocio {
         List<Usuario> seguidores = cn.getListQuery("select s.idSeguidos.seguidor from modelos.Seguidos s WHERE s.idSeguidos.seguido.id = "+idUsuario_seguido);
         //cn.cerrarConexion();
         return seguidores;
+    }
+    private static Integer getCountSeguidores_query(Conexion cn,int idUsuario_seguido)
+    {
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
+        List<Long> seguidores = cn.getListQuery("select count(s.idSeguidos.seguidor.id) from modelos.Seguidos s WHERE s.idSeguidos.seguido.id = "+idUsuario_seguido);
+        //cn.cerrarConexion();
+        Long count = seguidores.get(0);
+        return count != null ? count.intValue() : null;
     }
   
     private static List<Usuario> getSeguidos_query(Conexion cn,int idUsuario_seguidor)

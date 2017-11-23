@@ -35,7 +35,7 @@ public class ArtistaControlador {
             }
             
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = ArtistaNegocio.setData(cn,artistas, usermail,true);
+            List<JSONObject> jobj_list = ArtistaNegocio.setData(cn,artistas, usermail,true,true);
             cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -57,7 +57,7 @@ public class ArtistaControlador {
             }
             
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
-            List<JSONObject> jobj_list = ArtistaNegocio.setData(cn,artistas, usermail,true);
+            List<JSONObject> jobj_list = ArtistaNegocio.setData(cn,artistas, usermail,true,true);
             cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
         } catch (Exception ex) {
