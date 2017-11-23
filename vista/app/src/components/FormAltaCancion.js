@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
-import {Form, Button, Input, Upload, Icon} from 'antd';
+import {Form, Button, Input, Icon} from 'antd';
+import moment from 'moment';
 
+import {config} from '../utils/api';
+import Upload from './UploadSingleFile';
 import ExtendedForm from './ExtendedForm';
 import FechaNacimiento from './FechaNacimiento';
 import {GenerosMusicalesDD} from './GenerosMusicales';
@@ -9,6 +12,23 @@ import {DatosPersonalesValidator, FechaValidator, RequiredValidator} from '../ut
 const FormItem = Form.Item;
 
 class FormAltaCancion extends Component {
+
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      audio: props.audio || '',
+      imagen: props.imagen || ''
+    }
+  }
+
+  validateFile = file => (rule, value, cb) => {
+    if (!file) {
+      cb('Debe subir un archivo');
+    }
+
+    cb();
+  }
 
   render () {
     const {onSubmit, onCancel, form} = this.props;
@@ -25,8 +45,22 @@ class FormAltaCancion extends Component {
           }
         </FormItem>
         <FormItem>
-          {form.getFieldDecorator('audio')
-            (<Upload accept="audio">
+          {form.getFieldDecorator('audio', {rules: [{validator: this.validateFile(this.state.audio)}]})
+            (<Upload 
+              accept="audio"
+              headers={config().headers}
+              name={'file'}
+              action={'http://localhost:8080/archivo/subirCancion'}
+              onRemove={() => {
+                this.setState({audio: ''});
+              }}
+              onChange={(info) => {
+                const fileList = info.fileList;
+                if (fileList.length) {
+                  this.setState({audio: fileList[0].response});
+                }
+              }}
+            >
               <Button>
                 <Icon type="upload" /> 
                 {'Subir Canción'}
@@ -35,8 +69,10 @@ class FormAltaCancion extends Component {
           }
         </FormItem>
         <FormItem>
-          {form.getFieldDecorator('imagen')
-            (<Upload accept="audio">
+          {form.getFieldDecorator('imagen', {rules: [{validator: this.validateFile(this.state.imagen)}]})
+            (<Upload
+                accept="audio"
+              >
               <Button>
                 <Icon type="upload" /> 
                 {'Subir imagen'}
