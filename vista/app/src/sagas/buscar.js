@@ -26,7 +26,7 @@ export function* buscar({parametros}) {
       headers
     );
 
-    yield put(setResultadosBusqueda(resultado));
+    yield put(setResultadosBusqueda(resultado.data));
   } catch (e) {
       console.log(e);
   }
