@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import aplicacion.autenticacion.Token;
+import conexion.Conexion;
 import modelos.Usuario;
 import negocio.GestorArchivo;
 import negocio.GestorArchivo.TipoContenido;
@@ -102,9 +103,11 @@ public class ArchivoControlador {
     	GestorArchivo gestor = new GestorArchivo();
 
         String userMail = Token.getMailFromToken(token);
-        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-        Usuario user = usuarioNegocio.getUsuarioByMail(userMail);
-
+        
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        Usuario user = UsuarioNegocio.getUsuarioByMail(cn,userMail);
+        cn.cerrarConexion();
         String path = gestor.generarPath(user.getId(), tipoContenido, archivo.getOriginalFilename());
         gestor.subirArchvo(archivo, path);
 
