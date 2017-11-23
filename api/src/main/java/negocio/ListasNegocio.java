@@ -145,7 +145,7 @@ public class ListasNegocio {
             String idListaReproduccion = String.valueOf(a.getId());
             
             List<Cancion> canciones = cn.getListQuery("select cd.idCancionLista.cancion from modelos.CancionLista cd JOIN FETCH cd.idCancionLista.cancion.artista a WHERE cd.idCancionLista.lista.id = "+idListaReproduccion);
-            jobj.put("canciones", new JSONArray(CancionNegocio.setData(cn,canciones,usermail,true)));
+            jobj.put("canciones", new JSONArray(CancionNegocio.setData(cn,canciones,usermail,true,true)));
 
             jobj.put("object_type", "Lista");
             

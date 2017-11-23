@@ -187,7 +187,7 @@ public class CompartirNegocio {
                     List<Cancion> aux_list = new ArrayList<Cancion>();
                     aux_list.add(cancion);
                     jobj.put("object_type", "Cancion");
-                    jobj.put("cancion", CancionNegocio.setData(cn,aux_list, usermail, true).get(0));
+                    jobj.put("cancion", CancionNegocio.setData(cn,aux_list, usermail, true,true).get(0));
                 }
             }
             if(!found)
