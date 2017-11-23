@@ -1,13 +1,13 @@
 package aplicacion;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
+import java.io.IOException;
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,29 +15,101 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import aplicacion.autenticacion.Token;
+import modelos.Usuario;
 import negocio.GestorArchivo;
 import negocio.GestorArchivo.TipoContenido;
+import negocio.UsuarioNegocio;
 
 @RestController
-@RequestMapping("/cancion")
+@RequestMapping("/archivo")
 public class ArchivoControlador {
 
-    protected final String UPLOADED_FOLDER = "C:/canciones";
-
-    @RequestMapping(value = "/subir", method = RequestMethod.POST)
-    public void subirCancion(
-            HttpEntity<String> httpEntity,
-            HttpServletResponse response,
-            @RequestParam("file") MultipartFile archivo
+    @RequestMapping(value = "/subirCancion", method = RequestMethod.POST)
+    public String subirCancion(
+		HttpServletRequest request,
+        HttpServletResponse response,
+        @RequestParam("file") MultipartFile archivo
     ) throws IOException {
-        GestorArchivo gestor = new GestorArchivo();
-        
-        if (archivo.isEmpty()) {
+
+    	if (archivo.isEmpty()) {
             response.sendError(HttpStatus.OK.value(), "El archivo está vacio");
         }
-        String path = gestor.generarPath(1, 12, TipoContenido.EVENTO_FOTO, archivo.getOriginalFilename());
+
+    	String token = request.getHeader(HEADER_STRING);
+        String pathFinal = this.subirArchivo(archivo, TipoContenido.CANCION, token);
+
+        return pathFinal;
+    }
+
+    @RequestMapping(value = "/subirEventoFoto", method = RequestMethod.POST)
+    public String subirEvento(
+		HttpServletRequest request,
+        HttpServletResponse response,
+        @RequestParam("file") MultipartFile archivo
+    ) throws IOException {
+
+    	if (archivo.isEmpty()) {
+            response.sendError(HttpStatus.OK.value(), "El archivo está vacio");
+        }
+
+    	String token = request.getHeader(HEADER_STRING);
+        String pathFinal = this.subirArchivo(archivo, TipoContenido.EVENTO_FOTO, token);
+
+        return pathFinal;
+    }
+
+    @RequestMapping(value = "/subirDiscoPortada", method = RequestMethod.POST)
+    public String subirDiscoPortada(
+		HttpServletRequest request,
+        HttpServletResponse response,
+        @RequestParam("file") MultipartFile archivo
+    ) throws IOException {
+
+    	if (archivo.isEmpty()) {
+            response.sendError(HttpStatus.OK.value(), "El archivo está vacio");
+        }
+
+    	String token = request.getHeader(HEADER_STRING);
+        String pathFinal = this.subirArchivo(archivo, TipoContenido.DISCO_PORTADA, token);
+
+        return pathFinal;
+    }
+
+    @RequestMapping(value = "/subirPerfilFoto", method = RequestMethod.POST)
+    public String subirPerfilFoto(
+		HttpServletRequest request,
+        HttpServletResponse response,
+        @RequestParam("file") MultipartFile archivo
+    ) throws IOException {
+
+    	if (archivo.isEmpty()) {
+            response.sendError(HttpStatus.OK.value(), "El archivo está vacio");
+        }
+
+    	String token = request.getHeader(HEADER_STRING);
+        String pathFinal = this.subirArchivo(archivo, TipoContenido.PERFIL_FOTO, token);
+
+        return pathFinal;
+    }
+
+    protected String subirArchivo(
+		MultipartFile archivo,
+		TipoContenido tipoContenido,
+		String token
+    ) throws IOException {
+
+    	GestorArchivo gestor = new GestorArchivo();
+
+        String userMail = Token.getMailFromToken(token);
+        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        Usuario user = usuarioNegocio.getUsuarioByMail(userMail);
+
+        String path = gestor.generarPath(user.getId(), tipoContenido, archivo.getOriginalFilename());
         gestor.subirArchvo(archivo, path);
-        
+
+        String[] pathParts = path.split("/public");
+        return Arrays.asList(pathParts).get(1);
     }
     
 }

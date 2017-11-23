@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class GestorArchivo {
     
-    protected final String BASE_PATH = "C:/musicAppArchivos/";
+    protected String basePath = "";
     
     protected HashMap<TipoContenido, String> carpetas = new HashMap();
     
@@ -25,20 +25,21 @@ public class GestorArchivo {
         PERFIL_FOTO        
     }
 
-    public GestorArchivo() {
+    public GestorArchivo() throws IOException {
         carpetas.put(TipoContenido.CANCION, "/canciones/");
         carpetas.put(TipoContenido.DISCO_PORTADA, "/portadas/");
         carpetas.put(TipoContenido.EVENTO_FOTO, "/eventos/");
         carpetas.put(TipoContenido.PERFIL_FOTO, "/perfil/");
+
+        this.basePath = new File(".").getCanonicalPath();
     }
     
     public String generarPath(
             int idUsuario,
-            int idAsociado,
             TipoContenido tipoContenido,
             String nombreArchivo
     ) {
-        String path = BASE_PATH + idUsuario + carpetas.get(tipoContenido) + idAsociado + nombreArchivo;
+        String path = basePath + "/public/MusicAppArchivos/" + idUsuario + carpetas.get(tipoContenido) + nombreArchivo;
 
         return path;
     }
