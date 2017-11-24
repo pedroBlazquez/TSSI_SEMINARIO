@@ -21,6 +21,9 @@ public class Album {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
+    @Column(name = "portada", nullable = true)
+    private String portada;
+    
     @Column(name = "fechaPublicacion", nullable = false)
     private Date fechaPublicacion;
 
@@ -42,11 +45,12 @@ public class Album {
     public Album() {
     }
 
-    public Album(String nombre,Date fechaPublicacion, Artista artista) {
+    public Album(String nombre,Date fechaPublicacion, Artista artista,String portada) {
         super();
         this.nombre = nombre;
         this.fechaPublicacion = fechaPublicacion;
         this.artista = artista;
+        this.portada = portada;
     }
 
     public String getNombre() {
@@ -91,6 +95,14 @@ public class Album {
 
     public int getId() {
         return id;
+    }
+
+    public String getPortada() {
+        return portada;
+    }
+
+    public void setPortada(String portada) {
+        this.portada = portada;
     }
 
     

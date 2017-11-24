@@ -50,7 +50,7 @@ public class CancionNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity<Object> UpdateCancion(String idCancion,String nombre,String genero)
+    public static ResponseEntity<Object> UpdateCancion(String idCancion,String nombre,String genero,String archivo)
     {
         try
         {
@@ -66,8 +66,9 @@ public class CancionNegocio {
                 new_GeneroCancion.add(new GeneroCancion(g,upd_Cancion));
             
             upd_Cancion.setNombre(nombre);
-            upd_Cancion.setFechaPublicacion(new Date());
+            //upd_Cancion.setFechaPublicacion(new Date());
             upd_Cancion.setGenerosCancion(new_GeneroCancion);
+            upd_Cancion.setArchivo(archivo);
             
             cn.deleteList(cn.getListQuery("from modelos.GeneroCancion WHERE idGeneroCancion.cancion.id = "+idCancion));
             

@@ -52,7 +52,7 @@ public class Evento {
     }
 
     public Evento(String nombre, String descripcion, Date fechaEvento, String direccion, float costo,
-            Date fechaPublicacion, Artista artista) {
+            Date fechaPublicacion, Artista artista,String imagen) {
         super();
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -61,6 +61,7 @@ public class Evento {
         this.costo = costo;
         this.fechaPublicacion = fechaPublicacion;
         this.artista = artista;
+        this.imagen = imagen;
     }
 
     public String getNombre() {

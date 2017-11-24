@@ -66,7 +66,8 @@ public class UsuarioNegocio {
             usuario.setNombre(nuevoUsuario.getNombre());
             usuario.setApellido(nuevoUsuario.getApellido());
             usuario.setFechaNacimiento(nuevoUsuario.getFechaNacimiento());
-            usuario.setMail(nuevoUsuario.getMail());
+            //usuario.setMail(nuevoUsuario.getMail());
+            usuario.setImagen(nuevoUsuario.getImagen());
 
             cn.update(usuario);
             cn.cerrarConexion();

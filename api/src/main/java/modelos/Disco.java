@@ -23,7 +23,7 @@ public class Disco {
     @Column(name = "fechaPublicacion", nullable = false)
     private Date fechaPublicacion;
 
-    @Column(name = "portada")
+    @Column(name = "portada", nullable = true)
     private String portada;
 
     // FK
@@ -52,11 +52,12 @@ public class Disco {
     public Disco() {
     }
 
-    public Disco(String nombre, Date fechaPublicacion, Artista artista) {
+    public Disco(String nombre, Date fechaPublicacion, Artista artista,String portada) {
         super();
         this.nombre = nombre;
         this.fechaPublicacion = fechaPublicacion;
         this.artista = artista;
+        this.portada = portada;
     }
 
     public String getNombre() {
