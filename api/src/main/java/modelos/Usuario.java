@@ -226,6 +226,7 @@ public class Usuario {
 	    json.put("mail", this.mail);
 	    json.put("nombre", this.nombre);
 	    json.put("apellido", this.apellido);
+        json.put("imagen", this.imagen);
 	    json.put("usuarioTipoId", this.usuarioTipo.getId());
 	    json.put("usuarioTipoDescripcion", this.usuarioTipo.getDescripcion());
 
