@@ -89,7 +89,7 @@ export function* altaDisco(action) {
     const headers = config();
     const payload = {
       nombre: disco.nombre,
-      genero: GENEROS.find(g => g.id === disco.genero).value,
+      genero: GENEROS.find(g => g.id.toString() === disco.genero).value,
       canciones: disco.canciones.map(c => c.id),
       portada: BASE_URL + disco.portada.file.response
     };
