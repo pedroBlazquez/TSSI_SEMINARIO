@@ -53,7 +53,7 @@ public class LikeControlador {
             int cant_likes = LikeNegocio.getLikeCount(cn,tipo,id);
             cn.cerrarConexion();
             if(cant_likes == 0)
-                return new ResponseEntity<Object>(cant_likes,HttpStatus.NOT_FOUND);
+                return new ResponseEntity<Object>(cant_likes,HttpStatus.NO_CONTENT);
             else
                 return new ResponseEntity<Object>(cant_likes,HttpStatus.OK);
         } catch (Exception ex) {
@@ -73,7 +73,7 @@ public class LikeControlador {
             boolean exists = LikeNegocio.getUserLike(cn,tipo,id,usermail);
             cn.cerrarConexion();
             if(!exists)
-                return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
             else
                 return new ResponseEntity<Object>(HttpStatus.OK);
             

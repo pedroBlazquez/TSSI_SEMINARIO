@@ -52,7 +52,7 @@ class Disco extends Component {
                     return (
                         <div key={i} className='flex flex-space-between discoCancion'>
                             <span>{cancion.nombre}</span>
-                            <BotonPlay idCancion={cancion.id}/>
+                            <BotonPlay cancion={{...cancion, artista: disco.artista}}/>
                         </div>
                     );
                   })

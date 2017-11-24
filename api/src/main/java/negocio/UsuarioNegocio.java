@@ -54,6 +54,29 @@ public class UsuarioNegocio {
         }
         return true;
     }
+    public boolean updUsuario(JSONObject data,String usermail) {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        try {
+            Usuario usuario = getUsuarioByMail(cn, usermail);
+            
+            Usuario nuevoUsuario = new ObjectMapper()
+                    .readValue(data.toString(), Usuario.class);
+            
+            usuario.setNombre(nuevoUsuario.getNombre());
+            usuario.setApellido(nuevoUsuario.getApellido());
+            usuario.setFechaNacimiento(nuevoUsuario.getFechaNacimiento());
+            usuario.setMail(nuevoUsuario.getMail());
+
+            cn.update(usuario);
+            cn.cerrarConexion();
+        } catch (Exception e) {
+            e.printStackTrace();
+            cn.cerrarConexion();
+            return false;
+        }
+        return true;
+    }
 
     public static Usuario getUsuarioByMail(Conexion cn,String mail) {
         //Conexion cn = new Conexion();
@@ -101,10 +124,8 @@ public class UsuarioNegocio {
     public boolean eliminarUsuario(String mail){
         Conexion cn = new Conexion();
         cn.abrirConexion();
-        Usuario u = this.getUsuarioByMail(cn,mail);
-
+        Usuario u = getUsuarioByMail(cn,mail);
         try {
-            u.setMail(mail);
             cn.delete(u);
         } catch (Exception e) {
             e.printStackTrace();

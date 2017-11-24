@@ -32,3 +32,9 @@
 // Backgrounds
 .bg-color-light-gray {background-color: $light-gray;}
 .bg-color-white {background-color: white;}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

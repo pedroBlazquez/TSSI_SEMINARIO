@@ -19,7 +19,7 @@ import modelos.Usuario;
 
 public class ArtistaNegocio {
     
-    public boolean altaArtista(JSONObject data, int artistaTipoId, String mail) throws JSONException {
+    public boolean altaArtista(JSONObject data, String mail) throws JSONException {
         Conexion cn = new Conexion();
         JSONArray generosArray = data.getJSONArray("generos");
         //List<Integer> generosLista = new ArrayList();
@@ -36,6 +36,38 @@ public class ArtistaNegocio {
             cn.add(artista);
 
             generoArtistaNegocio.altaVariosGenerosArtista(cn,generosArray);
+
+            cn.cerrarConexion();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+    
+    public boolean updArtista(JSONObject data, String usermail) throws JSONException {
+        Conexion cn = new Conexion();
+        JSONArray generosArray = data.getJSONArray("generos");
+        GeneroArtistaNegocio generoArtistaNegocio = new GeneroArtistaNegocio();
+
+        try {
+            Artista artistaNuevo = new ObjectMapper()
+                    .readValue(data.toString(), Artista.class);
+
+            cn.abrirConexion();
+
+            Usuario usuario = UsuarioNegocio.getUsuarioByMail(cn,usermail);
+            Artista artista = (Artista) cn.getListQuery("from modelos.Artista WHERE usuario.id = "+usuario.getId()).get(0);
+            artista.setNombreFantasia(artistaNuevo.getNombreFantasia());
+            artista.setDescripcion(artistaNuevo.getDescripcion());
+            artista.setFechaInicio(artistaNuevo.getFechaInicio());
+            
+            cn.update(artista);
+            
+            cn.deleteList(cn.getListQuery("from modelos.GeneroArtista WHERE idGeneroArtista.artista.id = "+artista.getId()));
+            
+            generoArtistaNegocio.altaVariosGenerosArtista(cn,generosArray,artista);
 
             cn.cerrarConexion();
         } catch (Exception e) {

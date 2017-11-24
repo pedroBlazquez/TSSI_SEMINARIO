@@ -11,6 +11,7 @@ class Reproductor extends Component {
 
   componentDidUpdate (prevProps) {
     if(prevProps.track !== this.props.track) {
+      this.stopPlay();
       this.refs.reproductor.play();
     }
   }
@@ -36,7 +37,7 @@ class Reproductor extends Component {
           <Icon type="step-backward"/>
         </div>
         <div className={'absolute'} style={{left: 17}}>
-          <audio ref={'reproductor'} src={track ? track.path : ''} type={'audio/mpeg'} controls></audio>        </div>
+          <audio ref={'reproductor'} src={track ? track.archivo : ''} type={'audio/mpeg'} controls></audio>        </div>
         <div className={'absolute'} onClick={this.onNext} style={{fontSize: 17, top: 5, right: 0, color: '#BABABA', cursor: 'pointer'}} >
           <Icon type="step-forward"/>
         </div>
@@ -58,14 +59,15 @@ class ReproductorContainer extends Component {
       <div style={{backgroundColor: '#FAFAFA', width: 'inherit', height: 40, ...style}}>
         <div className={'relative'}>
           <Reproductor {...reproductor}/>
-          <div className={'absolute'} style={{left: 380, top: 0}}>
-            <div><strong>Artista</strong></div>
-            <div>Cancion</div>
+          <div className={'absolute'} style={{width: 180, left: 380, top: 0}}>
+            <div className={'ellipsis'}><strong>{artista && artista.nombreFantasia}</strong></div>
+            <div className={'ellipsis'}>{reproductor.track && reproductor.track.nombre}</div>
           </div>  
         </div>
       </div>
     );
   }
 }
+
 
 export default ReproductorContainer;

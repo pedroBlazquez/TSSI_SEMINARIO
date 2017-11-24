@@ -59,7 +59,6 @@ public class UsuarioControlador {
         JSONObject artistaForm = json.getJSONObject("artistaForm");
         boolean altaArtistaExitoso = artistaNegocio.altaArtista(
             artistaForm,
-            usuarioTipoId,
             mail
         );
 
@@ -90,6 +89,77 @@ public class UsuarioControlador {
         }
 
         intArtNegocio.altaListaIntegrantes(integrantesListaObjs, roles);
+    }
+    
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    public void update(HttpEntity<String> httpEntity, HttpServletResponse response, HttpServletRequest request) throws JSONException, IOException {
+        JSONObject json = new JSONObject(httpEntity.getBody());
+        JSONObject usuarioForm = json.getJSONObject("usuarioForm");
+        int usuarioTipoId = usuarioForm.getInt("usuarioTipo");
+        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        ArtistaNegocio artistaNegocio = new ArtistaNegocio();
+
+        String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+        boolean creacionExitosa = usuarioNegocio.updUsuario(usuarioForm,usermail);
+
+        if (!creacionExitosa) {
+            response.sendError(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Error al actualizar el usuario"
+            );
+        }
+
+        if (usuarioTipoId == 1) {
+            return;
+        }
+
+        JSONObject artistaForm = json.getJSONObject("artistaForm");
+        boolean altaArtistaExitoso = artistaNegocio.updArtista(
+            artistaForm,
+            usermail
+        );
+
+        if (!altaArtistaExitoso) {
+            response.sendError(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Error al actualizar el artista"
+            );
+            return;
+        }
+
+        if (usuarioTipoId == 2) {
+            return;
+        }
+
+        JSONArray integrantesLista = json.getJSONArray("integrantesLista");
+        IntegranteArtistaNegocio intArtNegocio = new IntegranteArtistaNegocio();
+        List<IntegranteArtista> integrantesListaObjs = new ArrayList<IntegranteArtista>();
+        List<Integer> roles = new ArrayList<Integer>();
+
+        for (int i = 0; i < integrantesLista.length(); i++) {
+            JSONObject obj = integrantesLista.getJSONObject(i);
+            roles.add(obj.getInt("rol"));
+            obj.remove("rol");
+            integrantesListaObjs.add(new ObjectMapper()
+                    .readValue(obj.toString(), IntegranteArtista.class));
+        }
+
+        intArtNegocio.altaListaIntegrantes(integrantesListaObjs, roles,usermail);
+    }
+    
+    
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)
+    public void delete(HttpEntity<String> httpEntity, HttpServletResponse response, HttpServletRequest request) throws JSONException, IOException {
+        String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        if (!usuarioNegocio.eliminarUsuario(usermail)) {
+            response.sendError(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "No se pudo dar de baja el usuario"
+            );
+            return;
+        }
+        return;
     }
 
     @RequestMapping(value = "/registro/checkMail", method = RequestMethod.POST)

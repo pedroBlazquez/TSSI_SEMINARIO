@@ -19,10 +19,10 @@ class NovedadesPerfil extends Component {
   }
 
   render () {
-    const {esPerfilPropio, records} = this.props;
+    const {esPerfilPropio, esArtista, records} = this.props;
     return (
       <MainContent>
-        {esPerfilPropio ? <NuevaPublicacion /> : null}
+        {esPerfilPropio && esArtista ? <NuevaPublicacion /> : null}
         <Novedades conPublicacion={esPerfilPropio} records={records} />
       </MainContent>
     );
