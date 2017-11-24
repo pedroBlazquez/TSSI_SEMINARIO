@@ -51,8 +51,8 @@ export function* traerPerfil(action) {
       yield put(setAlbumesPerfil(agregarArtista(albumes.data, artista)));
       yield put(setEventosPerfil(agregarArtista(eventos.data, artista)));
     } else {
-      const publicaciones = yield call(_get, `/compartir/getCompartidos/${idUsuario}`, headers);
-      yield put(setPublicacionesPerfil(publicaciones.data));
+      //const publicaciones = yield call(_get, `/compartir/getCompartidos/${idUsuario}`, headers);
+      //yield put(setPublicacionesPerfil(publicaciones.data));
     }
 
     yield put(setSeguidoresPerfil(seguidores.data));
