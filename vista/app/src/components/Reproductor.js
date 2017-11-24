@@ -56,7 +56,7 @@ class ReproductorContainer extends Component {
   render () {
     const {style, artista, ...reproductor} = this.props;
     return (
-      <div style={{backgroundColor: '#FAFAFA', width: 'inherit', height: 40, ...style}}>
+      <div style={{backgroundColor: '#FAFAFA', width: 580, height: 40, ...style}}>
         <div className={'relative'}>
           <Reproductor {...reproductor}/>
           <div className={'absolute'} style={{width: 180, left: 380, top: 0}}>

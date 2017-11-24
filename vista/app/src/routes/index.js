@@ -18,7 +18,6 @@ import Reproductor from '../containers/ReproductorContainer';
 const MainRoute = ({isLogged}) => (
   <MainLayout
     header={'MusicAPP'}
-    footer={'(C) Copyright MusicApp 2017'}
   >
     {isLogged && <NavBar/>}
     <AuthRoute authorized={isLogged} redirectTo="/login" path="/" exact component={NovedadesHome}/>
@@ -26,8 +25,9 @@ const MainRoute = ({isLogged}) => (
     <Route component={LoginForm} path="/login" />
     <Route component={RegistroUsuario} path="/registrarse"/>
     {isLogged && 
-      <div style={{position: 'fixed', bottom: 25, width: '100%'}}>
-        <Reproductor style={{position: 'relative', width: 580, left: 385}}/>
+      <div style={{position: 'fixed', bottom: 0, width: '100%', 'background-color': 'grey', height: 60}}>
+        <div style={{position: 'absolute', top: 20, left: 20}}>(C) Copyright MusicApp 2017</div>
+        <Reproductor style={{margin: 'auto', 'margin-top': 10}} />
       </div>
     }
   </MainLayout>
