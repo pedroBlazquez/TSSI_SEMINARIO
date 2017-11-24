@@ -124,7 +124,7 @@ public class LikeNegocio {
         
         cn.cerrarConexion();
         if(list.isEmpty())
-            return new ResponseEntity<Object>(list,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>(list,HttpStatus.NO_CONTENT);
         else
             return new ResponseEntity<Object>(list,HttpStatus.OK);
         

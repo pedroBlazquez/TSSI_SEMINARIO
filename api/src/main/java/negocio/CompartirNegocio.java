@@ -110,7 +110,7 @@ public class CompartirNegocio {
         
         //cn.cerrarConexion();
         if(list.isEmpty())
-            return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
         else
             return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
         
