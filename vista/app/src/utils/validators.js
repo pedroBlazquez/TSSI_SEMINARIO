@@ -17,3 +17,12 @@ export const MailValidator = ruleValidator([MAIL, REQUIRED_WHITE_SPACE]);
 export const DatosPersonalesValidator = ruleValidator([REQUIRED_WHITE_SPACE]);
 
 export const FechaValidator = RequiredValidator;
+
+
+// Custom function validators
+export const validateFile = file => (rule, value, cb) => {
+  if (!file) {
+    cb('Debe subir un archivo');
+  }
+  cb();
+}
