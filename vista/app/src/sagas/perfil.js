@@ -28,7 +28,7 @@ export function* traerPerfil(action) {
     const usuarioData = yield call(_get, `/usuario/${idPerfil}`, headers);
     const usuario = usuarioData.data;
     const idUsuario = usuario.id;
-    const esArtista = usuario.tipoUsuario !== USUARIO_OYENTE.id;
+    const esArtista = usuario.usuarioTipo.id !== USUARIO_OYENTE.id;
 
     // Llamadas comunes a todos los tipos de usuario
     const seguidos = yield call(_get, `/usuario/getSeguidos/${idUsuario}`, headers);
