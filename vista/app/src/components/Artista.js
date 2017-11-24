@@ -23,7 +23,7 @@ class Artista extends Component {
           <div className='artistaInfoContainer'>
               <div className='topBlock flex flex-space-between'>
                 <h1 className='artistaTitulo'>
-                    <Link to={`/perfil/${artista.usuario.id}`}>
+                    <Link to={`/perfil/${artista.usuario.id}`} style={{color: 'black'}}>
                         <strong>{artista.nombreFantasia}</strong>
                     </Link>
                 </h1>
