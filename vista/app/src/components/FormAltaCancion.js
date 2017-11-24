@@ -2,12 +2,11 @@ import React, {Component} from 'react';
 import {Form, Button, Input, Icon} from 'antd';
 import moment from 'moment';
 
-import {config} from '../utils/api';
 import Upload from './UploadSingleFile';
 import ExtendedForm from './ExtendedForm';
 import FechaNacimiento from './FechaNacimiento';
 import {GenerosMusicalesDD} from './GenerosMusicales';
-import {DatosPersonalesValidator, FechaValidator, RequiredValidator} from '../utils/validators';
+import {DatosPersonalesValidator, FechaValidator, RequiredValidator, validateFile} from '../utils/validators';
 
 const FormItem = Form.Item;
 
@@ -19,14 +18,6 @@ class FormAltaCancion extends Component {
     this.state = {
       audio: props.audio || ''
     }
-  }
-
-  validateFile = file => (rule, value, cb) => {
-    if (!file) {
-      cb('Debe subir un archivo');
-    }
-
-    cb();
   }
 
   render () {
@@ -44,10 +35,9 @@ class FormAltaCancion extends Component {
           }
         </FormItem>
         <FormItem>
-          {form.getFieldDecorator('audio', {rules: [{validator: this.validateFile(this.state.audio)}]})
+          {form.getFieldDecorator('audio', {rules: [{validator: validateFile(this.state.audio)}]})
             (<Upload 
               accept="audio"
-              headers={config().headers}
               name={'file'}
               action={'http://localhost:8080/archivo/subirCancion'}
               onRemove={() => {

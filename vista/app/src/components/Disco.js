@@ -10,24 +10,13 @@ import NoImagen from '../assets/default-release.png';
 
 class Disco extends Component {
 
-  constructor(props) {
-      super(props);
-
-      var url = this.props.disco.portada ?
-        this.props.disco.portada :
-        NoImagen;
-      this.state = {
-          urlImagen: url
-      }
-  }
-
   render () {
     const {disco}= this.props;
     return (
       <Card className={'margin-10p'}>
           <div className='discoTopBlock'>
             <div className='cancionImagenContainer'>
-              <img src={this.state.urlImagen} className=''/>
+              <img src={disco.portada || NoImagen} className=''/>
             </div>
             <div className='discoInfoContainer'>
                 <div className='flex flex-space-between'>

@@ -89,9 +89,10 @@ export function* altaDisco(action) {
     const headers = config();
     const payload = {
       nombre: disco.nombre,
-      genero: GENEROS.find(g => g.id === disco.genero).value,
-      canciones: disco.canciones.map(c => c.id)
-    }
+      genero: GENEROS.find(g => g.id.toString() === disco.genero).value,
+      canciones: disco.canciones.map(c => c.id),
+      portada: BASE_URL + disco.portada.file.response
+    };
     yield call(_post, '/discos/', {...payload}, headers);
     
     // Despues de hacer la baja, buscamos las canciones actualizadas

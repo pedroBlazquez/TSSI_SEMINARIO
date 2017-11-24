@@ -1,10 +1,17 @@
 import React, {Component} from 'react';
-import {Form, Button, Input, Upload, Icon} from 'antd';
+import {Form, Button, Input, Icon} from 'antd';
 import {isEqual} from 'lodash';
+
+import Upload from './UploadSingleFile';
 
 import ContenidoConBusqueda from './ContenidoConBusqueda';
 import {GenerosMusicalesDD} from './GenerosMusicales';
-import {DatosPersonalesValidator, FechaValidator, RequiredValidator} from '../utils/validators';
+import {
+  DatosPersonalesValidator,
+  FechaValidator,
+  RequiredValidator,
+  validateFile
+} from '../utils/validators';
 
 const FormItem = Form.Item;
 
@@ -13,6 +20,7 @@ class FormAltaDisco extends Component {
     super(props);
 
     this.state = {
+      portada: this.props.portada || '',
       cancionesSeleccionadas: this.props.cancionesSeleccionadas || [],
       error: false
     };
@@ -86,21 +94,24 @@ class FormAltaDisco extends Component {
           />
         </FormItem>
         <FormItem>
-          {form.getFieldDecorator('audio')
-            (<Upload accept="audio">
+          {form.getFieldDecorator('portada', {rules: [{validator: validateFile(this.state.portada)}]})
+            (<Upload 
+              accept="image"
+              name={'file'}
+              action={'http://localhost:8080/archivo/subirDiscoPortada'}
+              onRemove={() => {
+                this.setState({portada: ''});
+              }}
+              onChange={(info) => {
+                const fileList = info.fileList;
+                if (fileList.length) {
+                  this.setState({portada: fileList[0].response});
+                }
+              }}
+            >
               <Button>
                 <Icon type="upload" /> 
-                {'Subir Canción'}
-              </Button>
-            </Upload>)
-          }
-        </FormItem>
-        <FormItem>
-          {form.getFieldDecorator('imagen')
-            (<Upload accept="audio">
-              <Button>
-                <Icon type="upload" /> 
-                {'Subir imagen'}
+                {'Subir Portada'}
               </Button>
             </Upload>)
           }

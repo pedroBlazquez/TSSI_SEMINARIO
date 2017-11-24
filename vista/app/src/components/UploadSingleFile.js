@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {Upload} from 'antd';
+import {config} from '../utils/api';
 
 class UploadSingleFile extends Component {
   constructor (props) {
@@ -22,7 +23,14 @@ class UploadSingleFile extends Component {
   }
 
   render () {
-    return (<Upload {...this.props} fileList={this.state.fileList} onChange={this.handleChange} />)
+    return (
+      <Upload
+        {...this.props}
+        fileList={this.state.fileList}
+        headers={config().headers}
+        onChange={this.handleChange}
+      />
+    );
   }
 
 }
