@@ -1,34 +1,43 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
 import {Avatar} from 'antd';
+
+import {reproducir} from '../actions/reproductorActions';
 
 /*
     Este componente recibe el id de la cancion
 */
 class BotonPlay extends Component {
 
-    constructor (props) {
-        super(props);
-        this.state = {
-            reproduciendo: false
-        }
-    }
-
-    //Envia a la api la request para obtener la cancion
     clickHandler = () => {
-        this.setState({reproduciendo: !this.state.reproduciendo});
-        
+        const {cancion, reproducir} = this.props;
+        this.props.reproducir(cancion)
     }
 
     render () {
+        const {reproduciendo} = this.props;
         return (
             <Avatar 
                 className='reproduccionIcon'
-                icon={this.state.reproduciendo ? 'pause-circle-o' : 'play-circle-o'}
+                icon={reproduciendo ? 'pause-circle-o' : 'play-circle-o'}
                 onClick={this.clickHandler}
             />
         );
     }
 }
 
-export default BotonPlay;
+const mapStateToProps = (state, ownProps) => ({
+    reproduciendo: false,
+    ...ownProps
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    reproducir: bindActionCreators(reproducir, dispatch)
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(BotonPlay);

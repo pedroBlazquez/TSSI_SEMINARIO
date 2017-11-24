@@ -31,7 +31,7 @@ class Cancion extends Component {
           <div className='cancionInfoContainer'>
               <div className='flex flex-space-between'>
                   <div className='topBlock'>
-                      <BotonPlay idCancion={cancion.id} />
+                      <BotonPlay cancion={cancion} />
                       <div className='cancionTitleBlock'>
                           <h3>{cancion.artista.nombreFantasia}</h3>
                           <h1>{cancion.nombre}</h1>

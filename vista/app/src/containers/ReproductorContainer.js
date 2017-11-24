@@ -7,7 +7,8 @@ import {anterior, siguiente} from '../actions/reproductorActions';
 import Reproductor from '../components/Reproductor';
 
 const mapStateToProps = (state) => ({
-  track: state.reproductor.queue[state.reproductor.current]
+  track: state.reproductor.queue[state.reproductor.current],
+  artista: state.reproductor.queue[state.reproductor.current] && state.reproductor.queue[state.reproductor.current].artista
 });
 
 const mapDispatchToProps = (dispatch) => ({
