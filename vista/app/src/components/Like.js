@@ -25,7 +25,7 @@ class Like extends Component {
     clickHandler = () => {
         let {id, typeContent} = this.props;
         this.setState({liked: !this.state.liked});
-        if (this.state.liked) {
+        if (!this.state.liked) {
             this.state.likes++;
         } else {
             this.state.likes--;
@@ -37,7 +37,7 @@ class Like extends Component {
         return (
             <div>
                 <span className='likesNumber'><strong>{this.state.likes}</strong></span>
-                <Avatar className='like' icon={this.state.liked ? 'like-o' : 'like'} onClick={this.clickHandler}/>
+                <Avatar className='like' icon={this.state.liked ? 'like' : 'like-o'} onClick={this.clickHandler}/>
             </div>
         );
     }

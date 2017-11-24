@@ -13,7 +13,7 @@ class Disco extends Component {
   constructor(props) {
       super(props);
 
-      var url = this.props.disco.img ?
+      var url = this.props.disco.portada ?
         this.props.disco.portada :
         NoImagen;
       this.state = {
