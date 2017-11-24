@@ -8,6 +8,7 @@ import canciones from './canciones';
 import albumes from './albumes';
 import loadingStatus from './loadingStatus';
 import eventos from './eventos';
+import publicaciones from './publicaciones';
 
 export default combineReducers({
   loadingStatus,
@@ -18,5 +19,6 @@ export default combineReducers({
   discos,
   canciones,
   albumes,
-  eventos
+  eventos,
+  publicaciones
 });

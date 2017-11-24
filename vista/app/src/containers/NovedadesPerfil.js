@@ -7,9 +7,11 @@ import {getNovedades} from '../actions/novedadesAction';
 
 import {Card} from 'antd';
 import MainContent from '../components/MainContent';
-import FormNuevaPublicacion from '../components/FormNuevaPublicacion';
+import NuevaPublicacion from '../containers/NuevaPublicacion';
 import withProfile from '../hoc/withProfile';
 import Novedades from '../components/Novedades';
+
+import {getPublicacionesPerfil} from '../selectors/perfil';
 
 class NovedadesPerfil extends Component {
   componentWillMount() {
@@ -20,12 +22,7 @@ class NovedadesPerfil extends Component {
     const {esPerfilPropio, records} = this.props;
     return (
       <MainContent>
-       {esPerfilPropio ?
-          <Card className={'margin-10p'} title={'Publicá un mensaje!'}>
-            <FormNuevaPublicacion />
-          </Card> : 
-          null
-        }
+        {esPerfilPropio ? <NuevaPublicacion /> : null}
         <Novedades conPublicacion={esPerfilPropio} records={records} />
       </MainContent>
     );
@@ -33,7 +30,7 @@ class NovedadesPerfil extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  records: state.novedadesReducer.records
+  records: getPublicacionesPerfil(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

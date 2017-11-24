@@ -14,7 +14,7 @@ class NuevaPublicacion extends Component {
     return (
       <Form onSubmit={onSubmit}>
         <FormItem>
-          {DatosPersonalesValidator({form})('publicacion')(<TextArea rows={4}/>)}
+          {DatosPersonalesValidator({form})('publicacion')(<TextArea rows={4} maxLength={250}/>)}
         </FormItem>
         <FormItem>
           <Button htmlType="submit" className={'green-button'}>{'Publicar'}</Button>
@@ -24,4 +24,15 @@ class NuevaPublicacion extends Component {
   }
 }
 
-export default Form.create()(ExtendedFrom(NuevaPublicacion));
+export default Form.create({
+  onFieldsChange(props, changedFields) {
+    if (typeof props.onChange === 'function') {
+      props.onChange(changedFields);
+    }
+  },
+  mapPropsToFields(props) {
+    return {
+      publicacion: {...props.publicacion},
+    };
+  }
+})(ExtendedFrom(NuevaPublicacion));

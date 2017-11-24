@@ -47,3 +47,8 @@ export const getSeguidoresPerfil = createSelector(
   [getPerfil],
   perfil => perfil.seguidores
 );
+
+export const getPublicacionesPerfil = createSelector(
+  [getPerfil],
+  perfil => perfil.publicaciones
+);
