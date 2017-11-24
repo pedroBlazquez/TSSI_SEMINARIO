@@ -20,6 +20,12 @@ public class GeneroArtistaNegocio {
             this.altaGeneroArtista(cn,ids.getInt(i), artista);
         }
     }
+    public void altaVariosGenerosArtista(Conexion cn, JSONArray ids,Artista artista) throws JSONException {
+        
+        for (int i = 0; i < ids.length(); i++) {
+            this.altaGeneroArtista(cn,ids.getInt(i), artista);
+        }
+    }
     
     public void altaGeneroArtista(Conexion cn,int id, Artista artista) {
         //Conexion cn = new Conexion();

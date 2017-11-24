@@ -72,7 +72,7 @@ public class CompartirControlador {
             boolean exists = CompartirNegocio.getCompartidoUsuario(cn,tipo,id,usermail);
             cn.cerrarConexion();
             if(!exists)
-                return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
             else
                 return new ResponseEntity<Object>(HttpStatus.OK);
         } catch (Exception ex) {

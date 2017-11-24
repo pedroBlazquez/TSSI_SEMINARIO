@@ -2,13 +2,11 @@ package negocio;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Artista;
-import modelos.Genero;
-import modelos.Usuario;
 
 public class InicioNegocio {
     
@@ -65,7 +61,7 @@ public class InicioNegocio {
                 priority_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("from Disco d JOIN FETCH d.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and d.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,false,true));
                 priority_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,false,true));
                 priority_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,true));
-                priority_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and e.fechaPublicacion > '"+date_novedades+"' and e.fechaEvento > '"+date_now+"'"+" order by fechaPublicacion desc"), usermail,true));
+                priority_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and e.fechaEvento > '"+date_now+"' and (e.fechaPublicacion > '"+date_novedades+"' or e.fechaEvento < '"+Tools.DateFormatter(Tools.GetDateDifference(-7))+"') order by fechaPublicacion desc"), usermail,true));
 
                 //--------------------------------------------------------------------
                 //NOVEDADES DE GENEROS DE ARTISTAS SEGUIDOS + SUGERENCIA DE NUEVOS ARTISTAS DE ESTOS GENEROS
@@ -102,7 +98,7 @@ public class InicioNegocio {
                         //busco novedades para Album, Publicacion y Evento, de artistas del genero, que no sean seguidos por el usuario
                         general_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_genero+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,false,true));
                         general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_artistas_genero+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,true));
-                        general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_genero+") and e.fechaPublicacion > '"+date_novedades+"' and e.fechaEvento > '"+date_now+"'"+" order by fechaPublicacion desc",max_result ), usermail,true));
+                        general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_genero+") and e.fechaEvento > '"+date_now+"' and (e.fechaPublicacion > '"+date_novedades+"' or e.fechaEvento < '"+Tools.DateFormatter(Tools.GetDateDifference(-7))+"')  order by fechaPublicacion desc",max_result ), usermail,true));
                         
                         //agrego aleatoriamente 10 artistas que de los generos que le gustan al usuario
                         Collections.shuffle(artistas_genero);
@@ -159,7 +155,7 @@ public class InicioNegocio {
                     general_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("from Disco d JOIN FETCH d.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and d.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,false,true));
                     general_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,false,true));
                     general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,true));
-                    general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and e.fechaPublicacion > '"+date_novedades+"' and e.fechaEvento > '"+date_now+"'"+" order by fechaPublicacion desc",max_result), usermail,true));
+                    general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_seguidos_usuarios_seguidos+") and e.fechaEvento > '"+date_now+"' and (e.fechaPublicacion > '"+date_novedades+"' or e.fechaEvento < '"+Tools.DateFormatter(Tools.GetDateDifference(-7))+"')  order by fechaPublicacion desc",max_result), usermail,true));
                     
                     
                     
@@ -214,11 +210,11 @@ public class InicioNegocio {
             //int top_3 = 1;
             
             //creo lista para devolver
-            List<JSONObject> return_list = new ArrayList<JSONObject>();
+            //List<JSONObject> return_list = new ArrayList<JSONObject>();
             //lista de prioridad (aparece primero)
             List<JSONObject> priority_list = new ArrayList<JSONObject>();
             //lista secundaria
-            List<JSONObject> general_list = new ArrayList<JSONObject>();
+            //List<JSONObject> general_list = new ArrayList<JSONObject>();
             
             if(!busqueda.equals("") || !genero.equals("") || !artista.equals("") || !direccion.equals("") || fecha != null)
             {
