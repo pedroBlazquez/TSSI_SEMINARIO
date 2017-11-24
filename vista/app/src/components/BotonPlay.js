@@ -30,7 +30,7 @@ class BotonPlay extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    reproduciendo: getCurrentSong(state) === ownProps.cancion.id,
+    reproduciendo: getCurrentSong(state).id === ownProps.cancion.id,
     ...ownProps
 })
 
