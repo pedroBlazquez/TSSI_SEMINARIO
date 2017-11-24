@@ -8,18 +8,7 @@ import {
 
 const initialState = {
   current: -1,
-  queue: [
-    // HARDCODEADAS LAS CANCIONES CON MOTIVOS DE TESTING
-    {
-      path: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' 
-    },
-    {
-      path: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' 
-    },
-    {
-      path: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' 
-    }
-  ]
+  queue: []
 }
 
 export default function (state = initialState, action = {}) {

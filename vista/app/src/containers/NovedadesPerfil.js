@@ -17,10 +17,10 @@ class NovedadesPerfil extends Component {
   }
 
   render () {
-    const {esPerfilPropio, records} = this.props;
+    const {esPerfilPropio, esArtista, records} = this.props;
     return (
       <MainContent>
-       {esPerfilPropio ?
+       {esPerfilPropio && esArtista ?
           <Card className={'margin-10p'} title={'Publicá un mensaje!'}>
             <FormNuevaPublicacion />
           </Card> : 
