@@ -5,6 +5,7 @@ import {Card, Avatar} from 'antd';
 import Compartir from './Compartir';
 import Like from './Like';
 import BotonPlay from './BotonPlay';
+import {API_BASE_URL} from '../utils/constants'
 
 import NoImagen from '../assets/default-release.png';
 
@@ -13,8 +14,8 @@ class Disco extends Component {
   constructor(props) {
       super(props);
 
-      var url = this.props.disco.img ?
-        this.props.disco.portada :
+      var url = this.props.disco.portada ?
+        API_BASE_URL + this.props.disco.portada :
         NoImagen;
       this.state = {
           urlImagen: url

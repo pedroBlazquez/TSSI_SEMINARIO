@@ -6,6 +6,7 @@ import Compartir from './Compartir';
 import Like from './Like';
 import BotonPlay from './BotonPlay';
 import AgregarCancionLista from './AgregarCancionLista';
+import {API_BASE_URL} from '../utils/constants'
 
 import NoImagen from '../assets/default-cover.png';
 
@@ -13,8 +14,8 @@ class Cancion extends Component {
   constructor(props) {
       super(props);
 
-      var url = this.props.cancion.disco && this.props.cancion.disco.portada ?
-        this.props.cancion.disco.portada :
+      var url = this.props.cancion.discos && this.props.cancion.discos[0].portada ?
+        API_BASE_URL + this.props.cancion.discos[0].portada :
         NoImagen;
       this.state = {
           urlImagen: url
