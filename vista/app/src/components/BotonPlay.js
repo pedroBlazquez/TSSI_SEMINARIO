@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 import {Avatar} from 'antd';
 
 import {reproducir} from '../actions/reproductorActions';
+import {getCurrentSong} from '../selectors/reproductor';
 
 /*
     Este componente recibe el id de la cancion
@@ -29,7 +30,7 @@ class BotonPlay extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    reproduciendo: false,
+    reproduciendo: getCurrentSong(state) === ownProps.cancion.id,
     ...ownProps
 })
 
