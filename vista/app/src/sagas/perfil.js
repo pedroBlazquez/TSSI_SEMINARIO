@@ -7,6 +7,7 @@ import {TRAER_PERFIL} from '../actions/types';
 import {
   loadingStatus,
   setCancionesPerfil,
+  setCompartidosPerfil,
   setDiscosPerfil,
   setListasPerfil,
   setPublicacionesPerfil,
@@ -51,8 +52,8 @@ export function* traerPerfil(action) {
       yield put(setAlbumesPerfil(agregarArtista(albumes.data, artista)));
       yield put(setEventosPerfil(agregarArtista(eventos.data, artista)));
     } else {
-      const publicaciones = yield call(_get, `/compartir/getCompartidos/${idUsuario}`, headers);
-      yield put(setPublicacionesPerfil(publicaciones.data));
+      const compartidos = yield call(_get, `/compartir/getCompartidos/${idUsuario}`, headers);
+      yield put(setCompartidosPerfil(compartidos.data));
     }
 
     yield put(setSeguidoresPerfil(seguidores.data));

@@ -1,4 +1,5 @@
 import {createSelector} from 'reselect';
+import {USUARIO_OYENTE} from '../utils/constants';
 
 export const getPerfil = (state) => state.perfilReducer;
 
@@ -51,4 +52,23 @@ export const getSeguidoresPerfil = createSelector(
 export const getPublicacionesPerfil = createSelector(
   [getPerfil],
   perfil => perfil.publicaciones
+);
+
+export const getCompartidosPerfil = createSelector(
+  [getPerfil],
+  perfil => perfil.compartidos
+);
+
+export const getNovedadesPorTipoUsuario = createSelector(
+  [getUsuarioPerfil, getPublicacionesPerfil, getCompartidosPerfil],
+  (user, publicaciones, compartidos) => {
+    const tipoUsuario = user.usuarioTipo;
+    if (!tipoUsuario) return [];
+    
+    if (tipoUsuario.id !== USUARIO_OYENTE.id) {
+      return publicaciones;
+    }
+
+    return compartidos.map(c => c[c.object_type.toLowerCase()]);
+  }
 );

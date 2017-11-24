@@ -11,7 +11,7 @@ import NuevaPublicacion from '../containers/NuevaPublicacion';
 import withProfile from '../hoc/withProfile';
 import Novedades from '../components/Novedades';
 
-import {getPublicacionesPerfil} from '../selectors/perfil';
+import {getNovedadesPorTipoUsuario} from '../selectors/perfil';
 
 class NovedadesPerfil extends Component {
   componentWillMount() {
@@ -30,7 +30,7 @@ class NovedadesPerfil extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  records: getPublicacionesPerfil(state)
+  records: getNovedadesPorTipoUsuario(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
