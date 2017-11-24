@@ -7,6 +7,7 @@ import novedades from './novedades';
 import compartir from './compartir';
 import like from './like';
 import buscar from './buscar';
+import publicar from './publicar';
 
 // single entry point to start all Sagas at once
 export default function* rootSaga() {
@@ -17,6 +18,7 @@ export default function* rootSaga() {
     novedades(),
     compartir(),
     like(),
-    buscar()
+    buscar(),
+    publicar()
   ])
 }

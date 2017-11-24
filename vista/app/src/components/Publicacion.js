@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import moment from 'moment';
 
 import {Card, Avatar} from 'antd';
 
@@ -23,7 +24,7 @@ class Publicacion extends Component {
     return (
       <Card
         className={'margin-10p'}
-        title={<CardTitle user={usuario} fechaPublicacion={publicacion.fechaPublicacion}/>}
+        title={<CardTitle user={usuario} fechaPublicacion={moment(publicacion.fechaPublicacion).format('YYYY-MM-DD')}/>}
       >
       {publicacion.texto}
       </Card>
