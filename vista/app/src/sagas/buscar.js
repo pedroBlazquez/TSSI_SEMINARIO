@@ -9,7 +9,7 @@ import {setResultadosBusqueda} from '../actions/buscarActions';
 export function* buscar({parametros}) {
   try {
     const headers = config();
-    const genero = GENEROS.find(g => g.id === parametros.genero);
+    const genero = GENEROS.find(g => g.id.toString() === parametros.genero);
     const fecha = moment(parametros.fecha).isValid() ? moment(parametros.fecha).format('DD-MM-YYY') : '';
     const body = {
       'busqueda': parametros.search,
@@ -26,7 +26,7 @@ export function* buscar({parametros}) {
       headers
     );
 
-    yield put(setResultadosBusqueda(resultado));
+    yield put(setResultadosBusqueda(resultado.data));
   } catch (e) {
       console.log(e);
   }
