@@ -103,6 +103,9 @@
 
 .cancionTitleBlock {
     display: inline-block;
+    h1 {
+        max-width: 245px;
+    }
 }
 
 .cancionTitleBlock {
@@ -123,7 +126,7 @@
 .discoInfoContainer {
     vertical-align: top;
     display: inline-block;
-    min-width: 370px;
+    min-width: 359px;
 }
 
 .discoInfoContainer .topBlock {

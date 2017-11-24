@@ -13,8 +13,8 @@ class Cancion extends Component {
   constructor(props) {
       super(props);
 
-      var url = this.props.cancion.disco && this.props.cancion.disco.portada ?
-        this.props.cancion.disco.portada :
+      var url = this.props.cancion.discos && this.props.cancion.discos[0].portada ?
+        this.props.cancion.discos[0].portada :
         NoImagen;
       this.state = {
           urlImagen: url
