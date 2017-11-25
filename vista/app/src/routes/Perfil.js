@@ -11,6 +11,7 @@ import DiscosPerfil from '../containers/DiscosPerfil';
 import AlbumesPerfil from '../containers/AlbumesPefil';
 import SeguidosContainer from '../containers/SeguidosContainer';
 import SeguidoresContainer from '../containers/SeguidoresContainer';
+import EventosPerfil from '../containers/EventosPerfil';
 
 const Perfil = () => (
   <PerfilContainer>
@@ -22,6 +23,7 @@ const Perfil = () => (
       <Route path={'/perfil/:profileId/canciones'} component={CancionesPerfil}/>
       <Route path={'/perfil/:profileId/discos'} component={DiscosPerfil}/>
       <Route path={'/perfil/:profileId/albumes'} component={AlbumesPerfil}/>
+      <Route path={'/perfil/:profileId/eventos'} component={EventosPerfil}/>
       <AuthRoute
         path={'/perfil/:profileId/administrar'}
         exact
