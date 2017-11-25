@@ -1,4 +1,5 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
+import {message} from 'antd';
 import moment from 'moment';
 
 import {_post, _get, _put, config} from '../utils/api';
@@ -113,8 +114,10 @@ export function* modificarUsuario ({user}) {
     }
 
     yield call(_put, '/usuario/', {...payload}, headers);
+
+    yield call(message.success, 'Actualizado con éxito', 1);
   } catch (e) {
-    console.log(e);
+    yield call(message.warn, 'Un error inesperado ocurrió', 1);
   }
 }
 
