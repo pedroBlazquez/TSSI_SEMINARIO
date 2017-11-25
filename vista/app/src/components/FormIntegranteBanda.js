@@ -16,7 +16,7 @@ class FormIntegranteBanda extends Component {
     return (
       <Form onSubmit={onSubmit}>
         <FormItem>
-          {DatosPersonalesValidator({form})('integrante')
+          {DatosPersonalesValidator({form})('nombre')
             (<Input type={'text'} placeholder='Ingrese el nombre del integrante'/>)
           }
         </FormItem>

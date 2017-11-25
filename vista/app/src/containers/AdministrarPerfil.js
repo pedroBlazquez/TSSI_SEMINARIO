@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import '../styles/AdministrarContenido.css';
 
-import {USUARIO_OYENTE} from '../utils/constants';
+import {USUARIO_OYENTE, USUARIO_BANDA} from '../utils/constants';
 import {updateUser} from '../actions/registerActions';
 
 import PerfilWrapper from '../components/PerfilContentWrapper';
@@ -21,6 +21,7 @@ class AdministrarPerfil extends Component {
   constructor (props) {
     super(props);
     this.esArtista = props.usuario.usuarioTipo.id !== USUARIO_OYENTE.id;
+    this.esBanda = props.usuario.usuarioTipo.id === USUARIO_BANDA.id;
 
     let initialState = {
       usuarioFields: {
@@ -49,7 +50,7 @@ class AdministrarPerfil extends Component {
       const {artista} = props.usuario;
       initialState.artistaFields = {
         generos: {
-          value: artista[0].generos
+          value: artista[0].generos.map(g => g.id)
         },
         fechaInicio: {
           value: moment(artista[0].fechaInicio)
@@ -60,7 +61,7 @@ class AdministrarPerfil extends Component {
         nombreFantasia: {
           value: artista[0].nombreFantasia
         },
-        integrantes: artista[0].integrantes
+        integrantes: artista[0].integrantes || []
       }
     }
 
@@ -111,7 +112,17 @@ class AdministrarPerfil extends Component {
           </TabPane>
           {this.esArtista &&
             <TabPane tab="Artista / Banda" key="2">
-              <div>Aca va la admin de banda / artista</div>
+              <div className={'autoalign'} style={{width: '50%', maxHeight: 440, overflowY: 'auto', paddingRight: 10}}>
+                <DatosArtista
+                  onSubmit={this.onSubmit}
+                  onChange={this.onDatosArtistaChange}
+                  agregarIntegrante={this.agregarIntegrante}
+                  removerIntegrante={this.removerIntegrante}
+                  esBanda={this.esBanda}
+                  {...this.state.artistaFields}
+                  update
+                />
+              </div>
             </TabPane>
           }
         </Tabs>

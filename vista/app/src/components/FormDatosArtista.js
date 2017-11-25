@@ -32,7 +32,16 @@ class DatosArtistaForm extends Component {
   }
 
   render () {
-    const {form, onSubmit, esBanda, onCancel, integrantes, agregarIntegrante, removerIntegrante} = this.props;
+    const {
+      form,
+      onSubmit,
+      esBanda,
+      onCancel,
+      integrantes,
+      agregarIntegrante,
+      removerIntegrante,
+      update
+    } = this.props;
     return (
       <div>
         <Form onSubmit={onSubmit}>
@@ -76,9 +85,11 @@ class DatosArtistaForm extends Component {
           }
           <FormItem >
             <div className='flex flex-space-between'>
-              <Button onClick={onCancel} className={'white-button'}>
-                {'Atrás'}
-              </Button>
+              {!update &&
+                <Button onClick={onCancel} className={'white-button'}>
+                  {'Atrás'}
+                </Button>
+              }
               <Button htmlType="submit" className={'green-button'}>
                 {'Confirmar'}
               </Button>

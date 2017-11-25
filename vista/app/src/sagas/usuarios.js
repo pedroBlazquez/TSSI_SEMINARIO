@@ -1,4 +1,5 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
+import moment from 'moment';
 
 import {_post, _get, _put, config} from '../utils/api';
 import {USUARIO_ARTISTA, USUARIO_BANDA, USUARIO_OYENTE} from '../utils/constants';
@@ -45,7 +46,7 @@ export function* altaUsuario ({user}) {
     payload.usuarioForm = {
       nombre: user.usuarioFields.nombre.value,
       apellido: user.usuarioFields.apellido.value,
-      fechaNacimiento: user.usuarioFields.fechaNacimiento.value.format('DD-MM-YYYY'),
+      fechaNacimiento: user.usuarioFields.fechaNacimiento.value.format('YYYY-MM-DD'),
       mail: user.usuarioFields.usuario.value,
       password: user.usuarioFields.password.value,
       usuarioTipo: user.usuarioFields.tipoUsuario.value
@@ -55,12 +56,18 @@ export function* altaUsuario ({user}) {
       payload.artistaForm = {
         nombreFantasia: user.artistaFields.nombreFantasia.value,
         descripcion: user.artistaFields.descripcion.value,
-        fechaInicio: user.artistaFields.fechaInicio.value.format('DD-MM-YYYY'),
+        fechaInicio: user.artistaFields.fechaInicio.value.format('YYYY-MM-DD'),
         generos: user.artistaFields.generos.value
       }
 
       if (user.usuarioFields.tipoUsuario.value === USUARIO_BANDA.id) {
-        payload.artistaForm.integrantes = user.artistaFields.integrantes;
+        payload.integrantesLista = user.artistaFields.integrantes.map(i => {
+          return {
+            nombre: i.nombre,
+            rol: i.rol,
+            fechaNacimiento: moment(i.fechaNacimiento).format('YYYY-MM-DD')
+          }
+        });
       }
     }
 
@@ -93,7 +100,13 @@ export function* modificarUsuario ({user}) {
       }
 
       if (user.usuarioFields.tipoUsuario.value === USUARIO_BANDA.id) {
-        payload.artistaForm.integrantes = user.artistaFields.integrantes;
+        payload.integrantesLista = user.artistaFields.integrantes.map(i => {
+          return {
+            nombre: i.nombre,
+            rol: i.rol,
+            fechaNacimiento: moment(i.fechaNacimiento).format('DD-MM-YYYY')
+          }
+        });
       }
     }
 
