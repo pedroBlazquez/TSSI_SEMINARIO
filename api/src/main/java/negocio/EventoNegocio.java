@@ -19,7 +19,7 @@ import modelos.Publicacion;
 
 public class EventoNegocio {
     
-    public static ResponseEntity<Object> CreateEvento(String nombre,String descripcion,String direccion, Date fechaEvento, int costo,String usermail)
+    public static ResponseEntity<Object> CreateEvento(String nombre,String descripcion,String direccion, Date fechaEvento, int costo,String usermail,String imagen)
     {
         try
         {
@@ -28,7 +28,7 @@ public class EventoNegocio {
             
             List<Artista> list_artistas = cn.getListQuery("from modelos.Artista WHERE usuario.mail = '"+usermail+"'");
             
-            Evento new_Evento = new Evento(nombre,descripcion,fechaEvento,direccion,costo,new Date(), list_artistas.get(0));
+            Evento new_Evento = new Evento(nombre,descripcion,fechaEvento,direccion,costo,new Date(), list_artistas.get(0),imagen);
             
             cn.add(new_Evento);
             
@@ -40,7 +40,7 @@ public class EventoNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity<Object> UpdateEvento(String idEvento,String nombre,String descripcion,String direccion, Date fechaEvento, int costo)
+    public static ResponseEntity<Object> UpdateEvento(String idEvento,String nombre,String descripcion,String direccion, Date fechaEvento, int costo,String imagen)
     {
         try
         {
@@ -54,6 +54,7 @@ public class EventoNegocio {
             upd_Evento.setDireccion(direccion);
             upd_Evento.setFechaEvento(fechaEvento);
             upd_Evento.setCosto(costo);
+            upd_Evento.setImagen(imagen);
             
             cn.update(upd_Evento);
             

@@ -108,7 +108,7 @@ public class CancionControlador {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
-            String archivo = "path_archivo";
+            String archivo = json.getString("archivo");
             String nombre= json.getString("nombre");
             String genero= json.getString("genero");
             //busca mail de usuario
@@ -130,11 +130,12 @@ public class CancionControlador {
             //obtiene objeto json
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
+            String archivo = json.getString("archivo");
             String idDisco= json.getString("idCancion");
             String nombre= json.getString("nombre");
             String genero= json.getString("genero");
             
-            return CancionNegocio.UpdateCancion(idDisco,nombre,genero);
+            return CancionNegocio.UpdateCancion(idDisco,nombre,genero,archivo);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

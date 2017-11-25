@@ -43,6 +43,10 @@ public class Usuario {
 
     @Column(name = "estado", nullable = false)
     private boolean estado;
+    
+
+    @Column(name = "imagen", nullable = true)
+    private String imagen;
 
     // FK
     @ManyToOne(fetch = FetchType.EAGER)
@@ -83,10 +87,11 @@ public class Usuario {
         this.mail = mail;
         this.password = password;
         this.estado = estado;
+        
     }
     
 	public Usuario(String mail, String password, String nombre, String apellido, Date fechaAlta, boolean estado,
-			UsuarioTipo usuarioTipo) {
+			UsuarioTipo usuarioTipo,String imagen) {
 		super();
 		this.mail = mail;
 		this.password = password;
@@ -95,6 +100,7 @@ public class Usuario {
 		this.fechaAlta = fechaAlta;
 		this.estado = estado;
 		this.usuarioTipo = usuarioTipo;
+		this.imagen = imagen;
 	}
     
 	public String getMail() {
@@ -220,6 +226,7 @@ public class Usuario {
 	    json.put("mail", this.mail);
 	    json.put("nombre", this.nombre);
 	    json.put("apellido", this.apellido);
+        json.put("imagen", this.imagen);
 	    json.put("usuarioTipoId", this.usuarioTipo.getId());
 	    json.put("usuarioTipoDescripcion", this.usuarioTipo.getDescripcion());
 
@@ -229,4 +236,12 @@ public class Usuario {
 
 	    return json;
 	}
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 }

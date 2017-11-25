@@ -210,11 +210,11 @@ public class InicioNegocio {
             //int top_3 = 1;
             
             //creo lista para devolver
-            //List<JSONObject> return_list = new ArrayList<JSONObject>();
+            List<JSONObject> return_list = new ArrayList<JSONObject>();
             //lista de prioridad (aparece primero)
             List<JSONObject> priority_list = new ArrayList<JSONObject>();
             //lista secundaria
-            //List<JSONObject> general_list = new ArrayList<JSONObject>();
+            List<JSONObject> general_list = new ArrayList<JSONObject>();
             
             if(!busqueda.equals("") || !genero.equals("") || !artista.equals("") || !direccion.equals("") || fecha != null)
             {
@@ -298,8 +298,8 @@ public class InicioNegocio {
                     
                     if(!is_evento)
                     {
-                        priority_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("select distinct gc.idGeneroCancion.cancion from GeneroCancion gc JOIN FETCH gc.idGeneroCancion.cancion.artista a WHERE gc.idGeneroCancion.genero.id = "+idGenero+" "+filtro_cancion+" order by gc.idGeneroCancion.cancion.fechaPublicacion desc",top_1), usermail,true,true));
-                        priority_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("select distinct gd.idGeneroDisco.disco from GeneroDisco gd JOIN FETCH gd.idGeneroDisco.disco.artista a WHERE gd.idGeneroDisco.genero.id = "+idGenero+" "+filtro_disco+" order by gd.idGeneroDisco.disco.fechaPublicacion desc",top_1), usermail,false,true));
+                        general_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("select distinct gc.idGeneroCancion.cancion from GeneroCancion gc JOIN FETCH gc.idGeneroCancion.cancion.artista a WHERE gc.idGeneroCancion.genero.id = "+idGenero+" "+filtro_cancion+" order by gc.idGeneroCancion.cancion.fechaPublicacion desc",top_1), usermail,true,true));
+                        general_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("select distinct gd.idGeneroDisco.disco from GeneroDisco gd JOIN FETCH gd.idGeneroDisco.disco.artista a WHERE gd.idGeneroDisco.genero.id = "+idGenero+" "+filtro_disco+" order by gd.idGeneroDisco.disco.fechaPublicacion desc",top_1), usermail,false,true));
                     }
                     List<Artista> artistas_genero = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE ga.idGeneroArtista.genero.id = "+idGenero+" "+filtro_artista_artistagenero);
                     if(!artistas_genero.isEmpty() || !artistas_genero.isEmpty())
@@ -311,14 +311,20 @@ public class InicioNegocio {
                         query_artistas_genero.deleteCharAt(query_artistas_genero.length() - 1);
                         if(!is_evento)
                         {
-                            priority_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_genero+") "+st_nombre+" order by a.fechaPublicacion desc ",top_1), usermail,false,true));
-                            priority_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista a WHERE a.id in ("+query_artistas_genero+") "+st_publicacion+" order by p.fechaPublicacion desc",top_1), usermail,true));
+                            general_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_genero+") "+st_nombre+" order by a.fechaPublicacion desc ",top_1), usermail,false,true));
+                            general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista a WHERE a.id in ("+query_artistas_genero+") "+st_publicacion+" order by p.fechaPublicacion desc",top_1), usermail,true));
                         }
-                        priority_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista a WHERE a.id in ("+query_artistas_genero+") "+st_nombre+filtro_direccion+" and e.fechaEvento "+filtro_fechaEvento+" order by e.fechaEvento desc",top_1), usermail,true));
+                        general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista a WHERE a.id in ("+query_artistas_genero+") "+st_nombre+filtro_direccion+" and e.fechaEvento "+filtro_fechaEvento+" order by e.fechaEvento desc",top_1), usermail,true));
                         
                     }
                     if(!is_evento)
-                        priority_list.addAll(ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true));
+                    {
+                        List<JSONObject> temp_list = ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true);
+                        if(!artista.equals(""))
+                            priority_list.addAll(temp_list);
+                        else
+                            general_list.addAll(temp_list);
+                    }
                 }
                 else
                 {
@@ -330,9 +336,9 @@ public class InicioNegocio {
                             filtros = filtros.replaceFirst(" and ", "");
                             filtros = filtros.replaceFirst("artista.", "ar.");
                             
-                            priority_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("from Cancion c JOIN FETCH c.artista ar WHERE  "+filtros+" order by fechaPublicacion desc",top_1), usermail,true,true));
-                            priority_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("from Disco d JOIN FETCH d.artista ar WHERE  "+filtros+" order by fechaPublicacion desc",top_1), usermail,false,true));
-                            priority_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE  "+filtros+" order by fechaPublicacion desc",top_1), usermail,false,true));
+                            general_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("from Cancion c JOIN FETCH c.artista ar WHERE  "+filtros+" order by fechaPublicacion desc",top_1), usermail,true,true));
+                            general_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("from Disco d JOIN FETCH d.artista ar WHERE  "+filtros+" order by fechaPublicacion desc",top_1), usermail,false,true));
+                            general_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE  "+filtros+" order by fechaPublicacion desc",top_1), usermail,false,true));
                         }
                         
                         filtros = st_publicacion+filtro_artista_directo;
@@ -340,7 +346,7 @@ public class InicioNegocio {
                         {
                             filtros = filtros.replaceFirst(" and ", "");
                             filtros = filtros.replaceFirst("artista.", "ar.");
-                            priority_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE  "+filtros+" order by fechaPublicacion desc"), usermail,true));
+                            general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE  "+filtros+" order by fechaPublicacion desc"), usermail,true));
                         }
                         
                         if(!busqueda_usuario.equals(""))
@@ -351,7 +357,11 @@ public class InicioNegocio {
                         if(!filtro_artista_directo.equals(""))
                         {
                             filtros = filtro_artista_directo.replaceFirst(" and ", "").replaceFirst(" or ", "").replaceFirst("artista.", "");
-                            priority_list.addAll(ArtistaNegocio.setData(cn,cn.getListQuery("from Artista WHERE "+filtros,top_1),usermail,false,true));
+                            List<JSONObject> temp_list = ArtistaNegocio.setData(cn,cn.getListQuery("from Artista WHERE "+filtros,top_1),usermail,false,true);
+                            if(!artista.equals(""))
+                                priority_list.addAll(temp_list);
+                            else
+                                general_list.addAll(temp_list);
                         }
                     }
                     String filtros = st_nombre+filtro_artista_directo;
@@ -359,16 +369,23 @@ public class InicioNegocio {
                     {
                         filtros = filtros.replaceFirst("artista.", "ar.");
                     }
-                    priority_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE e.fechaEvento "+filtro_fechaEvento+" "+filtros+filtro_direccion+" order by e.fechaEvento desc",top_1), usermail,true));
+                    general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE e.fechaEvento "+filtro_fechaEvento+" "+filtros+filtro_direccion+" order by e.fechaEvento desc",top_1), usermail,true));
                     
                 }
                 
                 
             }
             
+
+            //mezclo ambas listas
+            Collections.shuffle(priority_list);
+            Collections.shuffle(general_list);
+
+            return_list.addAll(priority_list);
+            return_list.addAll(general_list);
             
             cn.cerrarConexion();
-            return new ResponseEntity<Object>(priority_list.toString(),HttpStatus.OK);
+            return new ResponseEntity<Object>(return_list.toString(),HttpStatus.OK);
         }catch(Exception e)
         {
             e.printStackTrace();

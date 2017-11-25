@@ -81,13 +81,14 @@ public class EventoControlador {
             String nombre= json.getString("nombre");
             String descripcion= json.getString("descripcion");
             String direccion= json.getString("direccion");
+            String imagen= json.getString("imagen");
             int costo = json.getInt("costo");
             Date fechaEvento = Tools.DateFormatter(json.getString("fechaEvento"));
            
             //busca mail de usuario
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            return EventoNegocio.CreateEvento(nombre,descripcion,direccion,fechaEvento,costo,usermail);
+            return EventoNegocio.CreateEvento(nombre,descripcion,direccion,fechaEvento,costo,usermail,imagen);
             
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -107,10 +108,11 @@ public class EventoControlador {
             String nombre= json.getString("nombre");
             String descripcion= json.getString("descripcion");
             String direccion= json.getString("direccion");
+            String imagen= json.getString("imagen");
             int costo =  json.getInt("costo");
             Date fechaEvento = Tools.DateFormatter(json.getString("fechaEvento"));
             
-            return EventoNegocio.UpdateEvento(idEvento,nombre,descripcion,direccion,fechaEvento,costo);
+            return EventoNegocio.UpdateEvento(idEvento,nombre,descripcion,direccion,fechaEvento,costo,imagen);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
