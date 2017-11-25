@@ -48,7 +48,7 @@ class PerfilSideBar extends Component {
           <div className={'margin-5p'}>
             {esPerfilPropio && 
               <Button className={'green-button full-width margin-5p-bottom'}>
-                {'Editar Perfil'}
+                <NavLink to={`/perfil/${profileId}/editar`}>{'Editar Perfil'}</NavLink>
               </Button>
             }
             {esArtista && esPerfilPropio && 

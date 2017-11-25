@@ -6,6 +6,7 @@ export const CHECK_TOKEN   = 'CHECK_TOKEN';
 // Altas
 export const REGISTER_USER    = 'REGISTER_USER';
 export const SUCCESS_REGISTER = 'SUCCESS_REGISTER';
+export const UPDATE_USER      = 'UPDATE_USER';
 
 // Contenido
 export const ALTA_CANCION = 'ALTA_CANCION';

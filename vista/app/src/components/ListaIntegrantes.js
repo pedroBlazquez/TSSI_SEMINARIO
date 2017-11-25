@@ -10,7 +10,7 @@ class IntegrantesBanda extends Component {
     this.columns = [
       {
         title: 'Integrante',
-        dataIndex: 'integrante',
+        dataIndex: 'nombre',
         key: 'integrante',
       }, {
         title: 'Rol',
