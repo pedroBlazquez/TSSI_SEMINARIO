@@ -188,7 +188,7 @@ public class UsuarioControlador {
             }
             List<Usuario> lu = new ArrayList<Usuario>();
             lu.add(u);
-            List<JSONObject> jobj_list = UsuarioNegocio.setData(cn,lu, usermail);
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(cn,lu, usermail,true);
             cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.get(0).toString(), HttpStatus.OK);
         } catch (Exception ex) {

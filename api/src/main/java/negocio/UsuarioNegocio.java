@@ -167,7 +167,7 @@ public class UsuarioNegocio {
         return list;
     }*/
     
-    public static List<JSONObject> setData(Conexion cn,List<Usuario> usuarios,String usermail) throws JsonProcessingException, JSONException
+    public static List<JSONObject> setData(Conexion cn,List<Usuario> usuarios,String usermail,boolean w_integrantes) throws JsonProcessingException, JSONException
     {
         //Conexion cn = new Conexion();
         //cn.abrirConexion();
@@ -184,7 +184,7 @@ public class UsuarioNegocio {
                 List<Artista> artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+idUsuario);
                 if(!artista.isEmpty()) //es artista
                 {
-                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(cn,artista,usermail,false,false)));
+                    jobj.put("artista", new JSONArray(ArtistaNegocio.setData(cn,artista,usermail,w_integrantes,false)));
                 }
             }
             else
