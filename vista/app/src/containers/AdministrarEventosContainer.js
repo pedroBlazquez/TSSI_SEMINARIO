@@ -25,23 +25,27 @@ class AdministrarEventosContainer extends Component {
     const {eventos} = this.props;
     const evento = eventos.find(c => c.id === id);
 
-    this.setState({evento: {
-      nombre: {
-        value: evento.nombre
+    this.setState({
+      evento: {
+        nombre: {
+          value: evento.nombre
+        },
+        descripcion: {
+          value: evento.descripcion
+        },
+        direccion: {
+          value: evento.direccion
+        },
+        fecha : {
+          value: moment(evento.fechaEvento)
+        },
+        costo : {
+          value: evento.costo
+        }
       },
-      descripcion: {
-        value: evento.descripcion
-      },
-      direccion: {
-        value: evento.direccion
-      },
-      fecha : {
-        value: moment(evento.fechaEvento)
-      },
-      costo : {
-        value: evento.costo
-      }
-    }, editando: id});
+      editando: id,
+      imagen: evento.imagen
+    });
   }
 
   onEliminar = (id) => {
@@ -62,6 +66,7 @@ class AdministrarEventosContainer extends Component {
       const {editando} = this.state;
       const evento = {
         ...values,
+        imagen: values.imagen || this.state.imagen,
         idEvento: editando.toString(),
       };
       this.setState(initialState);
@@ -86,6 +91,7 @@ class AdministrarEventosContainer extends Component {
           onSubmit: this.onSubmit,
           onCancel: this.onCancel,
           onChange: this.onFormChange,
+          imagen: this.state.imagen,
           ...this.state.evento
         }}
         modalTitle={this.state.editando === null ? 'Alta Evento' : 'Actualizar Evento'}
