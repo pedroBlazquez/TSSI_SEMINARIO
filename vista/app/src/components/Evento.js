@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+import {Link} from 'react-router-dom';
 import {Card, Avatar} from 'antd';
 
 import Compartir from './Compartir';
@@ -9,7 +10,9 @@ const CardTitle = ({artista, fechaPublicacion, id}) => (
     <div>
       <Avatar className='avatarIcon' icon={'user'}/>
       <div className='cardHeaderInfo'>
-        <h2 className='novedadTitulo'>{artista}</h2>
+        <Link to={`/perfil/${artista.usuario.id}`} style={{color: 'black'}}>
+          <h2 className='novedadTitulo'>{artista.nombreFantasia}</h2>
+        </Link>
         <span className='fechaPublicacion'>{fechaPublicacion}</span>
       </div>
     </div>
@@ -23,7 +26,12 @@ class Evento extends Component {
     return (
       <Card
         className={'margin-10p'}
-        title={<CardTitle artista={evento.artista.nombreFantasia} fechaPublicacion={evento.fechaPublicacion} id={evento.id}/>}
+        title={
+          <CardTitle
+            artista={evento.artista}
+            fechaPublicacion={evento.fechaPublicacion}
+            id={evento.id}/>
+          }
       >
         { !!evento.imagen &&
           <div className='eventoImagenMarco'>

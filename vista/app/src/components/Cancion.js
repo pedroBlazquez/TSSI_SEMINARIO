@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {Card, Avatar} from 'antd';
+import {Link} from 'react-router-dom';
 
 import Compartir from './Compartir';
 import Like from './Like';
@@ -33,7 +34,9 @@ class Cancion extends Component {
                   <div className='topBlock'>
                       <BotonPlay cancion={cancion} />
                       <div className='cancionTitleBlock'>
+                        <Link to={`/perfil/${cancion.artista.usuario.id}`} style={{color: 'black'}}>
                           <h3>{cancion.artista.nombreFantasia}</h3>
+                        </Link>
                           <h1>{cancion.nombre}</h1>
                       </div>
                       <AgregarCancionLista id={cancion.id}/>

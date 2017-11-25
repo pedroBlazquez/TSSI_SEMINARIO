@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {Card, Avatar} from 'antd';
+import {Link} from 'react-router-dom';
 
 import Compartir from './Compartir';
 import Like from './Like';
@@ -22,7 +23,9 @@ class Disco extends Component {
                 <div className='flex flex-space-between'>
                     <div className='topBlock'>
                         <h1>{disco.nombre}</h1>
-                        <h3>{disco.artista.nombreFantasia}</h3>
+                        <Link to={`/perfil/${disco.artista.usuario.id}`} style={{color: 'black'}}>
+                            <h3>{disco.artista.nombreFantasia}</h3>
+                        </Link>
                         <h5>{disco.fechaPublicacion}</h5>
                     </div>
                     <Compartir id={disco.id} typeContent='Disco'/>

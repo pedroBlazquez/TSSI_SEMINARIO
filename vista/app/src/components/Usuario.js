@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+import {Link} from 'react-router-dom';
 import {Card, Avatar} from 'antd';
 
 import Compartir from './Compartir';
@@ -21,7 +22,11 @@ class Usuario extends Component {
           </div>
           <div className='artistaInfoContainer'>
               <div className='topBlock flex flex-space-between'>
-                  <h1 className='artistaTitulo'><strong>{usuario.nombre + ' ' + usuario.apellido}</strong></h1>
+                <Link to={`/perfil/${usuario.id}`} style={{color: 'black'}}>
+                    <h1 className='artistaTitulo'>
+                        <strong>{usuario.nombre + ' ' + usuario.apellido}</strong>
+                    </h1>
+                </Link>
                   <Compartir id={usuario.id} typeContent='Artista'/>
               </div>
           </div>

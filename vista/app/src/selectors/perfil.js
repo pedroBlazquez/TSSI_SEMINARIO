@@ -10,18 +10,18 @@ export const getUsuarioPerfil = createSelector(
 );
 
 export const getCancionesPerfil = createSelector(
-  [getPerfil],
-  perfil => perfil.canciones
+  [getPerfil, getUsuarioPerfil],
+  (perfil, user) => appendUser(perfil.canciones, user)
 );
 
 export const getDiscosPerfil = createSelector(
-  [getPerfil],
-  perfil => perfil.discos
+  [getPerfil, getUsuarioPerfil],
+  (perfil, user )=> appendUser(perfil.discos, user)
 );
 
 export const getAlbumesPerfil = createSelector(
-  [getPerfil],
-  perfil => perfil.albumes
+  [getPerfil, getUsuarioPerfil],
+  (perfil, user) => appendUser(perfil.albumes, user)
 );
 
 export const getListasPerfil = createSelector(
@@ -30,14 +30,14 @@ export const getListasPerfil = createSelector(
 );
 
 export const getEventosPerfil = createSelector(
-  [getPerfil],
-  perfil => perfil.eventos
+  [getPerfil, getUsuarioPerfil],
+  (perfil, user)=> appendUser(perfil.eventos, user)
 );
 
 
 export const getLoadingPerfil = createSelector(
   [getPerfil],
-  perfil => perfil.loadingStatus
+  (perfil) => perfil.loadingStatus
 );
 
 export const getSeguidosPerfil = createSelector(
@@ -51,13 +51,13 @@ export const getSeguidoresPerfil = createSelector(
 );
 
 export const getPublicacionesPerfil = createSelector(
-  [getPerfil],
-  perfil => perfil.publicaciones
+  [getPerfil, getUsuarioPerfil],
+  (perfil, user) => appendUser(perfil.publicaciones, user)
 );
 
 export const getCompartidosPerfil = createSelector(
-  [getPerfil],
-  perfil => perfil.compartidos
+  [getPerfil, getUsuarioPerfil],
+  (perfil, user) => appendUser(perfil.compartidos, user)
 );
 
 export const getNovedadesPorTipoUsuario = createSelector(
@@ -82,3 +82,10 @@ export const getSiguiendoPerfil = createSelector(
     return !!siguiendo;
   }
 );
+
+function appendUser(record, currUser) {
+  if (!record) return record;
+  if (currUser.usuarioTipo === USUARIO_OYENTE.id) return record;
+
+  return record.map(r => ({...r, artista: {...r.artista, usuario: currUser}}));
+}
