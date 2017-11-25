@@ -23,7 +23,7 @@ import modelos.Genero;
 
 public class AlbumNegocio {
     
-    public static ResponseEntity<Object> CreateAlbum(String nombre,  ArrayList<String> discos, String usermail)
+    public static ResponseEntity<Object> CreateAlbum(String nombre,  ArrayList<String> discos, String usermail,String portada)
     {
         try
         {
@@ -35,7 +35,7 @@ public class AlbumNegocio {
             
             List<Artista> list_artistas = cn.getListQuery("from modelos.Artista WHERE usuario.mail = '"+usermail+"'");
             
-            Album new_Album = new Album(nombre,new Date(),list_artistas.get(0));
+            Album new_Album = new Album(nombre,new Date(),list_artistas.get(0),portada);
             
             List<DiscoAlbum> new_DiscoAlbum = new ArrayList<DiscoAlbum>();
             for(Disco c : list_discos)
@@ -54,7 +54,7 @@ public class AlbumNegocio {
             return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
         }
     }
-    public static ResponseEntity<Object> UpdateAlbum(String idAlbum,String nombre,  ArrayList<String> discos)
+    public static ResponseEntity<Object> UpdateAlbum(String idAlbum,String nombre,  ArrayList<String> discos,String portada)
     {
         try
         {
@@ -72,7 +72,8 @@ public class AlbumNegocio {
                 new_DiscoAlbum.add(new DiscoAlbum(c, upd_Album));
             
             upd_Album.setNombre(nombre);
-            upd_Album.setFechaPublicacion(new Date());
+            //upd_Album.setFechaPublicacion(new Date());
+            upd_Album.setPortada(portada);
 
             upd_Album.setDiscosAlbum(new_DiscoAlbum);
             
