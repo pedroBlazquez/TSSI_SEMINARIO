@@ -22,7 +22,8 @@ public class GestorArchivo {
         CANCION,
         DISCO_PORTADA,
         EVENTO_FOTO,
-        PERFIL_FOTO        
+        PERFIL_FOTO,
+        ALBUM_PORTADA
     }
 
     public GestorArchivo() throws IOException {
@@ -30,6 +31,7 @@ public class GestorArchivo {
         carpetas.put(TipoContenido.DISCO_PORTADA, "/portadas/");
         carpetas.put(TipoContenido.EVENTO_FOTO, "/eventos/");
         carpetas.put(TipoContenido.PERFIL_FOTO, "/perfil/");
+        carpetas.put(TipoContenido.ALBUM_PORTADA, "/albumes/");
 
         this.basePath = new File(".").getCanonicalPath();
     }

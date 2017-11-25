@@ -77,6 +77,23 @@ public class ArchivoControlador {
         return pathFinal;
     }
 
+    @RequestMapping(value = "/subirAlbumPortada", method = RequestMethod.POST)
+    public String subirAlbumPortada(
+		HttpServletRequest request,
+        HttpServletResponse response,
+        @RequestParam("file") MultipartFile archivo
+    ) throws IOException {
+
+        if (archivo.isEmpty()) {
+            response.sendError(HttpStatus.OK.value(), "El archivo está vacio");
+        }
+
+        String token = request.getHeader(HEADER_STRING);
+        String pathFinal = this.subirArchivo(archivo, TipoContenido.ALBUM_PORTADA, token);
+
+        return pathFinal;
+    }
+
     @RequestMapping(value = "/subirPerfilFoto", method = RequestMethod.POST)
     public String subirPerfilFoto(
 		HttpServletRequest request,
