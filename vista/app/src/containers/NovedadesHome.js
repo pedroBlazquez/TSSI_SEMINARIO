@@ -14,10 +14,15 @@ import withProfile from '../hoc/withProfile';
 import Novedades from '../components/Novedades';
 import Reproductor from '../components/Reproductor';
 import ModalListasReproduccion from '../components/ModalListasReproduccion';
+import {ocultarListas} from '../actions/listasReproduccionActions';
 
 class NovedadesHome extends Component {
   componentWillMount() {
     this.props.getNovedades();
+  }
+
+  componentWillUnmount () {
+    this.props.cerrarModal();
   }
 
   render () {
@@ -39,6 +44,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  cerrarModal: bindActionCreators(ocultarListas, dispatch),
   getNovedades: bindActionCreators(getNovedades, dispatch)
 });
 
