@@ -24,11 +24,6 @@ class Usuario extends Component {
                   <h1 className='artistaTitulo'><strong>{usuario.nombre + ' ' + usuario.apellido}</strong></h1>
                   <Compartir id={usuario.id} typeContent='Artista'/>
               </div>
-              <div className='flex flex-space-between'>
-                  <div className='columnRight'>
-                      <Like id={usuario.id} typeContent='Artista' likes={usuario.seguidores} isLiked={usuario.seguido}/>
-                  </div>
-              </div>
           </div>
           
       </Card>

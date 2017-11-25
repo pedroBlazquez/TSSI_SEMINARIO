@@ -46,6 +46,9 @@ export const SEND_COMPARTIR       = 'SEND_COMPARTIR';
 // Like
 export const SEND_LIKE            = 'SEND_LIKE';
 
+// Seguir
+export const SEGUIR_USUARIO       = 'SEGUIR_USUARIO';
+
 
 // BUSCAR
 export const BUSCAR               = 'BUSCAR';

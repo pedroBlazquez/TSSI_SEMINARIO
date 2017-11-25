@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect';
 import {USUARIO_OYENTE} from '../utils/constants';
+import {getCurrentUser} from './login';
 
 export const getPerfil = (state) => state.perfilReducer;
 
@@ -70,5 +71,14 @@ export const getNovedadesPorTipoUsuario = createSelector(
     }
 
     return compartidos.map(c => c[c.object_type.toLowerCase()]);
+  }
+);
+
+export const getSiguiendoPerfil = createSelector(
+  [getCurrentUser, getSeguidoresPerfil],
+  (user, seguidores) => {
+    const siguiendo = seguidores.find(s => s.id === user.id);
+
+    return !!siguiendo;
   }
 );
