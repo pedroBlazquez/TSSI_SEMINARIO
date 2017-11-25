@@ -26,14 +26,18 @@ class AdministrarCancionesContainer extends Component {
     const {canciones} = this.props;
     const cancion = canciones.find(c => c.id === id);
 
-    this.setState({cancion: {
-      nombre: {
-        value: cancion.nombre
+    this.setState({
+      cancion: {
+        nombre: {
+          value: cancion.nombre
+        },
+        genero: {
+          value: cancion.genero.id
+        }
       },
-      genero: {
-        value: cancion.genero.id
-      }
-    }, editando: id});
+      editando: id,
+      audio: cancion.archivo
+    });
   }
 
   onEliminar = (id) => {
@@ -52,8 +56,10 @@ class AdministrarCancionesContainer extends Component {
     const {onSubmit, onUpdate, alta, modificar} = this.props;
     if (this.state.editando !== null) {
       const {editando} = this.state;
+      const audio = values.audio || this.state.audio;
       const cancion = {
         ...values,
+        audio,
         idCancion: editando.toString(),
         genero: GENEROS.find(g => g.id === values.genero).value
       };
@@ -79,7 +85,8 @@ class AdministrarCancionesContainer extends Component {
           onSubmit: this.onSubmit,
           onCancel: this.onCancel,
           onChange: this.onFormChange,
-          ...this.state.cancion
+          ...this.state.cancion,
+          audio: this.state.audio
         }}
         modalTitle={this.state.editando === null ? 'Alta Cancion' : 'Actualizar Canción'}
         contenidoProps={{

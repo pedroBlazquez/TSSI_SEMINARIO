@@ -71,7 +71,14 @@ export function* modificarCancion(action) {
     const user = yield select(getCurrentUser);
     const artista = user.artista[0]
     const headers = config();
-    yield call(_put, '/canciones/', {...cancion}, headers);
+    const audio = typeof cancion.audio === 'string' ? cancion.audio : BASE_URL + cancion.audio.file.response;
+    const payload = {
+      nombre: cancion.nombre,
+      genero: cancion.genero,
+      archivo: audio,
+      idCancion: cancion.idCancion
+    };
+    yield call(_put, '/canciones/', {...payload}, headers);
     
     // Despues de hacer la baja, buscamos las canciones actualizadas
     const cancionesActualizadas = yield call(_get, `/canciones/getArtista/${artista.id}`, headers);
