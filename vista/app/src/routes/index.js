@@ -25,9 +25,9 @@ const MainRoute = ({isLogged}) => (
     <Route component={LoginForm} path="/login" />
     <Route component={RegistroUsuario} path="/registrarse"/>
     {isLogged && 
-      <div style={{position: 'fixed', bottom: 0, width: '100%', 'background-color': 'grey', height: 60}}>
+      <div style={{position: 'fixed', bottom: 0, width: '100%', backgroundoClor: 'grey', height: 60}}>
         <div style={{position: 'absolute', top: 20, left: 20}}>(C) Copyright MusicApp 2017</div>
-        <Reproductor style={{margin: 'auto', 'margin-top': 10}} />
+        <Reproductor style={{margin: 'auto', marginTop: 10}} />
       </div>
     }
   </MainLayout>
