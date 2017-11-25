@@ -15,12 +15,13 @@ export default class ListaUsuarios extends Component {
       let element;
 
       if (!!record.artista) {
-        let artista = record.artista[0];
-        delete record.artista;
+        const {artista, ...other} = record;
+        const newRecord = {
+          ...artista[0],
+          usuario: other
+        };
 
-        artista.usuario = record;
-
-        element = <Artista key={record.id} artista={artista} />;
+        element = <Artista key={record.id} artista={newRecord} />;
       } else {
         element = <Usuario key={record.id} usuario={record} />;
       }
