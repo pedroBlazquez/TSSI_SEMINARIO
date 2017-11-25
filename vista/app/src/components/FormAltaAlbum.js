@@ -65,7 +65,7 @@ class FormAltaAlbum extends Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
           {DatosPersonalesValidator({form})('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre del Album'/>)
+            (<Input type={'text'} placeholder='Ingrese el nombre del Album' maxLength={100}/>)
           }
         </FormItem>
         <FormItem 

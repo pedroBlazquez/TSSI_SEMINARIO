@@ -28,18 +28,18 @@ class FormAltaEvento extends Component {
       <Form onSubmit={onSubmit}>
         <FormItem>
           {DatosPersonalesValidator({form})('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre del evento'/>)
+            (<Input type={'text'} placeholder='Ingrese el nombre del evento' maxLength={100}/>)
           }
         </FormItem>
         <FormItem>
           {DatosPersonalesValidator({form})('direccion')
-            (<Input type={'text'} placeholder='Ingrese la direccion del evento'/>)
+            (<Input type={'text'} placeholder='Ingrese la direccion del evento' maxLength={100}/>)
           }
         </FormItem>
         <FormItem>
             {
               DatosPersonalesValidator({form})('descripcion')
-              (<TextArea placeholder={'Ingrese una breve descripcion'} rows={4}/>)
+              (<TextArea placeholder={'Ingrese una breve descripcion'} rows={4} maxLength={250}/>)
             }
           </FormItem>
         <FormItem>

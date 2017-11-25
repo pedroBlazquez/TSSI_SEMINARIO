@@ -8,6 +8,7 @@ class PasswordInput extends Component {
         prefix={<Icon type="lock" style={{ fontSize: 13 }} />}
         type="password"
         placeholder="Password"
+        maxLength={100}
         {...this.props}
       />
     );

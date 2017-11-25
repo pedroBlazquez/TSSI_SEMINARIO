@@ -26,7 +26,7 @@ class FormAltaCancion extends Component {
       <Form onSubmit={onSubmit}>
         <FormItem>
           {DatosPersonalesValidator({form})('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre de la cancion'/>)
+            (<Input type={'text'} placeholder='Ingrese el nombre de la cancion' maxLength={100}/>)
           }
         </FormItem>
         <FormItem>

@@ -6,6 +6,7 @@ class MailInput extends Component {
     return (
       <Input
         prefix={<Icon type="mail" style={{ fontSize: 13 }} />}
+        maxLength={100}
         placeholder="email@mail.com"
         {...this.props}
       />

@@ -73,7 +73,7 @@ class FormAltaDisco extends Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
           {DatosPersonalesValidator({form})('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre del disco'/>)
+            (<Input type={'text'} placeholder='Ingrese el nombre del disco'maxLength={100} />)
           }
         </FormItem>
         <FormItem>
