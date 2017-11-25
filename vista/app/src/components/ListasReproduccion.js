@@ -16,9 +16,12 @@ class ListasReproduccion extends Component {
 
         return (
             <div>
-                {listas.map((lista) => {
-                    return <ListaReproduccion lista={lista}/>
-                })}
+                {
+                    !!listas &&
+                    listas.map((lista) => {
+                        return <ListaReproduccion lista={lista}/>
+                    })
+                }
             </div>
         );
     }
