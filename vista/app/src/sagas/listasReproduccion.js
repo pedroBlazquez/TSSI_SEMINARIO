@@ -21,11 +21,29 @@ export function* pushSongToListSaga(action) {
         const headers = config();
         const payload = {'idListaReproduccion': action.idLista, 'idCancion': action.idCancion};
         const response = yield call(_put, '/listas/agregarCancion', payload, headers);
-
+        
         yield call(message.success, 'Cancion agregada con exito');
     } catch (e) {
         console.log(e);
         yield call(message.warn, 'Hubo un error, vuelva a intentarlo');
+    }
+}
+
+export function* altaLista(action) {
+    try {
+        const headers = config();
+        const lista = action.lista;
+        const payload = {
+            ...lista,
+            canciones: []
+        };
+
+        yield call(_post, '/listas/', payload, headers);
+
+        const listas = yield call(_get, `/listas/getUsuario/0`, headers);
+
+    } catch (e) {
+        console.log(e);
     }
 }
 
