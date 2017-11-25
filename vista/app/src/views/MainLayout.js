@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Layout } from 'antd';
 
-const { Header, Footer } = Layout;
+const { Header } = Layout;
 
-const MainLayout = ({header, footer, children}) => (
+const MainLayout = ({header, children}) => (
   <Layout >
     <Header className={'bg-color-light-gray'}>
       {header}
@@ -12,9 +12,6 @@ const MainLayout = ({header, footer, children}) => (
     <Layout className={'main-container'}>
         {children}
     </Layout>
-    <Footer className={'bg-color-light-gray'}>
-      {footer}
-    </Footer>
   </Layout>
 );
 
