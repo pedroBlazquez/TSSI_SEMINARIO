@@ -34,9 +34,6 @@ class Artista extends Component {
                       <div><strong>Inicio:</strong> {artista.fechaInicio}</div>
                       <div><strong>Generos:</strong> {generos.join(', ')}</div>
                   </div>
-                  <div className='columnRight'>
-                      <Like id={artista.id} typeContent='Artista' likes={artista.seguidores} isLiked={artista.seguido}/>
-                  </div>
               </div>
           </div>
           
