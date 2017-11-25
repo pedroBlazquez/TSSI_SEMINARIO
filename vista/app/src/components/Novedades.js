@@ -19,22 +19,22 @@ export default class Novedades extends Component {
       let element;
       switch(record.object_type) {
         case OBJECT_TYPES.ARTISTA:
-          element = <Artista key={record.id} artista={record} />;
+          element = <Artista key={record.id + 'Artista'} artista={record} />;
           break;
         case OBJECT_TYPES.PUBLICACION:
-          element = <Publicacion key={record.id} publicacion={record} />;
+          element = <Publicacion key={record.id + 'Publicacion'} publicacion={record} />;
           break;
         case OBJECT_TYPES.EVENTO:
-          element = <Evento key={record.id} evento={record} />;
+          element = <Evento key={record.id + 'Evento'} evento={record} />;
           break;
         case OBJECT_TYPES.DISCO:
-          element = <Disco key={record.id} disco={record} />;
+          element = <Disco key={record.id + 'Disco'} disco={record} />;
           break;
         case OBJECT_TYPES.CANCION:
-          element = <Cancion key={record.id} cancion={record} />;
+          element = <Cancion key={record.id + 'Cancion'} cancion={record} />;
           break;
         case OBJECT_TYPES.ALBUM:
-          element = <Album key={record.id} album={record}/>;
+          element = <Album key={record.id + 'Album'} album={record}/>;
           break;
       }
       return element;
