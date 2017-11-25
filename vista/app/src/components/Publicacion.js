@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import moment from 'moment';
+import {Link} from 'react-router-dom';
 
 import {Card, Avatar} from 'antd';
 
-const CardTitle = ({user, fechaPublicacion}) => (
+const CardTitle = ({nombreUsuario, usuario, fechaPublicacion}) => (
   <div className={'flex flex-space-between'}>
     <div>
       <Avatar className='avatarIcon' icon={'user'}/>
       <div className='cardHeaderInfo'>
-        <h2 className='novedadTitulo'>{user}</h2>
+        <Link to={`/perfil/${usuario.id}`} style={{color: 'black'}}>
+          <h2 className='novedadTitulo'>{nombreUsuario}</h2>
+        </Link>
         <span className='fechaPublicacion'>{fechaPublicacion}</span>
       </div>
     </div>
@@ -17,14 +20,20 @@ const CardTitle = ({user, fechaPublicacion}) => (
 
 class Publicacion extends Component {
   render () {
-    const {publicacion} = this.props,
-          usuario = publicacion.artista ?
-            publicacion.artista.nombreFantasia :
-            publicacion.usuario.nombre + ' ' + publicacion.usuario.apellido;
+    const {publicacion} = this.props;
+    const usuario = publicacion.artista ? publicacion.artista.usuario : publicacion.usuario;
+    const nombreUsuario = publicacion.artista ? publicacion.artista.nombreFantasia :
+      usuario.nombre + ' ' + usuario.apellido;
     return (
       <Card
         className={'margin-10p'}
-        title={<CardTitle user={usuario} fechaPublicacion={moment(publicacion.fechaPublicacion).format('YYYY-MM-DD')}/>}
+        title={
+          <CardTitle
+            nombreUsuario={nombreUsuario}
+            usuario={usuario}
+            fechaPublicacion={moment(publicacion.fechaPublicacion).format('YYYY-MM-DD')}
+          />
+        }
       >
       {publicacion.texto}
       </Card>

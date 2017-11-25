@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {Card, Avatar} from 'antd';
+import {Link} from 'react-router-dom';
 
 import Compartir from './Compartir';
 import Like from './Like';
@@ -35,7 +36,9 @@ class Album extends Component {
                 <div className='flex flex-space-between'>
                     <div className='topBlock'>
                         <h1>{album.nombre}</h1>
-                        <h3>{album.artista.nombreFantasia}</h3>
+                        <Link to={`/perfil/${album.artista.usuario.id}`} style={{color: 'black'}}>
+                            <h3>{album.artista.nombreFantasia}</h3>
+                        </Link>
                         <h5>{album.fechaPublicacion}</h5>
                     </div>
                     <Compartir id={album.id} typeContent={OBJECT_TYPES.ALBUM}/>
