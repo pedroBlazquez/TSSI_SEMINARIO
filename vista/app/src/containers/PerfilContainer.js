@@ -9,7 +9,8 @@ import PerfilLayout from '../views/PerfilLayout';
 import PerfilSideBar from '../components/PerfilSideBar';
 import withProfile from '../hoc/withProfile';
 
-import {cargarPerfil, restorePerfil} from '../actions/perfilActions'
+import {cargarPerfil, restorePerfil} from '../actions/perfilActions';
+import {bajaUsuario} from '../actions/registerActions';
 import {getLoadingPerfil} from '../selectors/perfil';
 
 const SideBar = withRouter(withProfile(PerfilSideBar));
@@ -37,11 +38,11 @@ class PerfilContainer extends Component {
   }
 
   render () {
-    const {children, loading} = this.props;
+    const {children, loading, bajaUsuario} = this.props;
     if (loading) return (<Spin />);
     return (
       <PerfilLayout
-        sider={<SideBar />}
+        sider={<SideBar bajaUsuario={bajaUsuario} />}
       >
         {children}
       </PerfilLayout>
@@ -55,7 +56,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   cargarPerfil: bindActionCreators(cargarPerfil, dispatch),
-  restorePerfil: bindActionCreators(restorePerfil, dispatch)
+  restorePerfil: bindActionCreators(restorePerfil, dispatch),
+  bajaUsuario: bindActionCreators(bajaUsuario, dispatch)
 });
 
 export default withRouter(connect(
