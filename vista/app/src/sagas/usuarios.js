@@ -1,9 +1,9 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 
-import {_post, _get, config} from '../utils/api';
+import {_post, _get, _put, config} from '../utils/api';
 import {USUARIO_ARTISTA, USUARIO_BANDA, USUARIO_OYENTE} from '../utils/constants';
 import {setAuthToken, getAuthToken} from '../utils/storage';
-import {REQUEST_LOGIN, REGISTER_USER, CHECK_TOKEN} from '../actions/types';
+import {REQUEST_LOGIN, REGISTER_USER, CHECK_TOKEN, UPDATE_USER} from '../actions/types';
 import {errorLogin, successLogin} from '../actions/loginActions'; 
 import {failRegister, successRegister} from '../actions/registerActions'; 
 
@@ -71,18 +71,43 @@ export function* altaUsuario ({user}) {
   }
 }
 
-export function* checkMail ({user}) {
+export function* modificarUsuario ({user}) {
   try {
-    yield _post('/usuario/registro/checkMail', {mail: user.usuario});
+    const payload = {};
+    const headers = config();
+    payload.usuarioForm = {
+      nombre: user.usuarioFields.nombre.value,
+      apellido: user.usuarioFields.apellido.value,
+      fechaNacimiento: user.usuarioFields.fechaNacimiento.value.format('DD-MM-YYYY'),
+      mail: user.usuarioFields.usuario.value,
+      password: user.usuarioFields.password.value,
+      usuarioTipo: user.usuarioFields.tipoUsuario.value
+    };
 
+    if (user.usuarioFields.tipoUsuario.value !== USUARIO_OYENTE.id) {
+      payload.artistaForm = {
+        nombreFantasia: user.artistaFields.nombreFantasia.value,
+        descripcion: user.artistaFields.descripcion.value,
+        fechaInicio: user.artistaFields.fechaInicio.value.format('DD-MM-YYYY'),
+        generos: user.artistaFields.generos.value
+      }
+
+      if (user.usuarioFields.tipoUsuario.value === USUARIO_BANDA.id) {
+        payload.artistaForm.integrantes = user.artistaFields.integrantes;
+      }
+    }
+
+    yield call(_put, '/usuario/', {...payload}, headers);
   } catch (e) {
-
+    console.log(e);
   }
-}  
+}
+
 
 // Our watcher Saga
 export default function* watchLoginSagas () {
   yield takeEvery(REQUEST_LOGIN, requestLoginSaga);
   yield takeEvery(REGISTER_USER, altaUsuario);
+  yield takeEvery(UPDATE_USER, modificarUsuario);
   yield takeEvery(CHECK_TOKEN, checkToken);
 }

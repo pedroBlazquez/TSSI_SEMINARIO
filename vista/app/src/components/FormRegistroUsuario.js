@@ -19,7 +19,7 @@ const FormItem = Form.Item;
 class RegistroUsuarioForm extends Component {
 
   render () {
-    const {form, onSubmit, onCancel, onTipoUsuarioChange} = this.props;
+    const {form, onSubmit, onCancel, onTipoUsuarioChange, update} = this.props;
     return (
       <Form onSubmit={onSubmit}>
         <FormItem>
@@ -41,24 +41,29 @@ class RegistroUsuarioForm extends Component {
           }
         </FormItem>
         <FormItem>
-          {MailValidator({form})('usuario')(<MailInput />)}
+          {MailValidator({form})('usuario')(<MailInput disabled={update}/>)}
         </FormItem>
         <FormItem>
           {PasswordValidator({form})('password')(<PasswordInput />)}  
         </FormItem>
-        <FormItem >
-          <InputWithIcon
-            input={form.getFieldDecorator('tipoUsuario')(<TiposUsuario/>)}
-            icon={(<InfoTooltip title={'Estos son los tipos de usuarios que tenemos para vos!'}/>)}
-          />
-        </FormItem>
+        {!update &&
+          <FormItem >
+            <InputWithIcon
+              input={form.getFieldDecorator('tipoUsuario')(<TiposUsuario/>)}
+              icon={(<InfoTooltip title={'Estos son los tipos de usuarios que tenemos para vos!'}/>)}
+            />
+          </FormItem>
+        }
         <FormItem >
           <div className={'flex flex-space-between'}>
-            <Button onClick={onCancel} className={'white-button'}>
-              {'Cancelar'}
-            </Button>
+            {
+              !update &&
+              <Button onClick={onCancel} className={'white-button'}>
+                {'Cancelar'}
+              </Button>
+            }
             <Button htmlType="submit" className={'green-button'}>
-              {'Seguir'}
+              {update ? 'Confirmar' : 'Seguir'}
             </Button>
           </div>
         </FormItem>
