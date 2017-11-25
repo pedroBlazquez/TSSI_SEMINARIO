@@ -21,6 +21,11 @@ class FormIntegranteBanda extends Component {
           }
         </FormItem>
         <FormItem>
+          {DatosPersonalesValidator({form})('apellido')
+            (<Input type={'text'} placeholder='Apellido'/>)
+          }
+        </FormItem>
+        <FormItem>
           {form.getFieldDecorator('rol')(<RolesIntegrante />)}
         </FormItem>
         <FormItem>
