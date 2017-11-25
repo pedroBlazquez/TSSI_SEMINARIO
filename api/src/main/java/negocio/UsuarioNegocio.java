@@ -59,14 +59,13 @@ public class UsuarioNegocio {
         cn.abrirConexion();
         try {
             Usuario usuario = getUsuarioByMail(cn, usermail);
-            
+            data.remove(USUARIO_TIPO_JSON_FIELD);
             Usuario nuevoUsuario = new ObjectMapper()
                     .readValue(data.toString(), Usuario.class);
             
             usuario.setNombre(nuevoUsuario.getNombre());
             usuario.setApellido(nuevoUsuario.getApellido());
             usuario.setFechaNacimiento(nuevoUsuario.getFechaNacimiento());
-            //usuario.setMail(nuevoUsuario.getMail());
             usuario.setImagen(nuevoUsuario.getImagen());
 
             cn.update(usuario);
