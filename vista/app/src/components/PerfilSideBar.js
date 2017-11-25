@@ -7,6 +7,7 @@ import {Button} from 'antd';
 import NoImage from '../assets/no-image-profile.png';
 import VerticalMenu from './VerticalMenu';
 import PerfilWrapper from './PerfilContentWrapper';
+import SeguirUsuario from './SeguirUsuario';
 
 const getProfileOptions = (profileId) => [
   {to: `/perfil/${profileId}`, value: 'Perfil', exact: true},
@@ -38,6 +39,9 @@ class PerfilSideBar extends Component {
     return (
       <PerfilWrapper>
         <div className={'side-bar-container relative'}>
+          <div className={'absolute'} style={{top: 5, left: 5}}>
+            {!esPerfilPropio && <SeguirUsuario id={user.id}/>}
+          </div>
           <img className={'img-circle'} src={NoImage}/>
           <h3 className={'profile-title'}>{userName}</h3>
           <VerticalMenu options={getOptions(profileId, esArtista)} />
