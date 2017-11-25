@@ -2,12 +2,13 @@ import { put, takeEvery, call } from 'redux-saga/effects';
 import {message} from 'antd';
 import moment from 'moment';
 
-import {_post, _get, _put, config} from '../utils/api';
+import {_post, _get, _put, _delete, config} from '../utils/api';
 import {USUARIO_ARTISTA, USUARIO_BANDA, USUARIO_OYENTE} from '../utils/constants';
 import {setAuthToken, getAuthToken} from '../utils/storage';
-import {REQUEST_LOGIN, REGISTER_USER, CHECK_TOKEN, UPDATE_USER} from '../actions/types';
+import {REQUEST_LOGIN, REGISTER_USER, CHECK_TOKEN, UPDATE_USER, BAJA_USUARIO} from '../actions/types';
 import {errorLogin, successLogin} from '../actions/loginActions'; 
 import {failRegister, successRegister} from '../actions/registerActions'; 
+import {logOut} from '../actions/loginActions';
 
 // Our worker Saga
 export function* requestLoginSaga(action) {
@@ -121,6 +122,16 @@ export function* modificarUsuario ({user}) {
   }
 }
 
+export function* bajaUsuario () {
+  try {
+    yield call(_delete, '/usuario/', config());
+  } catch (e) {
+    console.log(e);
+  } finally {
+    yield put(logOut);
+  }
+}
+
 
 // Our watcher Saga
 export default function* watchLoginSagas () {
@@ -128,4 +139,5 @@ export default function* watchLoginSagas () {
   yield takeEvery(REGISTER_USER, altaUsuario);
   yield takeEvery(UPDATE_USER, modificarUsuario);
   yield takeEvery(CHECK_TOKEN, checkToken);
+  yield takeEvery(BAJA_USUARIO, bajaUsuario)
 }

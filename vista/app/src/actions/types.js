@@ -3,10 +3,11 @@ export const LOGIN         = 'LOGIN';
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const CHECK_TOKEN   = 'CHECK_TOKEN';
 
-// Altas
+// Usuario
 export const REGISTER_USER    = 'REGISTER_USER';
 export const SUCCESS_REGISTER = 'SUCCESS_REGISTER';
 export const UPDATE_USER      = 'UPDATE_USER';
+export const BAJA_USUARIO     = 'BAJA_USUARIO';
 
 // Contenido
 export const ALTA_CANCION = 'ALTA_CANCION';
