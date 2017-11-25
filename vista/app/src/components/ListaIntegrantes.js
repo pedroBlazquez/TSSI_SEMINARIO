@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Table, Icon} from 'antd';
+import moment from 'moment';
 
 import {ROLES_INTEGRANTES} from '../utils/constants';
 
@@ -12,19 +13,26 @@ class IntegrantesBanda extends Component {
         title: 'Integrante',
         dataIndex: 'nombre',
         key: 'integrante',
+        render: (nombre, integrante) => {
+          return integrante.nombre + ', ' + integrante.apellido;
+        }
       }, {
         title: 'Rol',
         dataIndex: 'rol',
         key: 'rol',
-        render: (text) => {
-          return ROLES_INTEGRANTES.find(r => r.id.toString() === text.toString()).value
+        render: (rol) => {
+          if (typeof rol === 'strong' || !isNaN(rol)) {
+            return ROLES_INTEGRANTES.find(r => r.id.toString() === rol.toString()).value
+          }
+
+          return ROLES_INTEGRANTES.find(r => r.id.toString() === rol.id.toString()).value
         }
       }, {
         title: 'Fecha nacimiento',
         dataIndex: 'fechaNacimiento',
         key: 'fechaNacimiento',
         render: (text, record) => {
-          return text.format('DD-MM-YYYY');
+          return moment(text).isValid() ? moment(text).format('DD-MM-YYYY') : text;
         }
       },{
         title: 'Remover',

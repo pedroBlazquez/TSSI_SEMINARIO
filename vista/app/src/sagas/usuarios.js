@@ -65,6 +65,7 @@ export function* altaUsuario ({user}) {
           return {
             nombre: i.nombre,
             rol: i.rol,
+            apellido: i.apellido,
             fechaNacimiento: moment(i.fechaNacimiento).format('YYYY-MM-DD')
           }
         });
@@ -104,6 +105,7 @@ export function* modificarUsuario ({user}) {
           return {
             nombre: i.nombre,
             rol: i.rol,
+            apellido: i.apellido,
             fechaNacimiento: moment(i.fechaNacimiento).format('DD-MM-YYYY')
           }
         });
