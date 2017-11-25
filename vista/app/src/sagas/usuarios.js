@@ -87,7 +87,7 @@ export function* modificarUsuario ({user}) {
     payload.usuarioForm = {
       nombre: user.usuarioFields.nombre.value,
       apellido: user.usuarioFields.apellido.value,
-      fechaNacimiento: user.usuarioFields.fechaNacimiento.value.format('DD-MM-YYYY'),
+      fechaNacimiento: user.usuarioFields.fechaNacimiento.value.format('YYYY-MM-DD'),
       mail: user.usuarioFields.usuario.value,
       password: user.usuarioFields.password.value,
       usuarioTipo: user.usuarioFields.tipoUsuario.value
@@ -97,7 +97,7 @@ export function* modificarUsuario ({user}) {
       payload.artistaForm = {
         nombreFantasia: user.artistaFields.nombreFantasia.value,
         descripcion: user.artistaFields.descripcion.value,
-        fechaInicio: user.artistaFields.fechaInicio.value.format('DD-MM-YYYY'),
+        fechaInicio: user.artistaFields.fechaInicio.value.format('YYYY-MM-DD'),
         generos: user.artistaFields.generos.value
       }
 
@@ -105,16 +105,16 @@ export function* modificarUsuario ({user}) {
         payload.integrantesLista = user.artistaFields.integrantes.map(i => {
           return {
             nombre: i.nombre,
-            rol: i.rol,
+            rol: i.rol.id,
             apellido: i.apellido,
-            fechaNacimiento: moment(i.fechaNacimiento).format('DD-MM-YYYY')
+            fechaNacimiento: moment(i.fechaNacimiento).format('YYYY-MM-DD')
           }
         });
       }
     }
 
     yield call(_put, '/usuario/', {...payload}, headers);
-
+    
     yield call(message.success, 'Actualizado con éxito', 1);
   } catch (e) {
     yield call(message.warn, 'Un error inesperado ocurrió', 1);
