@@ -48,7 +48,9 @@ public class InicioNegocio {
 
             StringBuilder query_artistas_seguidos = new StringBuilder();
             StringBuilder query_artistas_genero = new StringBuilder();
-                      
+
+            Set<Integer> generos1_set = new TreeSet<Integer>();
+            
             if(!artistas_seguidos.isEmpty())
             {
                 for (Integer seguido : artistas_seguidos)
@@ -66,54 +68,77 @@ public class InicioNegocio {
                 //--------------------------------------------------------------------
                 //NOVEDADES DE GENEROS DE ARTISTAS SEGUIDOS + SUGERENCIA DE NUEVOS ARTISTAS DE ESTOS GENEROS
                 
-                Set<Integer> generos1_set = new TreeSet<Integer>();
                 generos1_set.addAll(cn.getListQuery("select distinct ga.idGeneroArtista.genero.id from GeneroArtista ga "
                             + "WHERE ga.idGeneroArtista.artista.id IN ("+query_artistas_seguidos+")"
                             +" order by ga.idGeneroArtista.genero.id"));
                 
-                if(!generos1_set.isEmpty())
+            }
+            
+            List<Integer> cancioneslike_list = cn.getListQuery("select distinct l.accion.cancion.id FROM Like l WHERE l.usuario.id = "+usuario+" and l.accion.cancion != null");
+            if(!cancioneslike_list.isEmpty())
+            {    //GET GENEROS FROM CANCIONES LIKEADAS
+                
+                StringBuilder query_cancioneslike = new StringBuilder();
+                for (Integer c : cancioneslike_list)
+                    query_cancioneslike.append(c).append(",");
+                if(query_cancioneslike != null)
+                    query_cancioneslike.deleteCharAt(query_cancioneslike.length() - 1);
+                
+                generos1_set.addAll(cn.getListQuery("select distinct ga.idGeneroCancion.genero.id from GeneroCancion ga "
+                        + "WHERE ga.idGeneroCancion.cancion.id IN ("+query_cancioneslike+")"
+                        +" order by ga.idGeneroCancion.genero.id"));
+            }
+            
+            if(!generos1_set.isEmpty())
+            {
+                //lleno query para filtrar por generos que le gustan al usuario
+                
+                StringBuilder query_in_generos = new StringBuilder();
+                for (Integer g : generos1_set)
+                    query_in_generos.append(g).append(",");
+                query_in_generos.deleteCharAt(query_in_generos.length() - 1);
+                
+                int max_result = 10;
+                
+
+                String filtro = "";
+                if(!artistas_seguidos.isEmpty())
+                    filtro = "and ar.id not in ("+query_artistas_seguidos+") ";
+                
+                //busco novedades para Discos y Canciones de los generos que le gustan al usuario
+                general_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("select distinct gc.idGeneroCancion.cancion from GeneroCancion gc JOIN FETCH gc.idGeneroCancion.cancion.artista ar WHERE  gc.idGeneroCancion.genero.id in ("+query_in_generos+") "+filtro+" and gc.idGeneroCancion.cancion.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,true,true));
+                general_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("select distinct gd.idGeneroDisco.disco from GeneroDisco gd JOIN FETCH gd.idGeneroDisco.disco.artista ar WHERE  gd.idGeneroDisco.genero.id in ("+query_in_generos+") "+filtro+" and gd.idGeneroDisco.disco.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,false,true));
+                
+                if(!artistas_seguidos.isEmpty())
+                    filtro = " and ga.idGeneroArtista.artista.id not in ("+query_artistas_seguidos+")";
+                //obtengo artistas del genero que le gustan al usuario, pero que no sigue
+                List<Artista> artistas_genero = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE ga.idGeneroArtista.genero.id in ("+query_in_generos+") " +filtro);
+                if(!artistas_genero.isEmpty())
                 {
-                    //lleno query para filtrar por generos que le gustan al usuario
+                    //armo query para filtrar por artistas de los generos
+                    for (Artista a : artistas_genero)
+                        query_artistas_genero.append(a.getId()).append(",");
+                    query_artistas_genero.deleteCharAt(query_artistas_genero.length() - 1);
                     
-                    StringBuilder query_in_generos = new StringBuilder();
-                    for (Integer g : generos1_set)
-                        query_in_generos.append(g).append(",");
-                    query_in_generos.deleteCharAt(query_in_generos.length() - 1);
+                    //busco novedades para Album, Publicacion y Evento, de artistas del genero, que no sean seguidos por el usuario
+                    general_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_genero+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,false,true));
+                    general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_artistas_genero+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,true));
+                    general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_genero+") and e.fechaEvento > '"+date_now+"' and (e.fechaPublicacion > '"+date_novedades+"' or e.fechaEvento < '"+Tools.DateFormatter(Tools.GetDateDifference(-7))+"')  order by fechaPublicacion desc",max_result ), usermail,true));
                     
-                    int max_result = 10;
-                    
-                    //busco novedades para Discos y Canciones de los generos que le gustan al usuario
-                    general_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("select distinct gc.idGeneroCancion.cancion from GeneroCancion gc JOIN FETCH gc.idGeneroCancion.cancion.artista ar WHERE ar.id not in ("+query_artistas_seguidos+") and gc.idGeneroCancion.genero.id in ("+query_in_generos+") and gc.idGeneroCancion.cancion.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,true,true));
-                    general_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("select distinct gd.idGeneroDisco.disco from GeneroDisco gd JOIN FETCH gd.idGeneroDisco.disco.artista ar WHERE ar.id not in ("+query_artistas_seguidos+") and gd.idGeneroDisco.genero.id in ("+query_in_generos+") and gd.idGeneroDisco.disco.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,false,true));
-                    
-                    //obtengo artistas del genero que le gustan al usuario, pero que no sigue
-                    List<Artista> artistas_genero = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE ga.idGeneroArtista.artista.id not in ("+query_artistas_seguidos+") and ga.idGeneroArtista.genero.id in ("+query_in_generos+")");
-                    if(!artistas_genero.isEmpty())
+                    //agrego aleatoriamente 10 artistas que de los generos que le gustan al usuario
+                    Collections.shuffle(artistas_genero);
+                    int cant_artistas_genero = artistas_genero.size(); 
+                    if(cant_artistas_genero>(max_result-1))
+                        cant_artistas_genero = max_result;
+                    artistas_genero.subList(0,cant_artistas_genero);
+                    List<JSONObject> artistas = ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true);
+                    for(JSONObject a : artistas)
                     {
-                        //armo query para filtrar por artistas de los generos
-                        for (Artista a : artistas_genero)
-                            query_artistas_genero.append(a.getId()).append(",");
-                        query_artistas_genero.deleteCharAt(query_artistas_genero.length() - 1);
-                        
-                        //busco novedades para Album, Publicacion y Evento, de artistas del genero, que no sean seguidos por el usuario
-                        general_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_genero+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,false,true));
-                        general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_artistas_genero+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result ), usermail,true));
-                        general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_genero+") and e.fechaEvento > '"+date_now+"' and (e.fechaPublicacion > '"+date_novedades+"' or e.fechaEvento < '"+Tools.DateFormatter(Tools.GetDateDifference(-7))+"')  order by fechaPublicacion desc",max_result ), usermail,true));
-                        
-                        //agrego aleatoriamente 10 artistas que de los generos que le gustan al usuario
-                        Collections.shuffle(artistas_genero);
-                        int cant_artistas_genero = artistas_genero.size(); 
-                        if(cant_artistas_genero>(max_result-1))
-                            cant_artistas_genero = max_result;
-                        artistas_genero.subList(0,cant_artistas_genero);
-                        List<JSONObject> artistas = ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true);
-                        for(JSONObject a : artistas)
-                        {
-                            general_list.add(a);
-                        }
+                        general_list.add(a);
                     }
                 }
             }
+            
             
             //--------------------------------------------------------------------
             //NOVEDADES DE ARTISTAS SEGUIDOS POR LOS USUARIOS SEGUIDOS, (que no se los siga directamente y que no sean de los generos de los seguidos directamente)
