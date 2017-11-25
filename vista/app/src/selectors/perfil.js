@@ -85,7 +85,8 @@ export const getSiguiendoPerfil = createSelector(
 
 function appendUser(record, currUser) {
   if (!record) return record;
-  if (currUser.usuarioTipo === USUARIO_OYENTE.id) return record;
+  if (!currUser.usuarioTipo) return record;
+  if (currUser.usuarioTipo.id === USUARIO_OYENTE.id) return record;
 
   return record.map(r => ({...r, artista: {...r.artista, usuario: currUser}}));
 }
