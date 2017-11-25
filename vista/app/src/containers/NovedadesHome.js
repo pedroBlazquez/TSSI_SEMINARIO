@@ -13,6 +13,7 @@ import MainContent from '../components/MainContent';
 import withProfile from '../hoc/withProfile';
 import Novedades from '../components/Novedades';
 import Reproductor from '../components/Reproductor';
+import ModalListasReproduccion from '../components/ModalListasReproduccion';
 
 class NovedadesHome extends Component {
   componentWillMount() {
@@ -27,6 +28,7 @@ class NovedadesHome extends Component {
           <Busqueda />
         </Card>
         <Novedades records={records} />
+        <ModalListasReproduccion />
       </MainContent>
     );
   }

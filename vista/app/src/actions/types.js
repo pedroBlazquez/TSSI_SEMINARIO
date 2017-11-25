@@ -61,3 +61,10 @@ export const REPRODUCIR_ANTERIOR  = 'REPRODUCIR_ANTERIOR';
 
 // NUEVA PUBLICACION
 export const NUEVA_PUBLICACION    = 'NUEVA_PUBLICACION';
+
+// LISTAS DE REPRODUCCION
+export const ABRIR_MODAL          = 'ABRIR_MODAL';
+export const CERRAR_MODAL         = 'CERRAR_MODAL';
+export const SET_LISTAS           = 'SET_LISTAS';
+export const GET_LISTAS           = 'GET_LISTAS';
+export const PUSH_SONG_TO_LIST    = 'PUSH_SONG_TO_LIST';

@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 import {Avatar} from 'antd';
 
 import Imagen from '../assets/add-song.png';
+import {mostrarListas} from '../actions/listasReproduccionActions';
 
 /*
     Este componente recibe el id de la cancion.
@@ -12,7 +15,8 @@ import Imagen from '../assets/add-song.png';
 class AgregarCancionLista extends Component {
 
   clickHandler = () => {
-      alert(this.props.id);
+      let {id} = this.props;
+      this.props.mostrarListas(id);
   }
 
   render () {
@@ -22,4 +26,11 @@ class AgregarCancionLista extends Component {
   }
 }
 
-export default AgregarCancionLista;
+const mapDispatchToProps = (dispatch) => ({
+    mostrarListas: bindActionCreators(mostrarListas, dispatch)
+});
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(AgregarCancionLista)
