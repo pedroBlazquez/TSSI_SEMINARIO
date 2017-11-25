@@ -71,6 +71,10 @@ class FormBusqueda extends Component {
     }
   }
 
+  componentWillUnmount () {
+    this.onLimpiarBusqueda();
+  }
+
   toggleOpciones = () => {
     this.setState({showOptions: !this.state.showOptions});
   }

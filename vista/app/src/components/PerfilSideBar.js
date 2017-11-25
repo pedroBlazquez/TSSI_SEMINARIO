@@ -16,10 +16,11 @@ const getProfileOptions = (profileId) => [
 ];
 
 const getArtistaOptions = (profileId) => [
-  {to: `/perfil/${profileId}/albumes`, value: 'Albumes'},
-  {to: `/perfil/${profileId}/discos`, value: 'Discos'},
   {to: `/perfil/${profileId}/canciones`, value: 'Canciones'},
-  {to: `/perfil/${profileId}/informacion`, value: 'Informacion'},
+  {to: `/perfil/${profileId}/discos`, value: 'Discos'},
+  {to: `/perfil/${profileId}/albumes`, value: 'Albumes'},
+  {to: `/perfil/${profileId}/eventos`, value: 'Eventos'},
+  {to: `/perfil/${profileId}/informacion`, value: 'Informacion'}
 ];
 
 const getOptions = (profileId, esArtista) => {

@@ -206,6 +206,7 @@ export function* altaEvento(action) {
     const headers = config();
     const payload = {
       ...evento,
+      imagen: BASE_URL + evento.imagen.file.response,
       fechaEvento: evento.fecha.format('YYYY-MM-DD')
     }
     yield call(_post, '/eventos/', {...payload}, headers);
@@ -238,8 +239,10 @@ export function* modificarEvento(action) {
     const user = yield select(getCurrentUser);
     const artista = user.artista[0]
     const headers = config();
+    const imagen = typeof evento.imagen === 'string' ? evento.imagen : BASE_URL + evento.imagen.file.response;
     const payload = {
       ...evento,
+      imagen,
       fechaEvento: evento.fecha.format('YYYY-MM-DD')
     }
     yield call(_put, '/eventos/', {...payload}, headers);

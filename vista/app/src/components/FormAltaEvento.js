@@ -1,14 +1,26 @@
 import React, {Component} from 'react';
-import {Form, Button, Input, Upload, Icon, InputNumber} from 'antd';
+import {Form, Button, Input, Icon, InputNumber} from 'antd';
 
 import ExtendedForm from './ExtendedForm';
-import FechaNacimiento from './FechaNacimiento';
-import {DatosPersonalesValidator, FechaValidator, RequiredValidator} from '../utils/validators';
+import FechaEvento from './FechaEvento';
+import Upload from './UploadSingleFile';
+import {
+  DatosPersonalesValidator,
+  FechaValidator,
+  RequiredValidator,
+  validateFile
+} from '../utils/validators';
 
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
 
 class FormAltaEvento extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      imagen: props.imagen || ''
+    };
+  }
 
   render () {
     const {onSubmit, onCancel, form} = this.props;
@@ -33,7 +45,7 @@ class FormAltaEvento extends Component {
         <FormItem>
           {
             FechaValidator({form})('fecha')
-            (<FechaNacimiento className="full-width" placeholder={'Fecha'}/>)
+            (<FechaEvento className="full-width" placeholder={'Fecha'}/>)
           }
         </FormItem>
         <FormItem label={'Costo (Opcional): '}>
@@ -46,11 +58,24 @@ class FormAltaEvento extends Component {
           }
         </FormItem>
         <FormItem>
-          {form.getFieldDecorator('imagen')
-            (<Upload accept="image">
+          {form.getFieldDecorator('imagen',{rules: [{validator: validateFile(this.state.imagen)}]})
+            (<Upload 
+              accept="image"
+              name={'file'}
+              action={'http://localhost:8080/archivo/subirEventoFoto'}
+              onRemove={() => {
+                this.setState({imagen: ''});
+              }}
+              onChange={(info) => {
+                const fileList = info.fileList;
+                if (fileList.length) {
+                  this.setState({imagen: fileList[0].response});
+                }
+              }}
+            >
               <Button>
                 <Icon type="upload" /> 
-                {'Subir imagen'}
+                {'Subir Imagen'}
               </Button>
             </Upload>)
           }
