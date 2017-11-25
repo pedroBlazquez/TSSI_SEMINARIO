@@ -25,15 +25,19 @@ class AdministrarCancionesContainer extends Component {
     const {discos} = this.props;
     const disco = discos.find(c => c.id === id);
 
-    this.setState({disco: {
-      nombre: {
-        value: disco.nombre
+    this.setState({
+      disco: {
+        nombre: {
+          value: disco.nombre
+        },
+        genero: {
+          value: disco.genero.id
+        },
+        cancionesSeleccionadas: disco.canciones
       },
-      genero: {
-        value: disco.genero.id
-      },
-      cancionesSeleccionadas: disco.canciones
-    }, editando: id});
+      editando: id,
+      portada: disco.portada 
+    });
   }
 
   onEliminar = (id) => {
@@ -52,11 +56,13 @@ class AdministrarCancionesContainer extends Component {
     const {onSubmit, onUpdate, alta, modificar} = this.props;
     if (this.state.editando !== null) {
       const {editando} = this.state;
+      const portada = values.portada || this.state.portada;
       const disco = {
         ...values,
         idDisco: editando.toString(),
         genero: GENEROS.find(g => g.id === values.genero).value,
-        canciones: values.canciones.map(c => c.id)
+        canciones: values.canciones.map(c => c.id),
+        portada
       };
       this.setState(initialState);
       modificar(disco);
