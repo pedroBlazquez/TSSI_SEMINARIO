@@ -32,8 +32,8 @@ class ModalListasReproduccion extends Component {
         }
         {  
           !!listas &&
-          listas.map((lista) => {
-            return <ListaReproduccionItem lista={lista} idCancion={this.props.idCancion}/>
+          listas.map((lista, index) => {
+            return <ListaReproduccionItem key={index + lista.id} lista={lista} idCancion={this.props.idCancion}/>
           })
         }
       </Modal>

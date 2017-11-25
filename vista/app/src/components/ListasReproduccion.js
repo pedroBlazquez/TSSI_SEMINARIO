@@ -18,8 +18,8 @@ class ListasReproduccion extends Component {
             <div>
                 {
                     !!listas &&
-                    listas.map((lista) => {
-                        return <ListaReproduccion lista={lista}/>
+                    listas.map((lista, index) => {
+                        return <ListaReproduccion lista={lista} key={index + lista.id}/>
                     })
                 }
             </div>

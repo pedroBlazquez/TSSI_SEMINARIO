@@ -35,7 +35,7 @@ class ListaReproduccion extends Component {
                     return (
                         <div key={i} className='flex flex-space-between discoCancion'>
                             <span>{cancion.nombre}</span>
-                            <BotonPlay cancion={{...cancion, artista: cancion.artista.nombreFantasia}}/>
+                            <BotonPlay cancion={{...cancion, artista: cancion.artista}}/>
                         </div>
                     );
                   })
