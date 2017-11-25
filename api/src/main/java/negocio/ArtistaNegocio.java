@@ -1,6 +1,7 @@
 package negocio;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -18,6 +19,8 @@ import modelos.IntegranteArtista;
 import modelos.Usuario;
 
 public class ArtistaNegocio {
+
+    final String FECHA_INICIO_JSON_FIELD = "fechaInicio";
     
     public boolean altaArtista(JSONObject data, String mail) throws JSONException {
         Conexion cn = new Conexion();
@@ -26,11 +29,16 @@ public class ArtistaNegocio {
         GeneroArtistaNegocio generoArtistaNegocio = new GeneroArtistaNegocio();
 
         try {
+
+            Date fechaInicio = Tools.DateFormatter(data.getString(FECHA_INICIO_JSON_FIELD));
+            data.remove(FECHA_INICIO_JSON_FIELD);
+            
+            
             Artista artista = new ObjectMapper()
                     .readValue(data.toString(), Artista.class);
 
             cn.abrirConexion();
-
+            artista.setFechaInicio(fechaInicio);
             Usuario usuario = UsuarioNegocio.getUsuarioByMail(cn,mail);
             artista.setUsuario(usuario);
             cn.add(artista);
@@ -52,6 +60,10 @@ public class ArtistaNegocio {
         GeneroArtistaNegocio generoArtistaNegocio = new GeneroArtistaNegocio();
 
         try {
+
+            Date fechaInicio = Tools.DateFormatter(data.getString(FECHA_INICIO_JSON_FIELD));
+            data.remove(FECHA_INICIO_JSON_FIELD);
+            
             Artista artistaNuevo = new ObjectMapper()
                     .readValue(data.toString(), Artista.class);
 
@@ -61,7 +73,7 @@ public class ArtistaNegocio {
             Artista artista = (Artista) cn.getListQuery("from modelos.Artista WHERE usuario.id = "+usuario.getId()).get(0);
             artista.setNombreFantasia(artistaNuevo.getNombreFantasia());
             artista.setDescripcion(artistaNuevo.getDescripcion());
-            artista.setFechaInicio(artistaNuevo.getFechaInicio());
+            artista.setFechaInicio(fechaInicio);
             
             cn.update(artista);
             

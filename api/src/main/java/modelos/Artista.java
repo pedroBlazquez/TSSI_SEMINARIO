@@ -21,7 +21,7 @@ public class Artista {
     @Column(name = "nombreFantasia", nullable = false)
     private String nombreFantasia;
 
-    @JsonFormat(pattern = "dd-MM-YYYY")
+    //@JsonFormat(pattern = "dd-MM-YYYY")
     @Column(name = "fechaInicio", nullable = false)
     private Date fechaInicio;
 

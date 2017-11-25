@@ -33,11 +33,11 @@ public class Usuario {
     @Column(name = "apellido", nullable = false)
     private String apellido;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Buenos_Aires")
+    //@JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Buenos_Aires")
     @Column(name = "fechaAlta", nullable = false)
     private Date fechaAlta;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Buenos_Aires")
+    //@JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Buenos_Aires")
     @Column(name = "fechaNacimiento", nullable = false)
     private Date fechaNacimiento;
 

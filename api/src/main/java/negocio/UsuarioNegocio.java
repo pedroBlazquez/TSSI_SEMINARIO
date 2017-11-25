@@ -20,6 +20,7 @@ import modelos.UsuarioTipo;
 public class UsuarioNegocio {
 
     final String USUARIO_TIPO_JSON_FIELD = "usuarioTipo";
+    final String FECHA_NACIMIENTO_JSON_FIELD = "fechaNacimiento";
     
     public boolean checkMail(String mailToCheck) {
         Conexion cn = new Conexion();
@@ -39,9 +40,13 @@ public class UsuarioNegocio {
             data.remove(USUARIO_TIPO_JSON_FIELD);
             UsuarioTipo usuarioTipo = usuarioTipoNegocio.getUsuarioTipo(usuarioTipoId);
 
+            Date fechaNacimiento = Tools.DateFormatter(data.getString(FECHA_NACIMIENTO_JSON_FIELD));
+            data.remove(FECHA_NACIMIENTO_JSON_FIELD);
+            
             Usuario nuevoUsuario = new ObjectMapper()
                     .readValue(data.toString(), Usuario.class);
             nuevoUsuario.setFechaAlta(new Date());
+            nuevoUsuario.setFechaNacimiento(fechaNacimiento);
             nuevoUsuario.setEstado(true);
             nuevoUsuario.setUsuarioTipo(usuarioTipo);
 
@@ -59,13 +64,18 @@ public class UsuarioNegocio {
         cn.abrirConexion();
         try {
             Usuario usuario = getUsuarioByMail(cn, usermail);
+            
             data.remove(USUARIO_TIPO_JSON_FIELD);
+            
+            Date fechaNacimiento = Tools.DateFormatter(data.getString(FECHA_NACIMIENTO_JSON_FIELD));
+            data.remove(FECHA_NACIMIENTO_JSON_FIELD);
+            
             Usuario nuevoUsuario = new ObjectMapper()
                     .readValue(data.toString(), Usuario.class);
             
             usuario.setNombre(nuevoUsuario.getNombre());
             usuario.setApellido(nuevoUsuario.getApellido());
-            usuario.setFechaNacimiento(nuevoUsuario.getFechaNacimiento());
+            usuario.setFechaNacimiento(fechaNacimiento);
             usuario.setImagen(nuevoUsuario.getImagen());
 
             cn.update(usuario);

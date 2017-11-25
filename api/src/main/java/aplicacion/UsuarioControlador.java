@@ -5,6 +5,7 @@ import static aplicacion.autenticacion.SecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,10 +83,19 @@ public class UsuarioControlador {
 
         for (int i = 0; i < integrantesLista.length(); i++) {
             JSONObject obj = integrantesLista.getJSONObject(i);
+            
             roles.add(obj.getInt("rol"));
             obj.remove("rol");
-            integrantesListaObjs.add(new ObjectMapper()
-                    .readValue(obj.toString(), IntegranteArtista.class));
+            
+            Date fechaNacimiento = Tools.DateFormatter(obj.getString("fechaNacimiento"));
+            obj.remove("fechaNacimiento");
+            
+            IntegranteArtista ia = new ObjectMapper()
+                    .readValue(obj.toString(), IntegranteArtista.class);
+            
+            ia.setFechaNacimiento(fechaNacimiento);
+            
+            integrantesListaObjs.add(ia);
         }
 
         intArtNegocio.altaListaIntegrantes(integrantesListaObjs, roles);
@@ -140,8 +150,12 @@ public class UsuarioControlador {
             JSONObject obj = integrantesLista.getJSONObject(i);
             roles.add(obj.getInt("rol"));
             obj.remove("rol");
-            integrantesListaObjs.add(new ObjectMapper()
-                    .readValue(obj.toString(), IntegranteArtista.class));
+            Date fechaNacimiento = Tools.DateFormatter(obj.getString("fechaNacimiento"));
+            obj.remove("fechaNacimiento");
+            IntegranteArtista ia = new ObjectMapper()
+                    .readValue(obj.toString(), IntegranteArtista.class);
+            ia.setFechaNacimiento(fechaNacimiento);
+            integrantesListaObjs.add(ia);
         }
 
         intArtNegocio.altaListaIntegrantes(integrantesListaObjs, roles,usermail);
