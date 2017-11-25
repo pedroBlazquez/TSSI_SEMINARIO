@@ -71,7 +71,14 @@ export function* modificarCancion(action) {
     const user = yield select(getCurrentUser);
     const artista = user.artista[0]
     const headers = config();
-    yield call(_put, '/canciones/', {...cancion}, headers);
+    const audio = typeof cancion.audio === 'string' ? cancion.audio : BASE_URL + cancion.audio.file.response;
+    const payload = {
+      nombre: cancion.nombre,
+      genero: cancion.genero,
+      archivo: audio,
+      idCancion: cancion.idCancion
+    };
+    yield call(_put, '/canciones/', {...payload}, headers);
     
     // Despues de hacer la baja, buscamos las canciones actualizadas
     const cancionesActualizadas = yield call(_get, `/canciones/getArtista/${artista.id}`, headers);
@@ -125,7 +132,15 @@ export function* modificarDisco(action) {
     const user = yield select(getCurrentUser);
     const artista = user.artista[0]
     const headers = config();
-    yield call(_put, '/discos/', {...disco}, headers);
+    const portada = typeof disco.portada === 'string' ? disco.portada : BASE_URL + disco.portada.file.response;
+    const payload = {
+      nombre: disco.nombre,
+      genero: disco.genero,
+      canciones: disco.canciones,
+      idDisco: disco.idDisco,
+      portada
+    };
+    yield call(_put, '/discos/', {...payload}, headers);
     
     const discosActualizados = yield call(_get, `/discos/getArtista/${artista.id}`, headers);
     yield put(setDiscosPerfil(agregarArtista(discosActualizados.data, artista)));
