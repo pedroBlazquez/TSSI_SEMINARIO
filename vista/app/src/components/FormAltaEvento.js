@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Form, Button, Input, Icon, InputNumber} from 'antd';
 
 import ExtendedForm from './ExtendedForm';
-import FechaNacimiento from './FechaNacimiento';
+import FechaEvento from './FechaEvento';
 import Upload from './UploadSingleFile';
 import {
   DatosPersonalesValidator,
@@ -45,7 +45,7 @@ class FormAltaEvento extends Component {
         <FormItem>
           {
             FechaValidator({form})('fecha')
-            (<FechaNacimiento className="full-width" placeholder={'Fecha'}/>)
+            (<FechaEvento className="full-width" placeholder={'Fecha'}/>)
           }
         </FormItem>
         <FormItem label={'Costo (Opcional): '}>
