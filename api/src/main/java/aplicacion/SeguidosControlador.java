@@ -76,7 +76,7 @@ public class SeguidosControlador {
             else
                 seguidores = SeguidosNegocio.getSeguidores(cn,(int)idUsuario);
                 
-            List<JSONObject> jobj_list = UsuarioNegocio.setData(cn,seguidores, usermail);
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(cn,seguidores, usermail,false);
             cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
         } catch (Exception ex) {
@@ -97,7 +97,7 @@ public class SeguidosControlador {
             else
                 seguidos = SeguidosNegocio.getSeguidos(cn,(int)idUsuario);
             
-            List<JSONObject> jobj_list = UsuarioNegocio.setData(cn,seguidos, usermail);
+            List<JSONObject> jobj_list = UsuarioNegocio.setData(cn,seguidos, usermail,false);
             cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
             

@@ -351,7 +351,7 @@ public class InicioNegocio {
                         
                         if(!busqueda_usuario.equals(""))
                         {
-                            priority_list.addAll(UsuarioNegocio.setData(cn,cn.getListQuery("from Usuario WHERE "+busqueda_usuario+" and usuarioTipo.id = 1",top_1),usermail));
+                            priority_list.addAll(UsuarioNegocio.setData(cn,cn.getListQuery("from Usuario WHERE "+busqueda_usuario+" and usuarioTipo.id = 1",top_1),usermail,false));
                         }
                         
                         if(!filtro_artista_directo.equals(""))
