@@ -17,12 +17,12 @@ class FormIntegranteBanda extends Component {
       <Form onSubmit={onSubmit}>
         <FormItem>
           {DatosPersonalesValidator({form})('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre del integrante'/>)
+            (<Input type={'text'} placeholder='Ingrese el nombre del integrante' maxLength={100}/>)
           }
         </FormItem>
         <FormItem>
           {DatosPersonalesValidator({form})('apellido')
-            (<Input type={'text'} placeholder='Apellido'/>)
+            (<Input type={'text'} placeholder='Apellido' maxLength={100}/>)
           }
         </FormItem>
         <FormItem>

@@ -51,7 +51,7 @@ class DatosArtistaForm extends Component {
             help={form.getFieldError('nombreFantasia') ? form.getFieldError('nombreFantasia')[0] : ''}
           >
             <InputWithIcon
-              input={DatosPersonalesValidator({form})('nombreFantasia')(<Input type="text" placeholder="Ingrese nombre de fantasía" />)}
+              input={DatosPersonalesValidator({form})('nombreFantasia')(<Input type="text" placeholder="Ingrese nombre de fantasía" maxLength={100} />)}
               icon={(<InfoTooltip title={'Las personas podrán encontrarte a través de tu nombre de fantasía!'}/>)}
             />
           </FormItem>
