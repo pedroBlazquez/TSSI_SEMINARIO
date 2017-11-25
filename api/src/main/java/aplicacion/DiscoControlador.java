@@ -100,11 +100,12 @@ public class DiscoControlador {
             //busca en json los atributos
             String nombre= json.getString("nombre");
             String genero= json.getString("genero");
+            String portada= json.getString("portada");
             ArrayList<String> canciones = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("canciones"));
             //busca mail de usuario
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             
-            return DiscoNegocio.CreateDisco(nombre,genero,  canciones, usermail);
+            return DiscoNegocio.CreateDisco(nombre,genero,  canciones, usermail,portada);
             
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -123,9 +124,10 @@ public class DiscoControlador {
             String idDisco= json.getString("idDisco");
             String nombre= json.getString("nombre");
             String genero= json.getString("genero");
+            String portada= json.getString("portada");
             ArrayList<String> canciones = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("canciones"));
             
-            return DiscoNegocio.UpdateDisco(idDisco,nombre,genero,canciones);
+            return DiscoNegocio.UpdateDisco(idDisco,nombre,genero,canciones,portada);
         } catch (Exception ex) {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
