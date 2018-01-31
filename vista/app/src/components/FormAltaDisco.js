@@ -7,7 +7,6 @@ import Upload from './UploadSingleFile';
 import ContenidoConBusqueda from './ContenidoConBusqueda';
 import {GenerosMusicalesDD} from './GenerosMusicales';
 import {
-  DatosPersonalesValidator,
   FechaValidator,
   RequiredValidator,
   validateFile
@@ -72,7 +71,7 @@ class FormAltaDisco extends Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
-          {DatosPersonalesValidator({form})('nombre')
+          {RequiredValidator({form})('nombre')
             (<Input type={'text'} placeholder='Ingrese el nombre del disco'maxLength={100} />)
           }
         </FormItem>

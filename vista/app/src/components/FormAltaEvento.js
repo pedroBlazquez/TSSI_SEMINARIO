@@ -32,13 +32,13 @@ class FormAltaEvento extends Component {
           }
         </FormItem>
         <FormItem>
-          {DatosPersonalesValidator({form})('direccion')
+          {RequiredValidator({form})('direccion')
             (<Input type={'text'} placeholder='Ingrese la direccion del evento' maxLength={100}/>)
           }
         </FormItem>
         <FormItem>
             {
-              DatosPersonalesValidator({form})('descripcion')
+              RequiredValidator({form})('descripcion')
               (<TextArea placeholder={'Ingrese una breve descripcion'} rows={4} maxLength={250}/>)
             }
           </FormItem>
