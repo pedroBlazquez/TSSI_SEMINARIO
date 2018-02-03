@@ -6,7 +6,7 @@ import Upload from './UploadSingleFile';
 import ExtendedForm from './ExtendedForm';
 import FechaNacimiento from './FechaNacimiento';
 import {GenerosMusicalesDD} from './GenerosMusicales';
-import {DatosPersonalesValidator, FechaValidator, RequiredValidator, validateFile} from '../utils/validators';
+import {FechaValidator, RequiredValidator, validateFile} from '../utils/validators';
 
 const FormItem = Form.Item;
 
@@ -25,7 +25,7 @@ class FormAltaCancion extends Component {
     return (
       <Form onSubmit={onSubmit}>
         <FormItem>
-          {DatosPersonalesValidator({form})('nombre')
+          {RequiredValidator({form})('nombre')
             (<Input type={'text'} placeholder='Ingrese el nombre de la cancion' maxLength={100}/>)
           }
         </FormItem>

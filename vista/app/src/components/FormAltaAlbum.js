@@ -4,7 +4,7 @@ import {isEqual} from 'lodash';
 
 import ContenidoConBusqueda from './ContenidoConBusqueda';
 import {GenerosMusicalesDD} from './GenerosMusicales';
-import {DatosPersonalesValidator, FechaValidator, RequiredValidator} from '../utils/validators';
+import {FechaValidator, RequiredValidator} from '../utils/validators';
 
 const FormItem = Form.Item;
 
@@ -64,7 +64,7 @@ class FormAltaAlbum extends Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
-          {DatosPersonalesValidator({form})('nombre')
+          {RequiredValidator({form})('nombre')
             (<Input type={'text'} placeholder='Ingrese el nombre del Album' maxLength={100}/>)
           }
         </FormItem>
