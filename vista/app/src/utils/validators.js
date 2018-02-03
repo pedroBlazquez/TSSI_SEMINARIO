@@ -23,6 +23,15 @@ export const DatosPersonalesValidator = ruleValidator([REQUIRED, ONLY_STRING]);
 
 export const FechaValidator = RequiredValidator;
 
+export const NombreContenidoValidator = dataset => errorMsg => ruleValidator([REQUIRED, (rule, value, callback) => {
+  let exists =  dataset.find(d => {
+    return d.toLowerCase().trim() === value.toLowerCase().trim()
+  });
+  if (exists) {
+    callback(errorMsg)
+  }
+  callback();
+}]);
 
 // Custom function validators
 export const validateFile = file => (rule, value, cb) => {
