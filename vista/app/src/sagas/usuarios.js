@@ -41,8 +41,8 @@ export function* checkToken(action) {
 
 export function* altaUsuario ({user}) {
   try {
-    const mailDisponible = yield _post('/usuario/registro/checkMail', {mail: user.usuarioFields.usuario.value});
-    if (!mailDisponible) { throw new Error ("Ya existe el mail");}
+    const existeMail = yield _post('/usuario/registro/checkMail', {mail: user.usuarioFields.usuario.value});
+    if (existeMail.data) { throw new Error ("Ya existe el mail");}
 
     const payload = {};
     payload.usuarioForm = {
