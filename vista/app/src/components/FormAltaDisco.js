@@ -9,7 +9,8 @@ import {GenerosMusicalesDD} from './GenerosMusicales';
 import {
   FechaValidator,
   RequiredValidator,
-  validateFile
+  validateFile,
+  NombreContenidoValidator
 } from '../utils/validators';
 
 const FormItem = Form.Item;
@@ -67,12 +68,15 @@ class FormAltaDisco extends Component {
   }
 
   render () {
-    const {onCancel, form} = this.props;
+    const {onCancel, form, discos} = this.props;
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
-          {RequiredValidator({form})('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre del disco'maxLength={100} />)
+          {NombreContenidoValidator(discos)
+            ('Ya existe un disco con este nombre')
+            ({form})
+            ('nombre')
+            (<Input type={'text'} placeholder='Ingrese el nombre del disco' maxLength={100} />)
           }
         </FormItem>
         <FormItem>
