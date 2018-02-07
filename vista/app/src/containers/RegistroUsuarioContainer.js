@@ -54,6 +54,13 @@ class RegistroUsuarioContainer extends Component {
     };
   }
 
+  componentWillReceiveProps (next) {
+    if (next.success) {
+      const {history} = this.props;
+      history.push('/login');   
+    }
+  }
+
   componentWillUnmount () {
     this.props.resetStatus();
   }
