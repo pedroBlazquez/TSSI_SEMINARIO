@@ -13,14 +13,26 @@ import {sendCompartir} from '../actions/compartirAction';
 */
 class Compartir extends Component {
 
+  constructor (props) {
+    super(props);
+    this.state = {
+      wasShared: props.shared
+    }
+  }
+
   clickHandler = () => {
     let {id, typeContent} = this.props;
+    this.setState({
+      wasShared: !this.state.wasShared
+    });
     this.props.sendCompartir(id, typeContent);
   }
 
   render () {
+    let shared = 'compartirIcon compartido',
+        notShared = 'compartirIcon';
     return (
-        <Avatar className='compartirIcon' icon={'share-alt'} onClick={this.clickHandler}/>
+        <Avatar className={this.state.wasShared ? shared : notShared} icon={'share-alt'} onClick={this.clickHandler}/>
     );
   }
 }

@@ -41,7 +41,7 @@ class Album extends Component {
                         </Link>
                         <h5>{album.fechaPublicacion}</h5>
                     </div>
-                    <Compartir id={album.id} typeContent={OBJECT_TYPES.ALBUM}/>
+                    <Compartir id={album.id} typeContent={OBJECT_TYPES.ALBUM} shared={album.compartido}/>
                 </div>
                 <div>
                     <div className='columnRight'>
