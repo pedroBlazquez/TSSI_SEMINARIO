@@ -41,7 +41,7 @@ class Cancion extends Component {
                       </div>
                       <AgregarCancionLista id={cancion.id}/>
                   </div>
-                  <Compartir id={cancion.id} typeContent='Cancion'/>
+                  <Compartir id={cancion.id} typeContent='Cancion' shared={cancion.compartido}/>
               </div>
               <div>
                   <div className='columnRight'>

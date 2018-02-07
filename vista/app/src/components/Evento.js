@@ -5,7 +5,7 @@ import {Card, Avatar} from 'antd';
 
 import Compartir from './Compartir';
 
-const CardTitle = ({artista, fechaPublicacion, id}) => (
+const CardTitle = ({artista, fechaPublicacion, id, compartido}) => (
   <div className={'flex flex-space-between'}>
     <div>
       <Avatar className='avatarIcon' icon={'user'}/>
@@ -16,7 +16,7 @@ const CardTitle = ({artista, fechaPublicacion, id}) => (
         <span className='fechaPublicacion'>{fechaPublicacion}</span>
       </div>
     </div>
-    <Compartir id={id} typeContent='Evento'/>
+    <Compartir id={id} typeContent='Evento' shared={compartido}/>
   </div>
 );
 
@@ -30,7 +30,8 @@ class Evento extends Component {
           <CardTitle
             artista={evento.artista}
             fechaPublicacion={evento.fechaPublicacion}
-            id={evento.id}/>
+            id={evento.id}
+            compartido={evento.compartido}/>
           }
       >
         { !!evento.imagen &&

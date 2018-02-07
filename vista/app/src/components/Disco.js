@@ -28,7 +28,7 @@ class Disco extends Component {
                         </Link>
                         <h5>{disco.fechaPublicacion}</h5>
                     </div>
-                    <Compartir id={disco.id} typeContent='Disco'/>
+                    <Compartir id={disco.id} typeContent='Disco' shared={disco.compartido}/>
                 </div>
                 <div>
                     <div className='columnRight'>

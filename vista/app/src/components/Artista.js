@@ -27,7 +27,7 @@ class Artista extends Component {
                         <strong>{artista.nombreFantasia}</strong>
                     </Link>
                 </h1>
-                  <Compartir id={artista.id} typeContent='Artista'/>
+                  <Compartir id={artista.id} typeContent='Artista' shared={artista.compartido}/>
               </div>
               <div className='flex flex-space-between'>
                   <div className='columnLeft'>

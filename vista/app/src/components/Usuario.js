@@ -27,7 +27,7 @@ class Usuario extends Component {
                         <strong>{usuario.nombre + ' ' + usuario.apellido}</strong>
                     </h1>
                 </Link>
-                  <Compartir id={usuario.id} typeContent='Artista'/>
+                  <Compartir id={usuario.id} typeContent='Artista' shared={usuario.compartido}/>
               </div>
           </div>
           
