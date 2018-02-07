@@ -4,7 +4,7 @@ import {isEqual} from 'lodash';
 
 import ContenidoConBusqueda from './ContenidoConBusqueda';
 import {GenerosMusicalesDD} from './GenerosMusicales';
-import {FechaValidator, RequiredValidator} from '../utils/validators';
+import {FechaValidator, RequiredValidator, NombreContenidoValidator} from '../utils/validators';
 
 const FormItem = Form.Item;
 
@@ -60,11 +60,14 @@ class FormAltaAlbum extends Component {
   }
 
   render () {
-    const {onCancel, form} = this.props;
+    const {onCancel, form, albumes} = this.props;
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
-          {RequiredValidator({form})('nombre')
+          {NombreContenidoValidator(albumes)
+            ('Ya existe un album con este nombre')
+            ({form})
+            ('nombre')
             (<Input type={'text'} placeholder='Ingrese el nombre del Album' maxLength={100}/>)
           }
         </FormItem>

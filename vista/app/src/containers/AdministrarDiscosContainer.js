@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import {GENEROS} from '../utils/constants';
+import {mapContentName} from '../utils/utils';
 
 import AltaDisco from '../components/FormAltaDisco';
 import AdministrarContenido from '../components/AdministrarContenido';
@@ -87,6 +88,7 @@ class AdministrarCancionesContainer extends Component {
           onSubmit: this.onSubmit,
           onCancel: this.onCancel,
           onChange: this.onFormChange,
+          discos: mapContentName(discos, this.state.editando),
           canciones,
           ...this.state.disco
         }}

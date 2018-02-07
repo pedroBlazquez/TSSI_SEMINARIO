@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import AltaEvento from '../components/FormAltaEvento';
 import AdministrarContenido from '../components/AdministrarContenido';
+import {mapContentName} from '../utils/utils'; 
 
 import {getEventosPerfil} from '../selectors/perfil';
 
@@ -92,6 +93,7 @@ class AdministrarEventosContainer extends Component {
           onCancel: this.onCancel,
           onChange: this.onFormChange,
           imagen: this.state.imagen,
+          eventos: mapContentName(eventos, this.state.editando),
           ...this.state.evento
         }}
         modalTitle={this.state.editando === null ? 'Alta Evento' : 'Actualizar Evento'}
