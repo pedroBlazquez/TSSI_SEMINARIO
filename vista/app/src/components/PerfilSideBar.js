@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import '../styles/profile.css';
 import {withRouter, NavLink} from 'react-router-dom';
 
-import {Button} from 'antd';
+import {Button, Modal} from 'antd';
 
 import NoImage from '../assets/no-image-profile.png';
 import VerticalMenu from './VerticalMenu';
 import PerfilWrapper from './PerfilContentWrapper';
 import SeguirUsuario from './SeguirUsuario';
+
+const confirm = Modal.confirm;
 
 const getProfileOptions = (profileId) => [
   {to: `/perfil/${profileId}`, value: 'Perfil', exact: true},
@@ -33,6 +35,18 @@ const getOptions = (profileId, esArtista) => {
 }
 
 class PerfilSideBar extends Component {
+  mostrarModalBajaUsuario = () => {
+    const {bajaUsuario} = this.props;
+    confirm({
+      title: 'Baja de usuario',
+      content: 'Si confirma, la acción no podrá deshacerse',
+      onOk() {
+        bajaUsuario();
+      },
+      onCancel() {},
+    });
+  }
+  
   render () {
     const {esArtista, esPerfilPropio, user, profileId} = this.props;
     const userName = esArtista ? user.artista[0].nombreFantasia : `${user.nombre}, ${user.apellido}`;
@@ -59,7 +73,9 @@ class PerfilSideBar extends Component {
           </div>
           <div className={'absolute'} style={{bottom: 5}}>
             {esPerfilPropio && 
-              <Button className={'green-button full-width'}>{'Eliminar Cuenta'}</Button>
+              <Button className={'green-button full-width'} onClick={this.mostrarModalBajaUsuario}>
+                {'Eliminar Cuenta'}
+              </Button>
             }
           </div>
         </div>

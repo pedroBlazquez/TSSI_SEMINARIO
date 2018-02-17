@@ -30,21 +30,23 @@ public class ListasNegocio {
             Conexion cn = new Conexion();
             cn.abrirConexion();
             
-            String INcanciones = Tools.Convert_Array_toStringComma(canciones);
-            
-            List<Cancion> list_canciones = cn.getListQuery("from modelos.Cancion WHERE id IN ("+INcanciones+")");
-
             Usuario usuario = UsuarioNegocio.getUsuarioByMail(cn, usermail);
             
             ListaReproduccion new_ListaReproduccion = new ListaReproduccion(nombre,new Date(),false,privacidad,usuario);
             
-            List<CancionLista> new_CancionListaReproduccion = new ArrayList<CancionLista>();
-            for(Cancion c : list_canciones)
+            if(!canciones.isEmpty())
             {
-                new_CancionListaReproduccion.add(new CancionLista(c, new_ListaReproduccion));
-            }
+                String INcanciones = Tools.Convert_Array_toStringComma(canciones);
+                List<Cancion> list_canciones = cn.getListQuery("from modelos.Cancion WHERE id IN ("+INcanciones+")");
             
-            new_ListaReproduccion.setCancionesLista(new_CancionListaReproduccion);
+                List<CancionLista> new_CancionListaReproduccion = new ArrayList<CancionLista>();
+                for(Cancion c : list_canciones)
+                {
+                    new_CancionListaReproduccion.add(new CancionLista(c, new_ListaReproduccion));
+                }
+                
+                new_ListaReproduccion.setCancionesLista(new_CancionListaReproduccion);
+            }
             
             cn.add(new_ListaReproduccion);
             
@@ -65,19 +67,25 @@ public class ListasNegocio {
             
             ListaReproduccion upd_ListaReproduccion = (ListaReproduccion) cn.ReadOne_simpleid(ListaReproduccion.class, Integer.parseInt(idLista));
             
-            String INcanciones = Tools.Convert_Array_toStringComma(canciones);
-            
-            List<Cancion> list_canciones = cn.getListQuery("from modelos.Cancion WHERE id IN ("+INcanciones+")");
-            
-            List<CancionLista> new_CancionListaReproduccion = new ArrayList<CancionLista>();
-            for(Cancion c : list_canciones)
-                new_CancionListaReproduccion.add(new CancionLista(c, upd_ListaReproduccion));
-            
             upd_ListaReproduccion.setNombre(nombre);
             upd_ListaReproduccion.setPrivacidad(privacidad);
-            upd_ListaReproduccion.setCancionesLista(new_CancionListaReproduccion);
             
-            cn.deleteList(cn.getListQuery("from modelos.CancionLista WHERE idCancionLista.lista.id = "+idLista));
+            if(!canciones.isEmpty())
+            {
+            
+                String INcanciones = Tools.Convert_Array_toStringComma(canciones);
+                
+                List<Cancion> list_canciones = cn.getListQuery("from modelos.Cancion WHERE id IN ("+INcanciones+")");
+                
+                List<CancionLista> new_CancionListaReproduccion = new ArrayList<CancionLista>();
+                for(Cancion c : list_canciones)
+                    new_CancionListaReproduccion.add(new CancionLista(c, upd_ListaReproduccion));
+                
+                upd_ListaReproduccion.setCancionesLista(new_CancionListaReproduccion);
+                
+                cn.deleteList(cn.getListQuery("from modelos.CancionLista WHERE idCancionLista.lista.id = "+idLista));
+                
+            }
             
             cn.update(upd_ListaReproduccion);
             

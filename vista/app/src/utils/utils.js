@@ -5,3 +5,12 @@ export function agregarArtista (records, artista) {
     return records;
   }
 }
+
+export function mapContentName (content, excludeId) {
+  return content.reduce((acc, curr) => {
+    if (curr.id !== excludeId) {
+      acc.push(curr.nombre);
+    }
+    return acc;
+  }, []);
+}

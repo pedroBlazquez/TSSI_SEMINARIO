@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Form, Button, Input, Select, DatePicker} from 'antd';
 import es_ES from 'antd/lib/locale-provider/es_ES';
 
-import { DatosPersonalesValidator, FechaValidator } from '../utils/validators';
+import { DatosPersonalesValidator, RequiredValidator, FechaValidator } from '../utils/validators';
 
 import '../styles/LoginForm.css';
 import ExtendedForm from './ExtendedForm';
@@ -66,7 +66,7 @@ class DatosArtistaForm extends Component {
           </FormItem>
           <FormItem label={"Descripción"}>
             {
-              DatosPersonalesValidator({form})('descripcion')
+              RequiredValidator({form})('descripcion')
               (<TextArea rows={4}/>)
             }
           </FormItem>

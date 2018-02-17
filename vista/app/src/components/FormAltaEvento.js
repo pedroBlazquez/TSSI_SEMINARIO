@@ -5,10 +5,10 @@ import ExtendedForm from './ExtendedForm';
 import FechaEvento from './FechaEvento';
 import Upload from './UploadSingleFile';
 import {
-  DatosPersonalesValidator,
   FechaValidator,
   RequiredValidator,
-  validateFile
+  validateFile,
+  NombreContenidoValidator
 } from '../utils/validators';
 
 const TextArea = Input.TextArea;
@@ -23,22 +23,25 @@ class FormAltaEvento extends Component {
   }
 
   render () {
-    const {onSubmit, onCancel, form} = this.props;
+    const {onSubmit, onCancel, form, eventos} = this.props;
     return (
       <Form onSubmit={onSubmit}>
         <FormItem>
-          {DatosPersonalesValidator({form})('nombre')
+          {NombreContenidoValidator(eventos)
+            ('Ya existe un evento con ese nombre')
+            ({form})
+            ('nombre')
             (<Input type={'text'} placeholder='Ingrese el nombre del evento' maxLength={100}/>)
           }
         </FormItem>
         <FormItem>
-          {DatosPersonalesValidator({form})('direccion')
+          {RequiredValidator({form})('direccion')
             (<Input type={'text'} placeholder='Ingrese la direccion del evento' maxLength={100}/>)
           }
         </FormItem>
         <FormItem>
             {
-              DatosPersonalesValidator({form})('descripcion')
+              RequiredValidator({form})('descripcion')
               (<TextArea placeholder={'Ingrese una breve descripcion'} rows={4} maxLength={250}/>)
             }
           </FormItem>

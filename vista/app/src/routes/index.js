@@ -5,6 +5,7 @@ import {Route, withRouter, Switch} from 'react-router-dom';
 import AuthRoute from './AuthRoute';
 
 import MainLayout from '../views/MainLayout';
+import Manual from '../views/manualusuario';
 import NavBar from '../containers/UserNavBarContainer';
 import LoginForm from '../containers/LoginContainer';
 import RegistroUsuario from '../containers/RegistroUsuarioContainer';
@@ -20,6 +21,7 @@ const MainRoute = ({isLogged}) => (
     header={'MusicAPP'}
   >
     {isLogged && <NavBar/>}
+    <Route component={Manual} path="/help" exact/>
     <AuthRoute authorized={isLogged} redirectTo="/login" path="/" exact component={NovedadesHome}/>
     <AuthRoute authorized={isLogged} redirectTo="/login" path="/perfil/:profileId" component={Perfil}/>
     <Route component={LoginForm} path="/login" />
