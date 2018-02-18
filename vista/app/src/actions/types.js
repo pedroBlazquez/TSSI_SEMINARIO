@@ -44,6 +44,7 @@ export const SET_NOVEDADES_INICIO = 'SET_NOVEDADES_INICIO';
 
 // Compartir
 export const SEND_COMPARTIR       = 'SEND_COMPARTIR';
+export const DELETE_COMPARTIR     = 'DELETE_COMPARTIR';
 
 // Like
 export const SEND_LIKE            = 'SEND_LIKE';
