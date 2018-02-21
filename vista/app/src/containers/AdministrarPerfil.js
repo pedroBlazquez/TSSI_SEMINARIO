@@ -80,10 +80,18 @@ class AdministrarPerfil extends Component {
 
   onSubmit = (e, values) => {
     const {actualizarUsuario, actualizarUsuarioStore} = this.props,
-          {nombre, apellido} = this.state.usuarioFields;
+          {nombre, apellido} = this.state.usuarioFields,
+          {descripcion, nombreFantasia} = this.state.artistaFields;
+    let baseObj = {'nombre': nombre.value, 'apellido': apellido.value}
 
+    console.log(this.state);
     actualizarUsuario(this.state);
-    actualizarUsuarioStore({'nombre': nombre.value, 'apellido': apellido.value});
+
+    if (descripcion.touched || nombreFantasia.touched) {
+      baseObj.artista = [{nombreFantasia: nombreFantasia.value, descripcion: descripcion.value}];
+    }
+
+    actualizarUsuarioStore(baseObj);
   }
 
   agregarIntegrante = (integrante) => {

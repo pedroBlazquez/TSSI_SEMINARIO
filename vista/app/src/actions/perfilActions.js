@@ -28,4 +28,4 @@ export const setUsuarioPerfil = (usuario) => ({type: PERFIL_USUARIO, usuario});
 export const setAlbumesPerfil = (albumes) => ({type: PERFIL_ALBUMES, albumes});
 export const setEventosPerfil = (eventos) => ({type: PERFIL_EVENTOS, eventos});
 export const setCompartidosPerfil = (compartidos) => ({type: PERFIL_COMPARTIDO, compartidos});
-export const updateProfileTree = (nombreCompleto) => ({type: PERFIL_UPDATE_TREE, nombreCompleto});
+export const updateProfileTree = (data) => ({type: PERFIL_UPDATE_TREE, data});
