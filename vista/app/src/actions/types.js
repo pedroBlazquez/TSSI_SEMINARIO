@@ -37,6 +37,7 @@ export const PERFIL_COMPARTIDO    = 'PERFIL_COMPARTIDO';
 export const PERFIL_ALBUMES       = 'PERFIL_ALBUMES';
 export const PERFIL_RESTORE       = 'PERFIL_RESTORE';
 export const PERFIL_EVENTOS       = 'PERFIL_EVENTOS';
+export const PERFIL_UPDATE_TREE   = 'PERFIL_UPDATE_TREE';
 
 // Novedades
 export const GET_NOVEDADES_INICIO = 'GET_NOVEDADES_INICIO';
