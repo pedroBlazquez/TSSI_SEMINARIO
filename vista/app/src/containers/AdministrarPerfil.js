@@ -81,13 +81,13 @@ class AdministrarPerfil extends Component {
   onSubmit = (e, values) => {
     const {actualizarUsuario, actualizarUsuarioStore} = this.props,
           {nombre, apellido} = this.state.usuarioFields,
-          {descripcion, nombreFantasia} = this.state.artistaFields;
+          {descripcion, nombreFantasia} = this.state.artistaFields || {};
     let baseObj = {'nombre': nombre.value, 'apellido': apellido.value}
 
     console.log(this.state);
     actualizarUsuario(this.state);
 
-    if (descripcion.touched || nombreFantasia.touched) {
+    if ((descripcion && nombreFantasia) && (descripcion.touched || nombreFantasia.touched)) {
       baseObj.artista = [{nombreFantasia: nombreFantasia.value, descripcion: descripcion.value}];
     }
 
