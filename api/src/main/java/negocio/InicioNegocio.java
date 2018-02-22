@@ -44,7 +44,7 @@ public class InicioNegocio {
             //fecha actual
             String date_now = Tools.DateFormatter(Tools.GetDateDifference(1));
             //fecha desde la cual se toman novedades
-            String date_novedades = Tools.DateFormatter(Tools.GetDateDifference(5));
+            String date_novedades = Tools.DateFormatter(Tools.GetDateDifference(7));
 
             StringBuilder query_artistas_seguidos = new StringBuilder();
             StringBuilder query_artistas_genero = new StringBuilder();
@@ -327,7 +327,7 @@ public class InicioNegocio {
                         general_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("select distinct gd.idGeneroDisco.disco from GeneroDisco gd JOIN FETCH gd.idGeneroDisco.disco.artista a WHERE gd.idGeneroDisco.genero.id = "+idGenero+" "+filtro_disco+" order by gd.idGeneroDisco.disco.fechaPublicacion desc",top_1), usermail,false,true));
                     }
                     List<Artista> artistas_genero = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE ga.idGeneroArtista.genero.id = "+idGenero+" "+filtro_artista_artistagenero);
-                    if(!artistas_genero.isEmpty() || !artistas_genero.isEmpty())
+                    if(!artistas_genero.isEmpty() )//|| !artistas_genero.isEmpty())
                     {
                         //armo query para filtrar por artistas de los generos
                         StringBuilder query_artistas_genero = new StringBuilder();
@@ -341,14 +341,15 @@ public class InicioNegocio {
                         }
                         general_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista a WHERE a.id in ("+query_artistas_genero+") "+st_nombre+filtro_direccion+" and e.fechaEvento "+filtro_fechaEvento+" order by e.fechaEvento desc",top_1), usermail,true));
                         
-                    }
-                    if(!is_evento)
-                    {
-                        List<JSONObject> temp_list = ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true);
-                        if(!artista.equals(""))
-                            priority_list.addAll(temp_list);
-                        else
-                            general_list.addAll(temp_list);
+
+                        if(!is_evento)
+                        {
+                            List<JSONObject> temp_list = ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true);
+                            if(!artista.equals(""))
+                                priority_list.addAll(temp_list);
+                            else
+                                general_list.addAll(temp_list);
+                        }
                     }
                 }
                 else
@@ -383,10 +384,10 @@ public class InicioNegocio {
                         {
                             filtros = filtro_artista_directo.replaceFirst(" and ", "").replaceFirst(" or ", "").replaceFirst("artista.", "");
                             List<JSONObject> temp_list = ArtistaNegocio.setData(cn,cn.getListQuery("from Artista WHERE "+filtros,top_1),usermail,false,true);
-                            if(!artista.equals(""))
+                            //if(!artista.equals(""))
                                 priority_list.addAll(temp_list);
-                            else
-                                general_list.addAll(temp_list);
+                            //else
+                            //    general_list.addAll(temp_list);
                         }
                     }
                     String filtros = st_nombre+filtro_artista_directo;
@@ -410,7 +411,10 @@ public class InicioNegocio {
             return_list.addAll(general_list);
             
             cn.cerrarConexion();
-            return new ResponseEntity<Object>(return_list.toString(),HttpStatus.OK);
+            if(return_list.isEmpty())
+                return new ResponseEntity<Object>(return_list.toString(),HttpStatus.NO_CONTENT);
+            else
+                return new ResponseEntity<Object>(return_list.toString(),HttpStatus.OK);
         }catch(Exception e)
         {
             e.printStackTrace();
