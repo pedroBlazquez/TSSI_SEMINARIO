@@ -8,6 +8,7 @@ import '../styles/AdministrarContenido.css';
 
 import {USUARIO_OYENTE, USUARIO_BANDA} from '../utils/constants';
 import {updateUser} from '../actions/registerActions';
+import {updateProfileTree} from '../actions/perfilActions';
 
 import PerfilWrapper from '../components/PerfilContentWrapper';
 import DatosArtista from '../components/FormDatosArtista';
@@ -78,8 +79,19 @@ class AdministrarPerfil extends Component {
   }
 
   onSubmit = (e, values) => {
-    const {actualizarUsuario} = this.props;
+    const {actualizarUsuario, actualizarUsuarioStore} = this.props,
+          {nombre, apellido} = this.state.usuarioFields,
+          {descripcion, nombreFantasia} = this.state.artistaFields || {};
+    let data = {'nombre': nombre.value, 'apellido': apellido.value}
+
     actualizarUsuario(this.state);
+
+    if (descripcion && nombreFantasia) {
+      data.nombreFantasia = nombreFantasia.value;
+      data.descripcion = descripcion.value;
+    }
+
+    actualizarUsuarioStore(data);
   }
 
   agregarIntegrante = (integrante) => {
@@ -136,7 +148,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actualizarUsuario: bindActionCreators(updateUser, dispatch)
+  actualizarUsuario: bindActionCreators(updateUser, dispatch),
+  actualizarUsuarioStore: bindActionCreators(updateProfileTree, dispatch)
 });
 
 export default connect(
