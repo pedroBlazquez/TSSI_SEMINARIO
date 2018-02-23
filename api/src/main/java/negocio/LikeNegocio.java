@@ -91,7 +91,7 @@ public class LikeNegocio {
 
         
         Integer usuario = UsuarioNegocio.getIdUsuarioByMail(cn, usermail);
-        List<modelos.Like> list_exists = new ArrayList<Like>();
+        List<Integer> list_exists = new ArrayList<Integer>();
         //chequea existencia
         if(Tipo.equals("Album"))
             list_exists = cn.getListQuery("SELECT l.id from modelos.Like l WHERE l.accion.album.id = "+id+" and l.usuario.id = "+usuario,1);
