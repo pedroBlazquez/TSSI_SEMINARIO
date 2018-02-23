@@ -22,7 +22,7 @@ const Perfil = () => (
       <Route path={'/perfil/:profileId'} exact component={NovedadesPerfil}/>
       <Route path={'/perfil/:profileId/seguidores'} component={SeguidoresContainer}/>
       <Route path={'/perfil/:profileId/seguidos'} component={SeguidosContainer}/>
-      <Route path={'/perfil/:profileId/listas'} component={ListasReproduccion}/>
+      <Route path={'/perfil/:profileId/listas'} component={AdministrarListas}/>
       <Route path={'/perfil/:profileId/canciones'} component={CancionesPerfil}/>
       <Route path={'/perfil/:profileId/discos'} component={DiscosPerfil}/>
       <Route path={'/perfil/:profileId/albumes'} component={AlbumesPerfil}/>
