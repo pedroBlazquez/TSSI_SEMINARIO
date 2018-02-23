@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Artista;
+import modelos.Like;
 import modelos.Usuario;
 import modelos.UsuarioTipo;
 
@@ -134,8 +135,19 @@ public class UsuarioNegocio {
     public boolean eliminarUsuario(String mail){
         Conexion cn = new Conexion();
         cn.abrirConexion();
+        
         Usuario u = getUsuarioByMail(cn,mail);
+        
+        List<modelos.Like> list_likes = new ArrayList<Like>();
+        list_likes = cn.getListQuery("from modelos.Like WHERE usuario.id = "+u.getId());
+        List<modelos.Compartido> list_compartidos = new ArrayList<modelos.Compartido>();
+        list_compartidos = cn.getListQuery("from modelos.Compartido WHERE usuario.id = "+u.getId());
+        
+        
+        //u = getUsuarioByMail(cn,mail);
         try {
+            cn.deleteList(list_likes);
+            cn.deleteList(list_compartidos);
             cn.delete(u);
         } catch (Exception e) {
             e.printStackTrace();

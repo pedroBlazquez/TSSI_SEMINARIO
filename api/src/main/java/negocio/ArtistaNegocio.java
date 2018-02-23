@@ -129,6 +129,8 @@ public class ArtistaNegocio {
             jobj.put("seguidores", SeguidosNegocio.getCountSeguidores(cn,idUsuario));
             jobj.put("seguido", SeguidosNegocio.getSeguimiento(cn,idUsuario,usermail));
 
+            jobj.put("compartido", CompartirNegocio.getCompartidoUsuario(cn,"Artista",idArtista,usermail));
+            
             jobj.put("object_type", "Artista");
             
             list.add(jobj);

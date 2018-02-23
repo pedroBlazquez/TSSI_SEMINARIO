@@ -7,6 +7,7 @@ import Artista from './Artista';
 import Cancion from './Cancion';
 import Disco from './Disco';
 import Album from './Album';
+import Usuario from './Usuario';
 
 import {OBJECT_TYPES} from '../utils/constants';
 
@@ -35,6 +36,9 @@ export default class Novedades extends Component {
           break;
         case OBJECT_TYPES.ALBUM:
           element = <Album key={record.id + 'Album'} album={record}/>;
+          break;
+        case OBJECT_TYPES.USUARIO:
+          element = <Usuario key={record.id + 'Usuario'} usuario={record} />;
           break;
       }
       return element;

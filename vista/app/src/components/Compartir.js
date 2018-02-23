@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import withProfile from '../hoc/withProfile';
+import {withRouter} from 'react-router-dom';
 
 import {Avatar} from 'antd';
 
-import {sendCompartir} from '../actions/compartirAction';
+import {sendCompartir, deleteCompartirFromTree} from '../actions/compartirAction';
 
 /*
     Este componente recibe id y tipo de contenido,
@@ -21,11 +23,14 @@ class Compartir extends Component {
   }
 
   clickHandler = () => {
-    let {id, typeContent} = this.props;
+    let {id, typeContent, esPerfilPropio} = this.props;
     this.setState({
       wasShared: !this.state.wasShared
     });
     this.props.sendCompartir(id, typeContent);
+    if (this.state.wasShared && window.location.pathname.match("perfil") && esPerfilPropio) {
+      this.props.deleteCompartirFromTree(id, typeContent);
+    }
   }
 
   render () {
@@ -38,10 +43,11 @@ class Compartir extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  sendCompartir: bindActionCreators(sendCompartir, dispatch)
+  sendCompartir: bindActionCreators(sendCompartir, dispatch),
+  deleteCompartirFromTree: bindActionCreators(deleteCompartirFromTree, dispatch)
 });
 
-export default connect(
+export default withRouter(withProfile(connect(
   null,
   mapDispatchToProps
-)(Compartir);
+)(Compartir)));

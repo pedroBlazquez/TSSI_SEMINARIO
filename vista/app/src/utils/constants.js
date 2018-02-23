@@ -39,5 +39,6 @@ export const OBJECT_TYPES = {
   EVENTO: 'Evento',
   DISCO: 'Disco',
   CANCION: 'Cancion',
-  ALBUM: 'Album'
+  ALBUM: 'Album',
+  USUARIO: 'Usuario'
 };

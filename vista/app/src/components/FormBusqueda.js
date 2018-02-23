@@ -29,13 +29,6 @@ const OpcionesBusqueda = ({
   fecha
 }) => (
   <div className="relative padding-10p">
-    <div className={'absolute'} style={{right: 5, top: 5}}>
-      <Icon
-        type="close"
-        style={{ fontSize: 13, cursor: 'pointer' }}
-        onClick={toggleOpciones}
-      />
-    </div>
     <label htmlFor="musico">Musico:</label>
     <Input type={'text'} name="musico" value={artista} onChange={onArtistaChange} placeholder='Nombre artista...'/>
     <label htmlFor="generos">Genero:</label>
@@ -76,6 +69,7 @@ class FormBusqueda extends Component {
   }
 
   toggleOpciones = () => {
+    this.onParametroChange(parametrosIniciales);
     this.setState({showOptions: !this.state.showOptions});
   }
 
@@ -133,27 +127,26 @@ class FormBusqueda extends Component {
             placeholder='Buscar...'
           />
         </FormItem>
-        <Popover
-          content={
-            <OpcionesBusqueda 
-              toggleOpciones={this.toggleOpciones}
-              onArtistaChange={this.onArtistaChange}
-              onUbicacionChange={this.onUbicacionChange}
-              onDesdeHastaChange={this.onDesdeHastaChange}
-              onFechaChange={this.onFechaChange}
-              onGeneroChange={this.onGeneroChange}
-              {...advancedOptions}
-            />
-          }
-          visible={this.state.showOptions}
-        >
+        <div>
+            {showOptions ? 
+              <OpcionesBusqueda 
+                toggleOpciones={this.toggleOpciones}
+                onArtistaChange={this.onArtistaChange}
+                onUbicacionChange={this.onUbicacionChange}
+                onDesdeHastaChange={this.onDesdeHastaChange}
+                onFechaChange={this.onFechaChange}
+                onGeneroChange={this.onGeneroChange}
+                {...advancedOptions}
+              /> :
+              null
+            }
           <span className={'margin-5p-left'} style={{cursor: 'pointer'}} onClick={this.toggleOpciones}>
-            Avanzado <Icon type="caret-down" style={{ fontSize: 13 }} />
+            Avanzado <Icon type={showOptions ? 'caret-up' : 'caret-down'} style={{ fontSize: 13 }} />
           </span>
-        </Popover>
-        <Button className={'margin-5p'} onClick={this.onLimpiarBusqueda}>
-          {'Limpiar búsqueda'}
-        </Button>
+          <Button className={'margin-5p'} onClick={this.onLimpiarBusqueda}>
+            {'Limpiar búsqueda'}
+          </Button>
+        </div>
       </Form>
     );
   }
