@@ -51,7 +51,3 @@ export default withRouter(withProfile(connect(
   null,
   mapDispatchToProps
 )(Compartir)));
-/*export default connect(
-  null,
-  mapDispatchToProps
-)(Compartir);*/

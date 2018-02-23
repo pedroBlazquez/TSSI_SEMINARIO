@@ -8,7 +8,14 @@ export default function (state = initialState, action) {
     case PERFIL_USUARIO:
       return action.usuario || initialState;
     case PERFIL_UPDATE_TREE:
-      return {...merge(state, action.data)};
+      let {nombre, apellido, nombreFantasia, descripcion} = action.data;
+      state.nombre = nombre;
+      state.apellido = apellido;
+      if (descripcion && nombreFantasia) {
+        state.artista[0].nombreFantasia = nombreFantasia;
+        state.artista[0].descripcion = descripcion;
+      }
+      return {...state};
     case PERFIL_RESTORE:
       return initialState;
     default:
