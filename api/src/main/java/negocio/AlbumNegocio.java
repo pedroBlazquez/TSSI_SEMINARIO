@@ -28,7 +28,7 @@ public class AlbumNegocio {
         try
         {
             Conexion cn = new Conexion();
-            //cn.abrirConexion();
+            cn.abrirConexion();
             String INdiscos = Tools.Convert_Array_toStringComma(discos);
           
             List<Disco> list_discos = cn.getListQuery("from modelos.Disco WHERE id IN ("+INdiscos+")");

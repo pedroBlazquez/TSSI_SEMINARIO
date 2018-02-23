@@ -104,7 +104,9 @@ public class AlbumControlador {
             JSONObject json = new JSONObject(httpEntity.getBody());    
             //busca en json los atributos
             String nombre= json.getString("nombre");
-            String portada= json.getString("portada");
+            String portada= "";
+            try { portada = json.getString("portada");}catch (JSONException x){}
+            
             ArrayList<String> discos = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("discos"));
             //busca mail de usuario
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
@@ -127,7 +129,8 @@ public class AlbumControlador {
             //busca en json los atributos
             String idAlbum= json.getString("idAlbum");
             String nombre= json.getString("nombre");
-            String portada= json.getString("portada");
+            String portada= "";
+            try { portada = json.getString("portada");}catch (JSONException x){}
             ArrayList<String> discos = Tools.Convert_jsonArray_toArrayString(json.getJSONArray("discos"));
             
             return AlbumNegocio.UpdateAlbum(idAlbum,nombre,discos,portada);
