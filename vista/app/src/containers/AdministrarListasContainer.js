@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import moment from 'moment';
 
 import {getListasPerfil} from '../selectors/perfil';
-import {crearLista, eliminarLista} from '../actions/listasReproduccionActions';
+import {crearLista, eliminarLista, modificarLista} from '../actions/listasReproduccionActions';
 
 import MainContent from '../components/MainContent';
 import AltaLista from '../components/FormAltaLista';
@@ -22,7 +22,6 @@ class AdministrarListasContainer extends Component {
   }
 
   onEditar = (id) => {
-    return;
     const {listas} = this.props;
     const lista = listas.find(c => c.id === id);
 
@@ -33,7 +32,8 @@ class AdministrarListasContainer extends Component {
         },
         privacidad: {
           value: lista.privacidad
-        }
+        },
+        canciones: lista.canciones
       },
       editando: id
     });
@@ -41,7 +41,7 @@ class AdministrarListasContainer extends Component {
 
   onEliminar = (id) => {
     const {baja} = this.props;
-    //baja(id);
+    baja(id);
   }
 
   onFormChange = (changedFields) => {
@@ -83,6 +83,7 @@ class AdministrarListasContainer extends Component {
               onSubmit: this.onSubmit,
               onCancel: this.onCancel,
               onChange: this.onFormChange,
+              ...this.state.lista
             }}
             modalTitle={this.state.editando === null ? 'Alta Lista' : 'Actualizar Lista'}
             contenidoProps={{
@@ -100,7 +101,7 @@ class AdministrarListasContainer extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   alta: bindActionCreators(crearLista, dispatch),
-  //modificar: bindActionCreators(modEvento, dispatch),
+  modificar: bindActionCreators(modificarLista, dispatch),
   baja: bindActionCreators(eliminarLista, dispatch)
 });
 

@@ -77,3 +77,4 @@ export const GET_LISTAS           = 'GET_LISTAS';
 export const PUSH_SONG_TO_LIST    = 'PUSH_SONG_TO_LIST';
 export const ALTA_LISTA           = 'ALTA_LISTA';
 export const ELIMINAR_LISTA       = 'ELIMINAR_LISTA';
+export const MOD_LISTA            = 'MOD_LISTA';

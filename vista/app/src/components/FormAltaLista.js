@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Button, Input, Checkbox} from 'antd';
 
-import ExtendedForm from './ExtendedForm';
 import FechaEvento from './FechaEvento';
 import Upload from './UploadSingleFile';
 import {
@@ -15,18 +14,38 @@ const TextArea = Input.TextArea;
 const FormItem = Form.Item;
 
 class FormAltaLista extends Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      canciones: this.props.canciones || []
+    };
+  }
+
+  handleSubmit = (e, values) => {
+    const {canciones} = this.state;
+    const {onSubmit, form} = this.props;
+    const {validateFields} = form;
+    e.preventDefault();
+    
+    validateFields((errors, values) => {
+      if (!errors) {
+        onSubmit(e, {...values, canciones});
+      }
+    });
+  }
 
   render () {
-    const {onSubmit, onCancel, form} = this.props;
+    const {onCancel, form} = this.props;
     return (
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <FormItem>
-          {DatosPersonalesValidator({form})('nombre')
+          {RequiredValidator({form})('nombre')
             (<Input type={'text'} placeholder='Ingrese el nombre del evento' maxLength={100}/>)
           }
         </FormItem>
         <FormItem label={'Permitir a otros usuarios ver esta lista'}>
-          {form.getFieldDecorator('privacidad')(<Checkbox />)}
+          {form.getFieldDecorator('privacidad', {valuePropName: 'checked'})(<Checkbox />)}
         </FormItem>
         <FormItem>
           <div className={'flex flex-space-between'}>
@@ -55,4 +74,4 @@ export default Form.create({
       privacidad: {...props.privacidad},
     }
   }
-})(ExtendedForm(FormAltaLista));
+})(FormAltaLista);
