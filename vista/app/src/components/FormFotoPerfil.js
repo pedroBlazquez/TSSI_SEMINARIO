@@ -38,10 +38,10 @@ class FormFotoPerfil extends Component {
                             multiple = {false}
                             onSuccess = {(url) => this.setState({profileUrl: url})}
                         >
-                        <Button>
-                            <Icon type='upload' /> 
-                            {'Subir Foto'}
-                        </Button>
+                            <Button>
+                                <Icon type='upload'/>
+                                {'Subir Foto'}
+                            </Button>
                         </Upload>
                     </FormItem>
                     <FormItem>
