@@ -26,6 +26,8 @@ import negocio.UsuarioNegocio;
 @RequestMapping("/archivo")
 public class ArchivoControlador {
 
+	protected String domain = "http://localhost:8080";
+
     @RequestMapping(value = "/subirCancion", method = RequestMethod.POST)
     public String subirCancion(
 		HttpServletRequest request,
@@ -129,7 +131,7 @@ public class ArchivoControlador {
         gestor.subirArchvo(archivo, path);
 
         String[] pathParts = path.split("/public");
-        return Arrays.asList(pathParts).get(1);
+        return this.domain + Arrays.asList(pathParts).get(1);
     }
     
 }

@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class GestorArchivo {
     
     protected String basePath = "";
-    
+
     protected HashMap<TipoContenido, String> carpetas = new HashMap();
     
     public enum TipoContenido {
