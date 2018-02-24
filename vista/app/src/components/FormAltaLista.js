@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Button, Input, Checkbox} from 'antd';
+import {Form, Button, Input, Checkbox, Icon} from 'antd';
 
 import FechaEvento from './FechaEvento';
 import Upload from './UploadSingleFile';
@@ -9,7 +9,6 @@ import {
   RequiredValidator,
   validateFile
 } from '../utils/validators';
-import Contenido from './Contenido';
 
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
@@ -36,8 +35,15 @@ class FormAltaLista extends Component {
     });
   }
 
+  removerCancion = (id) => {
+    const {canciones} = this.state;
+    this.setState({
+      canciones: canciones.filter(c => c.id.toString() !== id.toString())
+    });
+  }
+
   render () {
-    const {onCancel, form} = this.props;
+    const {onCancel, form, on} = this.props;
     const {canciones} = this.state;
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -49,7 +55,12 @@ class FormAltaLista extends Component {
         <FormItem label={'Canciones'}>
           {canciones.length ? 
             <div>
-              {canciones.map(c => <p key={c.id}>{c.nombre}</p>)}
+              {canciones.map(c =>
+                <div key={c.id}> 
+                  <span>{c.nombre} - {c.artista.nombreFantasia}</span>
+                  <Icon type="delete" className={'icon-delete'} onClick={(e) => { this.removerCancion(c.id);}}/>
+                </div>
+              )}
             </div> :
             'Puede agregar canciones a esta lista desde home'
           }
