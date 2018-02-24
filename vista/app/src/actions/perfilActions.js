@@ -30,6 +30,6 @@ export const setUsuarioPerfil = (usuario) => ({type: PERFIL_USUARIO, usuario});
 export const setAlbumesPerfil = (albumes) => ({type: PERFIL_ALBUMES, albumes});
 export const setEventosPerfil = (eventos) => ({type: PERFIL_EVENTOS, eventos});
 export const setCompartidosPerfil = (compartidos) => ({type: PERFIL_COMPARTIDO, compartidos});
-export const updateProfileTree = (data) => ({type: PERFIL_UPDATE_TREE, data});export const setCompartidosPerfil = (compartidos) => ({type: PERFIL_COMPARTIDO, compartidos});
+export const updateProfileTree = (data) => ({type: PERFIL_UPDATE_TREE, data});
 export const guardarFotoPerfil = (url) => ({type: GUARDAR_FOTO_PERFIL, url});
 export const actualizarFotoPerfil = (url) => ({type: ACTUALIZAR_FOTO_PERFIL, url});
