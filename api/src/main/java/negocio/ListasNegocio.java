@@ -86,6 +86,12 @@ public class ListasNegocio {
                 cn.deleteList(cn.getListQuery("from modelos.CancionLista WHERE idCancionLista.lista.id = "+idLista));
                 
             }
+            else
+            {
+                cn.deleteList(cn.getListQuery("from modelos.CancionLista WHERE idCancionLista.lista.id = "+idLista));
+                
+            }
+                
             
             cn.update(upd_ListaReproduccion);
             
