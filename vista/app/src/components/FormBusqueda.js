@@ -119,7 +119,7 @@ class FormBusqueda extends Component {
       <Form>
         <FormItem>
           <InputSearch
-            maxLength={200}
+            maxLength={'200'}
             type={'text'}
             value={search}
             onChange={this.onSearchChange}

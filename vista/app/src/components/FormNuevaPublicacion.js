@@ -14,7 +14,7 @@ class NuevaPublicacion extends Component {
     return (
       <Form onSubmit={onSubmit}>
         <FormItem>
-          {RequiredValidator({form})('publicacion')(<TextArea rows={4} maxLength={250}/>)}
+          {RequiredValidator({form})('publicacion')(<TextArea rows={4} maxLength={'250'}/>)}
         </FormItem>
         <FormItem>
           <Button htmlType="submit" className={'green-button'}>{'Publicar'}</Button>

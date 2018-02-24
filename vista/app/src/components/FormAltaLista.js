@@ -41,7 +41,7 @@ class FormAltaLista extends Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
           {RequiredValidator({form})('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre del evento' maxLength={100}/>)
+            (<Input type={'text'} placeholder='Ingrese el nombre del evento' maxLength={'100'}/>)
           }
         </FormItem>
         <FormItem label={'Permitir a otros usuarios ver esta lista'}>
