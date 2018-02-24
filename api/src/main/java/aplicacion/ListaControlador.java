@@ -8,6 +8,7 @@ import modelos.ListaReproduccion;
 import modelos.Usuario;
 import negocio.DiscoNegocio;
 import negocio.ListasNegocio;
+import negocio.UsuarioNegocio;
 import conexion.Conexion;
 
 import org.json.JSONException;
@@ -78,9 +79,18 @@ public class ListaControlador {
     @RequestMapping(value = "/getUsuario/{usuario}", method = RequestMethod.GET) //obtener listas publicas de un usuario especifico
     public ResponseEntity<?> getListaReproduccionArtista(@PathVariable("usuario") long idusuario, HttpServletRequest request) {
         try {
+
             Conexion cn = new Conexion();
             cn.abrirConexion();
-            List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE privacidad = false and usuario.id = "+idusuario + " order by fechaAlta desc");
+
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+            Integer idlogueado = UsuarioNegocio.getIdUsuarioByMail(cn, usermail);
+            
+            String filtro = "";
+            if(idusuario != idlogueado)
+                filtro = " privacidad = false and ";
+            
+            List<ListaReproduccion> listas = cn.getListQuery("from modelos.ListaReproduccion WHERE "+filtro+" usuario.id = "+idusuario + " order by fechaAlta desc");
             
             if (listas.isEmpty()) {
                 cn.cerrarConexion();
@@ -88,7 +98,6 @@ public class ListaControlador {
                 // You many decide to return HttpStatus.NOT_FOUND
             }
             
-            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
             List<JSONObject> jobj_list = ListasNegocio.setData(cn,listas, usermail);
             cn.cerrarConexion();
             return new ResponseEntity<Object>(jobj_list.toString(), HttpStatus.OK);
