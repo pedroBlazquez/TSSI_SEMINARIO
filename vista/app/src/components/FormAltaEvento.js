@@ -31,18 +31,18 @@ class FormAltaEvento extends Component {
             ('Ya existe un evento con ese nombre')
             ({form})
             ('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre del evento' maxLength={100}/>)
+            (<Input type={'text'} placeholder='Ingrese el nombre del evento' maxLength={'100'}/>)
           }
         </FormItem>
         <FormItem>
           {RequiredValidator({form})('direccion')
-            (<Input type={'text'} placeholder='Ingrese la direccion del evento' maxLength={100}/>)
+            (<Input type={'text'} placeholder='Ingrese la direccion del evento' maxLength={'100'}/>)
           }
         </FormItem>
         <FormItem>
             {
               RequiredValidator({form})('descripcion')
-              (<TextArea placeholder={'Ingrese una breve descripcion'} rows={4} maxLength={250}/>)
+              (<TextArea placeholder={'Ingrese una breve descripcion'} rows={4} maxLength={'250'}/>)
             }
           </FormItem>
         <FormItem>

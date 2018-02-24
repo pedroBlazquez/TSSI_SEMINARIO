@@ -76,7 +76,7 @@ class FormAltaDisco extends Component {
             ('Ya existe un disco con este nombre')
             ({form})
             ('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre del disco' maxLength={100} />)
+            (<Input type={'text'} placeholder='Ingrese el nombre del disco' maxLength={'100'} />)
           }
         </FormItem>
         <FormItem>

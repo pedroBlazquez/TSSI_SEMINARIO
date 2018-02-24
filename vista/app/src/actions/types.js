@@ -37,6 +37,7 @@ export const PERFIL_COMPARTIDO    = 'PERFIL_COMPARTIDO';
 export const PERFIL_ALBUMES       = 'PERFIL_ALBUMES';
 export const PERFIL_RESTORE       = 'PERFIL_RESTORE';
 export const PERFIL_EVENTOS       = 'PERFIL_EVENTOS';
+export const PERFIL_UPDATE_TREE   = 'PERFIL_UPDATE_TREE';
 export const GUARDAR_FOTO_PERFIL  = 'GUARDAR_FOTO_PERFIL';
 export const ACTUALIZAR_FOTO_PERFIL = 'ACTUALIZAR_FOTO_PERFIL';
 
@@ -46,6 +47,7 @@ export const SET_NOVEDADES_INICIO = 'SET_NOVEDADES_INICIO';
 
 // Compartir
 export const SEND_COMPARTIR       = 'SEND_COMPARTIR';
+export const DELETE_COMPARTIR     = 'DELETE_COMPARTIR';
 
 // Like
 export const SEND_LIKE            = 'SEND_LIKE';
@@ -75,3 +77,6 @@ export const CERRAR_MODAL         = 'CERRAR_MODAL';
 export const SET_LISTAS           = 'SET_LISTAS';
 export const GET_LISTAS           = 'GET_LISTAS';
 export const PUSH_SONG_TO_LIST    = 'PUSH_SONG_TO_LIST';
+export const ALTA_LISTA           = 'ALTA_LISTA';
+export const ELIMINAR_LISTA       = 'ELIMINAR_LISTA';
+export const MOD_LISTA            = 'MOD_LISTA';

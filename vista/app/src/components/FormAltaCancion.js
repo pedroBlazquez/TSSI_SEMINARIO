@@ -29,7 +29,7 @@ class FormAltaCancion extends Component {
             ('Ya existe una cancion con ese nombre')
             ({form})
             ('nombre')
-            (<Input type={'text'} placeholder='Ingrese el nombre de la cancion' maxLength={100}/>)
+            (<Input type={'text'} placeholder='Ingrese el nombre de la cancion' maxLength={'100'}/>)
           }
         </FormItem>
         <FormItem>

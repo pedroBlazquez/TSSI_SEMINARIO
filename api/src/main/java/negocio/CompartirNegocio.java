@@ -1,6 +1,8 @@
 package negocio;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -89,7 +91,7 @@ public class CompartirNegocio {
         }
     }
     
-    public static ResponseEntity<Object> getCompartidosUsuario(Conexion cn,int idUsuario,String usermail) throws JsonProcessingException, JSONException
+    /*public static ResponseEntity<Object> getCompartidosUsuario(Conexion cn,int idUsuario,String usermail) throws JsonProcessingException, JSONException
     {
         //Conexion cn = new Conexion();
         //cn.abrirConexion();
@@ -115,6 +117,60 @@ public class CompartirNegocio {
             return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
         
     }
+    */
+    public static ResponseEntity<Object> getCompartidosUsuario(Conexion cn,int idUsuario,String usermail) throws JsonProcessingException, JSONException
+    {
+        //Conexion cn = new Conexion();
+        //cn.abrirConexion();
+        Usuario u = new Usuario();
+        if(idUsuario == 0)
+            u = UsuarioNegocio.getUsuarioByMail(cn, usermail);
+        else
+            u = UsuarioNegocio.getById(cn, idUsuario);
+        
+        String id_artista = "";
+        List<Artista> res_artista = cn.getListQuery("from modelos.Artista WHERE usuario.id = "+u.getId());
+        if(!res_artista.isEmpty())
+            id_artista = String.valueOf(res_artista.get(0).getId()); 
+        
+        
+        List<modelos.Compartido> list = cn.getListQuery("from modelos.Compartido c "
+                + " LEFT JOIN FETCH c.accion.cancion.artista ca "
+                + " LEFT JOIN FETCH c.accion.disco.artista da "
+                + " LEFT JOIN FETCH c.accion.album.artista aa "
+                + " LEFT JOIN FETCH c.accion.publicacion.artista pa "
+                + " LEFT JOIN FETCH c.accion.evento.artista ea "
+                + " WHERE c.usuario.id = "+u.getId()+ " order by c.accion.fechaAccion desc");
+        
+        //si es artista agrega las publicaciones del mismo a la lista de compartidos.
+        if(!id_artista.equals(""))
+        {
+            //get publicaciones
+            List<Publicacion> publicaciones = cn.getListQuery("from modelos.Publicacion p JOIN FETCH p.artista pa WHERE pa.id = "+id_artista + " order by p.fechaPublicacion desc");  
+            //convertir publicaciones en objeto compartir y agregar a lista
+            for(Publicacion p : publicaciones)
+            {
+                modelos.AccionLikeCompartir alc = new AccionLikeCompartir(p.getFechaPublicacion());
+                alc.setPublicacion(p);
+                modelos.Compartido c = new Compartido(u,alc);
+                list.add(c);
+            }
+            //ordenar lista por fechaAccion
+            Collections.sort(list);
+            
+        }
+        
+        List<JSONObject> jobj_list = setData(cn,list,usermail);
+        
+        
+        //cn.cerrarConexion();
+        if(list.isEmpty())
+            return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+        else
+            return new ResponseEntity<Object>(jobj_list.toString(),HttpStatus.OK);
+        
+    }
+    
     public static boolean getCompartidoUsuario(Conexion cn,String Tipo,String id,String usermail)
     {
         //Conexion cn = new Conexion();
