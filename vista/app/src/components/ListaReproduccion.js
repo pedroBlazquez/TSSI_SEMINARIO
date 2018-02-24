@@ -16,31 +16,23 @@ class ListaReproduccion extends Component {
     const {lista}= this.props;
     return (
       <Card className={'margin-10p playlist'}>
-          <div className='titleBlock'>
-            <div className='cancionImagenContainer'>
-              <img src={Imagen}/>
-            </div>
-            <div className='discoInfoContainer'>
-                <div className='flex flex-space-between'>
-                    <div>
-                        <h1>{lista.nombre}</h1>
+        <div className={'flex flex-space-between'}>
+            <h2>{lista.nombre}</h2>
+            <img src={Imagen} style={{width: 20, height: 20}}/>
+        </div>
+        <div className='listaCanciones'>
+            {   
+                !!lista.canciones &&
+                lista.canciones.map((cancion, i) => {
+                return (
+                    <div key={i} className='flex flex-space-between discoCancion'>
+                        <span style={{height: '100%', verticalAlign: 'middle'}}>{cancion.nombre} - {cancion.artista.nombreFantasia}</span>
+                        <BotonPlay cancion={{...cancion, artista: cancion.artista}}/>
                     </div>
-                </div>
-            </div>
-          </div>
-          <div className='listaCanciones'>
-              {   
-                  !!lista.canciones &&
-                  lista.canciones.map((cancion, i) => {
-                    return (
-                        <div key={i} className='flex flex-space-between discoCancion'>
-                            <span>{cancion.nombre}</span>
-                            <BotonPlay cancion={{...cancion, artista: cancion.artista}}/>
-                        </div>
-                    );
-                  })
-              }
-          </div>
+                );
+                })
+            }
+        </div>
       </Card>
     );
   }

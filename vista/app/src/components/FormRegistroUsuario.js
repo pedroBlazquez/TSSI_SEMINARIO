@@ -25,13 +25,13 @@ class RegistroUsuarioForm extends Component {
         <FormItem>
           {
             DatosPersonalesValidator({form})('nombre')
-            (<Input type="text" placeholder="Ingrese su nombre" maxLength={100}/>)
+            (<Input type="text" placeholder="Ingrese su nombre" maxLength={'100'}/>)
           }
         </FormItem>
         <FormItem>
           {
             DatosPersonalesValidator({form})('apellido')
-            (<Input placeholder={'Ingrese su apellido'} type="text" maxLength={100}/>)
+            (<Input placeholder={'Ingrese su apellido'} type="text" maxLength={'100'}/>)
           }
         </FormItem>
         <FormItem>
@@ -41,10 +41,10 @@ class RegistroUsuarioForm extends Component {
           }
         </FormItem>
         <FormItem>
-          {MailValidator({form})('usuario')(<MailInput disabled={update} maxLength={100}/>)}
+          {MailValidator({form})('usuario')(<MailInput disabled={update} maxLength={'100'}/>)}
         </FormItem>
         <FormItem>
-          {PasswordValidator({form})('password')(<PasswordInput maxLength={100}/>)}  
+          {PasswordValidator({form})('password')(<PasswordInput maxLength={'100'}/>)}  
         </FormItem>
         {!update &&
           <FormItem >
