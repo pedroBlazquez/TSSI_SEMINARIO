@@ -1,5 +1,7 @@
 package modelos;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Compartidos")
-public class Compartido {
+public class Compartido implements Comparable<Compartido> {
 
     @Id
     @Column(name = "idCompartido")
@@ -52,6 +54,22 @@ public class Compartido {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(Compartido o) {
+        // TODO Auto-generated method stub
+        
+        Date compareDate = ((Compartido) o).getAccion().getFechaAccion();
+
+        int returnvalue = 0;
+        if(this.getAccion().getFechaAccion().before(compareDate))
+            returnvalue = 1;
+        else if (this.getAccion().getFechaAccion().after(compareDate))
+            returnvalue = -1;
+        return returnvalue;
+        
+
     }
 
 }

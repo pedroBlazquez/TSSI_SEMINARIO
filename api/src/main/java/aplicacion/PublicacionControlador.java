@@ -3,7 +3,9 @@ package aplicacion;
 import org.springframework.web.bind.annotation.*;
 
 import aplicacion.autenticacion.Token;
+import modelos.Artista;
 import modelos.Publicacion;
+import negocio.CompartirNegocio;
 import negocio.PublicacionNegocio;
 import conexion.Conexion;
 
@@ -67,6 +69,29 @@ public class PublicacionControlador {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    /*@RequestMapping(value = "/getArtista/{artista}", method = RequestMethod.GET)
+    public ResponseEntity<?> getPublicacionesArtista(@PathVariable("artista") long idartista, HttpServletRequest request) {
+        try {
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
+
+            Conexion cn = new Conexion();
+            cn.abrirConexion();
+            
+            int idUsuario = 0;
+            List<Artista> artistas = cn.getListQuery("from modelos.Artista WHERE id = "+idartista);
+            if (artistas.isEmpty()) {
+                idUsuario = artistas.get(0).getUsuario().getId();
+            }
+            
+            ResponseEntity<Object> response = CompartirNegocio.getCompartidosUsuario(cn,(int)idUsuario,usermail);
+            cn.cerrarConexion();
+            return response;
+        } catch (Exception ex) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
+    
     
     // -------------------Create-------------------------------------------
     
