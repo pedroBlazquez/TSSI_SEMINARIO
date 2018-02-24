@@ -5,6 +5,7 @@ import {message} from 'antd';
 import {_get, _put, _post, config} from '../utils/api';
 import {GET_LISTAS, PUSH_SONG_TO_LIST, ALTA_LISTA} from '../actions/types';
 import {setListas} from '../actions/listasReproduccionActions';
+import {setListasPerfil} from '../actions/perfilActions';
 
 export function* getListasSaga() {
     try {
@@ -40,7 +41,8 @@ export function* altaLista(action) {
         };
 
         yield call(_post, '/listas/', payload, headers);
-        yield put({type: GET_LISTAS});
+        const listas = yield call(_get, '/listas/getUsuario', headers);
+        yield put(setListasPerfil(listas.data));
         
     } catch (e) {
         console.log(e);
