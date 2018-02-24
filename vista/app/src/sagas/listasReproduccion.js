@@ -76,7 +76,7 @@ export function* modificarListaSaga(action) {
             idListaReproduccion: action.lista.idLista,
             nombre: action.lista.nombre,
             privacidad: action.lista.privacidad,
-            canciones: action.lista.canciones || []
+            canciones: action.lista.canciones.map(c => c.id.toString())
         };
         const listas = yield call(_put, '/listas/', payload, headers);
         yield put({type: 'GET_LISTAS_PERFIL'});

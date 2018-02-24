@@ -9,6 +9,7 @@ import {
   RequiredValidator,
   validateFile
 } from '../utils/validators';
+import Contenido from './Contenido';
 
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
@@ -37,6 +38,7 @@ class FormAltaLista extends Component {
 
   render () {
     const {onCancel, form} = this.props;
+    const {canciones} = this.state;
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
@@ -44,8 +46,17 @@ class FormAltaLista extends Component {
             (<Input type={'text'} placeholder='Ingrese el nombre del evento' maxLength={'100'}/>)
           }
         </FormItem>
-        <FormItem label={'Permitir a otros usuarios ver esta lista'}>
-          {form.getFieldDecorator('privacidad', {valuePropName: 'checked'})(<Checkbox />)}
+        <FormItem label={'Canciones'}>
+          {canciones.length ? 
+            <div>
+              {canciones.map(c => <p key={c.id}>{c.nombre}</p>)}
+            </div> :
+            'Puede agregar canciones a esta lista desde home'
+          }
+        </FormItem>
+
+        <FormItem>
+          Solo yo puedo ver esta lista: {form.getFieldDecorator('privacidad', {valuePropName: 'checked', initialValue: true})(<Checkbox />)}
         </FormItem>
         <FormItem>
           <div className={'flex flex-space-between'}>
