@@ -209,6 +209,11 @@ public class UsuarioControlador {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
+    @RequestMapping(value = "/guardarFoto", method = RequestMethod.POST)
+    public void guardarFoto(HttpEntity<String> httpEntity) throws JSONException {
+    	JSONObject json = new JSONObject(httpEntity.getBody());
+    	System.out.println(json);
+    }
 
 }

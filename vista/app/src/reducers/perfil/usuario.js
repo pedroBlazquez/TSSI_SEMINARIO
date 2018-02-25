@@ -1,4 +1,4 @@
-import {PERFIL_USUARIO, PERFIL_RESTORE, PERFIL_UPDATE_TREE} from '../../actions/types';
+import {PERFIL_USUARIO, PERFIL_RESTORE, PERFIL_UPDATE_TREE, ACTUALIZAR_FOTO_PERFIL} from '../../actions/types';
 import {merge} from 'lodash';
 
 const initialState = {};
@@ -15,6 +15,9 @@ export default function (state = initialState, action) {
         state.artista[0].nombreFantasia = nombreFantasia;
         state.artista[0].descripcion = descripcion;
       }
+      return {...state};
+    case ACTUALIZAR_FOTO_PERFIL:
+      state.imagen = action.url;
       return {...state};
     case PERFIL_RESTORE:
       return initialState;

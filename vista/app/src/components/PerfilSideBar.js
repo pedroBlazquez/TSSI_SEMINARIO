@@ -56,7 +56,7 @@ class PerfilSideBar extends Component {
           <div className={'absolute'} style={{top: 5, left: 5}}>
             {!esPerfilPropio && <SeguirUsuario id={user.id}/>}
           </div>
-          <img className={'img-circle'} src={NoImage}/>
+          <img className={'img-circle'} src={user.imagen || NoImage}/>
           <h3 className={'profile-title'}>{userName}</h3>
           <VerticalMenu options={getOptions(profileId, esArtista)} />
           <div className={'margin-5p'}>
