@@ -77,7 +77,7 @@ public class UsuarioNegocio {
             usuario.setNombre(nuevoUsuario.getNombre());
             usuario.setApellido(nuevoUsuario.getApellido());
             usuario.setFechaNacimiento(fechaNacimiento);
-            usuario.setImagen(nuevoUsuario.getImagen());
+            //usuario.setImagen(nuevoUsuario.getImagen());
 
             cn.update(usuario);
             cn.cerrarConexion();
@@ -89,6 +89,25 @@ public class UsuarioNegocio {
         return true;
     }
 
+    
+    public boolean updUsuario_pathimagen(String path_imagen,String usermail) {
+        Conexion cn = new Conexion();
+        cn.abrirConexion();
+        try {
+            Usuario usuario = getUsuarioByMail(cn, usermail);
+            
+            usuario.setImagen(path_imagen);
+            
+            cn.update(usuario);
+            cn.cerrarConexion();
+        } catch (Exception e) {
+            e.printStackTrace();
+            cn.cerrarConexion();
+            return false;
+        }
+        return true;
+    }
+    
     public static Usuario getUsuarioByMail(Conexion cn,String mail) {
         //Conexion cn = new Conexion();
         Usuario u = null;
