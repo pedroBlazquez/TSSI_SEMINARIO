@@ -18,9 +18,10 @@ class BotonPlay extends Component {
     }
 
     render () {
-        const {reproduciendo} = this.props;
+        const {reproduciendo, ...other} = this.props;
         return (
             <Avatar 
+                {...other}
                 className='reproduccionIcon'
                 icon={reproduciendo ? 'pause-circle-o' : 'play-circle-o'}
                 onClick={this.clickHandler}
