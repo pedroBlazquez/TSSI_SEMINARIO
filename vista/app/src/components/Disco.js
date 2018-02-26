@@ -10,6 +10,7 @@ import BotonPlay from './BotonPlay';
 
 import NoImagen from '../assets/default-release.png';
 import { setCola } from '../actions/reproductorActions';
+import ListaCanciones from './ListaCanciones';
 
 class Disco extends Component {
   
@@ -47,19 +48,7 @@ class Disco extends Component {
                 </div>
             </div>
           </div>
-          <div className='listaCanciones'>
-              {   
-                  !!disco.canciones &&
-                  disco.canciones.map((cancion, i) => {
-                    return (
-                        <div key={i} className='flex flex-space-between discoCancion'>
-                            <span>{cancion.nombre}</span>
-                            <BotonPlay cancion={{...cancion, artista: disco.artista}}/>
-                        </div>
-                    );
-                  })
-              }
-          </div>
+          <ListaCanciones canciones={disco.canciones}/>
       </Card>
     );
   }
