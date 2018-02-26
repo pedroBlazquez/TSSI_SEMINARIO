@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
-import {Card, Avatar} from 'antd';
+import {Card, Avatar, Button} from 'antd';
 import {Link} from 'react-router-dom';
 
 import Compartir from './Compartir';
@@ -8,8 +9,14 @@ import Like from './Like';
 import BotonPlay from './BotonPlay';
 
 import NoImagen from '../assets/default-release.png';
+import { setCola } from '../actions/reproductorActions';
 
 class Disco extends Component {
+  
+  reproducirDisco = () => {
+    const {disco, reproducir} = this.props;
+    reproducir(disco.canciones);
+  }
 
   render () {
     const {disco}= this.props;
@@ -31,6 +38,9 @@ class Disco extends Component {
                     <Compartir id={disco.id} typeContent='Disco' shared={disco.compartido}/>
                 </div>
                 <div>
+                    <div className='columnLeft'>
+                        <Button onClick={this.reproducirDisco}>Reproducir disco</Button>
+                    </div>
                     <div className='columnRight'>
                         <Like id={disco.id} typeContent='Disco' likes={disco.likes} isLiked={disco.liked}/>
                     </div>
@@ -55,4 +65,7 @@ class Disco extends Component {
   }
 }
 
-export default Disco;
+
+export default connect(null, {
+    reproducir: setCola
+})(Disco);
