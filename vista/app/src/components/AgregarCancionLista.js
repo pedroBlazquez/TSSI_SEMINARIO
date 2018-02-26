@@ -20,8 +20,9 @@ class AgregarCancionLista extends Component {
   }
 
   render () {
+    const {style} = this.props;
     return (
-        <img src={Imagen} className='addSong' onClick={this.clickHandler}></img>
+        <img src={Imagen} style={style} className='addSong' onClick={this.clickHandler}></img>
     );
   }
 }

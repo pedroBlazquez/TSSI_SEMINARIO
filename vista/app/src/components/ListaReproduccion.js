@@ -12,6 +12,7 @@ import {setCola} from '../actions/reproductorActions';
 
 import Imagen from '../assets/playlist.png';
 import '../styles/profile.css';
+import ListaCanciones from './ListaCanciones';
 
 class ListaReproduccion extends Component {
   reproducirLista = () => {
@@ -31,19 +32,9 @@ class ListaReproduccion extends Component {
               <Button onClick={this.reproducirLista}>{'Reproducir Lista'}</Button>
         </div>
         <Divider />
-        <div className='listaCanciones'>
-            {   
-                !!lista.canciones &&
-                lista.canciones.map((cancion, i) => {
-                return (
-                    <div key={i} className='flex flex-space-between discoCancion'>
-                        <span style={{height: '100%', verticalAlign: 'middle'}}>{cancion.nombre} - {cancion.artista.nombreFantasia}</span>
-                        <BotonPlay size={'small'} cancion={{...cancion, artista: cancion.artista}}/>
-                    </div>
-                );
-                })
-            }
-        </div>
+        <ListaCanciones 
+          canciones={lista.canciones}
+        />
       </Card>
     );
   }
