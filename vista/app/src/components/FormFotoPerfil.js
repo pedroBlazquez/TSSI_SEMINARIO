@@ -25,6 +25,12 @@ class FormFotoPerfil extends Component {
         this.props.actualizarFotoPerfil(this.state.profileUrl);
     }
 
+    onChange = (data) => {
+        if (data.file.status === 'done') {
+            this.setState({profileUrl: data.file.response})
+        }
+    }
+
     render () {
         const {form} = this.props;
         return (
@@ -36,7 +42,7 @@ class FormFotoPerfil extends Component {
                             name={'file'}
                             action={'http://localhost:8080/archivo/subirPerfilFoto'}
                             multiple = {false}
-                            onSuccess = {(url) => this.setState({profileUrl: url})}
+                            onChange = {this.onChange}
                         >
                             <Button>
                                 <Icon type='upload'/>
