@@ -23,6 +23,12 @@ class NovedadesPerfil extends Component {
     return (
       <MainContent>
         {esPerfilPropio && esArtista ? <NuevaPublicacion /> : null}
+        {esArtista ?
+          <Card title="Información del artista" className={'margin-10p'}>
+            {this.props.artista[0].descripcion}
+          </Card> :
+          null
+        }
         <Novedades conPublicacion={esPerfilPropio} records={records} />
       </MainContent>
     );
@@ -30,7 +36,8 @@ class NovedadesPerfil extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  records: getNovedadesPorTipoUsuario(state)
+  records: getNovedadesPorTipoUsuario(state),
+  artista: state.perfilReducer.usuario.artista
 });
 
 const mapDispatchToProps = (dispatch) => ({
