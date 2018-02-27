@@ -49,7 +49,7 @@ export default class Novedades extends Component {
     const {records, isHome, messageClickHandler} = this.props,
           globalMessage = <Card className={'margin-10p'}>{'No hay elementos para mostrar'}</Card>,
           homeMessage = <Card className={'margin-10p clickable'} onClick={messageClickHandler}>
-            {'No hay elementos para mostrar, clickee para volver a ver las novedades'}
+            {'No hay elementos para mostrar, clickee esta tarjeta para volver a ver las novedades o realice otra busqueda'}
           </Card>;
     return (
       <div>
