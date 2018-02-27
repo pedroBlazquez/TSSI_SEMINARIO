@@ -5,6 +5,7 @@ import perfilReducer from './perfil';
 import novedadesReducer from './novedadesReducer';
 import busqueda from './busqueda';
 import reproductor from './reproductor';
+import listasReproduccion from './listasReproduccion';
 
 const rootReducer = combineReducers({
   // Here should be the reducers
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   perfilReducer,
   novedadesReducer,
   busqueda,
-  reproductor
+  reproductor,
+  listasReproduccion
 });
 
 export default rootReducer;

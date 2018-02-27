@@ -2,16 +2,17 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Modal} from 'antd';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 
 import {ocultarListas, getListas} from '../actions/listasReproduccionActions';
 import ListaReproduccionItem from './ListaReproduccionItem';
+import { getCurrentUser } from '../selectors/login';
 
 
 class ModalListasReproduccion extends Component {
-
-  componentWillMount() {
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.modalOpen) {
       this.props.getListas();
+    }
   }
 
   render () {
@@ -26,7 +27,7 @@ class ModalListasReproduccion extends Component {
       >
         {
           !listas &&
-          <Link to={`/perfil/${this.props.userId}/listas`} style={{color: 'black'}}>
+          <Link to={`/perfil/${this.props.userId}/listas`} onClick={this.props.ocultarListas} style={{color: 'black'}}>
             <h2>No tiene ninguna lista de reproduccion. Haga click aqui para crear una</h2>
           </Link>
         }
@@ -42,18 +43,16 @@ class ModalListasReproduccion extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  modalOpen: state.perfilReducer.listasReproduccion.modalOpen,
-  idCancion: state.perfilReducer.listasReproduccion.idCancion,
-  listas: state.perfilReducer.listasReproduccion.listas,
-  userId: state.perfilReducer.usuario.id
-});
-
-const mapDispatchToProps = (dispatch) => ({
-    ocultarListas: bindActionCreators(ocultarListas, dispatch),
-    getListas: bindActionCreators(getListas, dispatch)
+  modalOpen: state.listasReproduccion.modalOpen,
+  idCancion: state.listasReproduccion.idCancion,
+  listas: state.listasReproduccion.listas,
+  userId: getCurrentUser(state).id
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {
+    getListas,
+    ocultarListas
+  }
 )(ModalListasReproduccion);

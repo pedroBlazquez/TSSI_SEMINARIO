@@ -10,7 +10,6 @@ import loadingStatus from './loadingStatus';
 import eventos from './eventos';
 import publicaciones from './publicaciones';
 import compartidos from './compartidos';
-import listasReproduccion from './listasReproduccion';
 
 export default combineReducers({
   loadingStatus,
@@ -23,6 +22,5 @@ export default combineReducers({
   albumes,
   eventos,
   publicaciones,
-  compartidos,
-  listasReproduccion
+  compartidos
 });

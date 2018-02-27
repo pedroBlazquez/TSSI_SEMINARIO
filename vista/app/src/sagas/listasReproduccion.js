@@ -4,14 +4,16 @@ import {message} from 'antd';
 
 import {_get, _put, _post, config, _delete} from '../utils/api';
 import {GET_LISTAS, PUSH_SONG_TO_LIST, ALTA_LISTA, ELIMINAR_LISTA, MOD_LISTA} from '../actions/types';
-import {setListas} from '../actions/listasReproduccionActions';
+import {setListas as setListasModal} from '../actions/listasReproduccionActions';
 import {setListasPerfil} from '../actions/perfilActions';
+
 
 export function* getListasSaga() {
     try {
         const headers = config();
         const response = yield call(_get, '/listas/getUsuario', headers);
-        yield put(setListas(response.data));
+        yield put(setListasPerfil(response.data));
+        yield put(setListasModal(response.data));
     } catch (e) {
         console.log(e);
     }
@@ -53,7 +55,7 @@ export function* bajaLista(action) {
         const lista = action.id;
 
         yield call(_delete, '/listas/', {data: {idListaReproduccion: lista.toString()}, ...headers});
-        yield put({type: 'GET_LISTAS_PERFIL'});
+        yield put({type: GET_LISTAS});
     } catch (e) {
         console.log(e);
     }
@@ -64,6 +66,7 @@ export function* getListasPerfilSaga() {
         const headers = config();
         const listas = yield call(_get, '/listas/getUsuario', headers);
         yield put(setListasPerfil(listas.data));
+        yield put(setListasModal(listas.data));
     } catch (e) {
         console.log(e);
     }
@@ -79,7 +82,7 @@ export function* modificarListaSaga(action) {
             canciones: action.lista.canciones.map(c => c.id.toString())
         };
         const listas = yield call(_put, '/listas/', payload, headers);
-        yield put({type: 'GET_LISTAS_PERFIL'});
+        yield put({type: GET_LISTAS});
     } catch (e) {
         console.log(e);
     }
@@ -91,5 +94,4 @@ export default function* watchNovedadesSagas () {
     yield takeEvery(PUSH_SONG_TO_LIST, pushSongToListSaga);
     yield takeEvery(ELIMINAR_LISTA, bajaLista);
     yield takeEvery(MOD_LISTA, modificarListaSaga);
-    yield takeEvery('GET_LISTAS_PERFIL', getListasPerfilSaga)
 }

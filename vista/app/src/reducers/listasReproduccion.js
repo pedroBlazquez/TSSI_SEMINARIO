@@ -1,4 +1,4 @@
-import {ABRIR_MODAL, CERRAR_MODAL, SET_LISTAS, LOGIN} from '../../actions/types';
+import {ABRIR_MODAL, CERRAR_MODAL, SET_LISTAS, LOGIN} from '../actions/types';
 
 const initialState = {modalOpen: false};
 
