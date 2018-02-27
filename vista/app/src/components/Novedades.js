@@ -46,12 +46,16 @@ export default class Novedades extends Component {
   }
 
   render () {
-    const {records} = this.props;
+    const {records, isHome, messageClickHandler} = this.props,
+          globalMessage = <Card className={'margin-10p'}>{'No hay elementos para mostrar'}</Card>,
+          homeMessage = <Card className={'margin-10p clickable'} onClick={messageClickHandler}>
+            {'No hay elementos para mostrar, clickee para volver a ver las novedades'}
+          </Card>;
     return (
       <div>
-        { !!records && !!records.length ?
+        { (!!records.length && !isHome) || records[0] !== 'noResultsFromSearch' && isHome ?
           this.getElements() :
-          <Card className={'margin-10p'}>{'No hay elementos para mostrar'}</Card>
+          isHome ? homeMessage : globalMessage
         }
       </div>
     );
