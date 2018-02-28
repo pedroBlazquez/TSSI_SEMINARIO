@@ -106,11 +106,11 @@ export default Form.create({
   },
   mapPropsToFields (props) {
     return {
-      nombre: {...props.nombre},
-      descripcion: {...props.descripcion},
-      direccion: {...props.descripcion},
-      fecha: {...props.fecha},
-      costo: {...props.costo}
+      nombre: Form.createFormField({...props.nombre}),
+      descripcion: Form.createFormField({...props.descripcion}),
+      direccion: Form.createFormField({...props.descripcion}),
+      fecha: Form.createFormField({...props.fecha}),
+      costo: Form.createFormField({...props.costo})
     }
   }
 })(ExtendedForm(FormAltaEvento));

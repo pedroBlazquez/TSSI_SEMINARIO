@@ -56,7 +56,7 @@ export default Form.create({
   },
   mapPropsToFields(props) {
     return {
-      rol: {...props.rol},
+      rol: Form.createFormField({...props.rol}),
     };
   } 
 })(ExtendedForm(FormIntegranteBanda));

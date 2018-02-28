@@ -116,7 +116,7 @@ export default Form.create({
   },
   mapPropsToFields (props) {
     return {
-      nombre: {...props.nombre}
+      nombre: Form.createFormField({...props.nombre})
     }
   }
 })(FormAltaAlbum);
