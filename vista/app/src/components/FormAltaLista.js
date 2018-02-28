@@ -92,8 +92,8 @@ export default Form.create({
   },
   mapPropsToFields (props) {
     return {
-      nombre: {...props.nombre},
-      privacidad: {...props.privacidad},
+      nombre: Form.createFormField({...props.nombre}),
+      privacidad: Form.createFormField({...props.privacidad}),
     }
   }
 })(FormAltaLista);

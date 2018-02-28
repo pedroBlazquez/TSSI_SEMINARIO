@@ -114,10 +114,10 @@ export default Form.create({
   },
   mapPropsToFields(props) {
     return {
-      nombreFantasia: {...props.nombreFantasia},
-      fechaInicio: {...props.fechaInicio},
-      generos: {...props.generos},
-      descripcion: {...props.descripcion}
+      nombreFantasia: Form.createFormField({...props.nombreFantasia}),
+      fechaInicio: Form.createFormField({...props.fechaInicio}),
+      generos: Form.createFormField({...props.generos}),
+      descripcion: Form.createFormField({...props.descripcion})
     };
   } 
 })(ExtendedForm(DatosArtistaForm));

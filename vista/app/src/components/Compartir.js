@@ -37,7 +37,12 @@ class Compartir extends Component {
     let shared = 'compartirIcon compartido',
         notShared = 'compartirIcon';
     return (
-        <Avatar className={this.state.wasShared ? shared : notShared} icon={'share-alt'} onClick={this.clickHandler}/>
+        <Avatar 
+          className={this.state.wasShared ? shared : notShared}
+          icon={'share-alt'}
+          onClick={this.clickHandler}
+          size={this.props.size}  
+        />
     );
   }
 }

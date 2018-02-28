@@ -16,6 +16,7 @@
 .flex-row {flex-direction: row;}
 .flex-col {flex-direction: column;}
 .flex-space-between {justify-content: space-between;}
+.flex-space-around {justify-content: space-around};
 .flex-align-baseline {align-items: baseline;}
 
 // Margins
@@ -24,6 +25,7 @@
 .margin-5p-top {margin-top: 5px};
 .margin-5p-bottom {margin-bottom: 5px};
 .margin-5p-left {margin-left: 5px};
+.margin-5p-right {margin-right: 5px;}
 .margin-10p {margin: 10px};
 .margin-10p-top {margin-top: 10px};
 .padding-10p {padding: 10px};

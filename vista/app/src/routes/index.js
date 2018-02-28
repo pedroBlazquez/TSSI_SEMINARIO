@@ -12,6 +12,7 @@ import RegistroUsuario from '../containers/RegistroUsuarioContainer';
 import Perfil from './Perfil';
 import NovedadesHome from '../containers/NovedadesHome'; 
 import Reproductor from '../containers/ReproductorContainer';
+import ModalListasReproduccion from '../components/ModalListasReproduccion';
 
 
 // TODO: Cambiar las rutas para un mejor approach
@@ -20,6 +21,7 @@ const MainRoute = ({isLogged}) => (
   <MainLayout
     header={'MusicAPP'}
   >
+    {isLogged && <ModalListasReproduccion />}
     {isLogged && <NavBar/>}
     <Route component={Manual} path="/help" exact/>
     <AuthRoute authorized={isLogged} redirectTo="/login" path="/" exact component={NovedadesHome}/>

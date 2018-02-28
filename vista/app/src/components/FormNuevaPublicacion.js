@@ -32,7 +32,7 @@ export default Form.create({
   },
   mapPropsToFields(props) {
     return {
-      publicacion: {...props.publicacion},
+      publicacion: Form.createFormField({...props.publicacion}),
     };
   }
 })(ExtendedFrom(NuevaPublicacion));

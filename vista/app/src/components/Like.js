@@ -12,6 +12,9 @@ import {sendLike} from '../actions/likeAction';
     que se podra sacar del arbol de estados.
 */
 class Like extends Component {
+    static defaultProps = {
+        showLikes: true
+    };
 
     constructor (props) {
         super(props);
@@ -34,10 +37,16 @@ class Like extends Component {
     }
 
     render () {
+        const {showLikes} = this.props;
         return (
             <div>
-                <span className='likesNumber'><strong>{this.state.likes}</strong></span>
-                <Avatar className='like' icon={this.state.liked ? 'like' : 'like-o'} onClick={this.clickHandler}/>
+                {showLikes && <span className='likesNumber'><strong>{this.state.likes}</strong></span>}
+                <Avatar 
+                    className='like'
+                    icon={this.state.liked ? 'like' : 'like-o'} 
+                    onClick={this.clickHandler}
+                    size={this.props.size}
+                />
             </div>
         );
     }

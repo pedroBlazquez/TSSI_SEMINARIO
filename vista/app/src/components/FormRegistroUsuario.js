@@ -78,12 +78,12 @@ export default Form.create({
   },
   mapPropsToFields(props) {
     return {
-      usuario: {...props.usuario},
-      password: {...props.password},
-      nombre: {...props.nombre},
-      apellido: {...props.apellido},
-      tipoUsuario: {...props.tipoUsuario},
-      fechaNacimiento: {...props.fechaNacimiento}
+      usuario: Form.createFormField({...props.usuario}),
+      password: Form.createFormField({...props.password}),
+      nombre: Form.createFormField({...props.nombre}),
+      apellido: Form.createFormField({...props.apellido}),
+      tipoUsuario: Form.createFormField({...props.tipoUsuario}),
+      fechaNacimiento: Form.createFormField({...props.fechaNacimiento})
     };
   } 
 })(ExtendedForm(RegistroUsuarioForm));
