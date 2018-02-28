@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import {getNovedades} from '../actions/novedadesAction';
+import {setStatusBusqueda} from '../actions/buscarActions';
 
 import {getRecordsInicio} from '../selectors/inicio';
 
@@ -17,6 +18,12 @@ import Reproductor from '../components/Reproductor';
 class NovedadesHome extends Component {
   componentWillMount() {
     this.props.getNovedades();
+    this.props.setStatusBusqueda(false);
+  }
+
+  messageOnClick = () => {
+    this.props.getNovedades();
+    this.props.setStatusBusqueda(false);
   }
 
   render () {
@@ -26,7 +33,7 @@ class NovedadesHome extends Component {
         <Card className={'margin-10p'}>
           <Busqueda />
         </Card>
-        <Novedades records={records} />
+        <Novedades records={records} messageClickHandler={this.messageOnClick} isHome={true}/>
       </MainContent>
     );
   }
@@ -37,7 +44,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getNovedades: bindActionCreators(getNovedades, dispatch)
+  getNovedades: bindActionCreators(getNovedades, dispatch),
+  setStatusBusqueda: bindActionCreators(setStatusBusqueda, dispatch)
 });
 
 export default connect(

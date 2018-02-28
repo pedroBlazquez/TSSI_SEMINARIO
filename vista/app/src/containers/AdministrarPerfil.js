@@ -13,6 +13,7 @@ import {updateProfileTree} from '../actions/perfilActions';
 import PerfilWrapper from '../components/PerfilContentWrapper';
 import DatosArtista from '../components/FormDatosArtista';
 import DatosUsuario from '../components/FormRegistroUsuario';
+import FormFotoPerfil from '../components/FormFotoPerfil';
 import {getUsuarioPerfil} from '../selectors/perfil';
 
 const TabPane = Tabs.TabPane;
@@ -121,6 +122,19 @@ class AdministrarPerfil extends Component {
                 update
               />
             </div>
+          </TabPane>
+          <TabPane tab="Cambiar Foto de Perfil" key="3">
+              <div className="formContenedor">
+                <div className="formFotoPerfil">
+                  <FormFotoPerfil />
+                </div>
+                {this.esArtista &&
+                  <div className="mensajeArtista">
+                    Recorda que esta cuenta representa a una Banda o Artista, tené en cuenta eso a la
+                    hora de elegir una foto de perfil :)
+                  </div>
+                }
+              </div>
           </TabPane>
           {this.esArtista &&
             <TabPane tab="Artista / Banda" key="2">

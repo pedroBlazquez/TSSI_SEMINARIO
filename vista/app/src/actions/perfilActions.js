@@ -12,7 +12,9 @@ import {
   PERFIL_ALBUMES,
   PERFIL_EVENTOS,
   PERFIL_COMPARTIDO,
-  PERFIL_UPDATE_TREE
+  PERFIL_UPDATE_TREE,
+  GUARDAR_FOTO_PERFIL,
+  ACTUALIZAR_FOTO_PERFIL
 } from './types';
 
 export const cargarPerfil = (id) => ({type: TRAER_PERFIL, id});
@@ -29,3 +31,5 @@ export const setAlbumesPerfil = (albumes) => ({type: PERFIL_ALBUMES, albumes});
 export const setEventosPerfil = (eventos) => ({type: PERFIL_EVENTOS, eventos});
 export const setCompartidosPerfil = (compartidos) => ({type: PERFIL_COMPARTIDO, compartidos});
 export const updateProfileTree = (data) => ({type: PERFIL_UPDATE_TREE, data});
+export const guardarFotoPerfil = (url) => ({type: GUARDAR_FOTO_PERFIL, url});
+export const actualizarFotoPerfil = (url) => ({type: ACTUALIZAR_FOTO_PERFIL, url});

@@ -209,6 +209,25 @@ public class UsuarioControlador {
             return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @RequestMapping(value = "/guardarFoto", method = RequestMethod.POST)
+    public ResponseEntity<?> guardarFoto(HttpEntity<String> httpEntity, HttpServletRequest request) throws JSONException {
+    	try{
+    	    JSONObject json = new JSONObject(httpEntity.getBody());
+            String path_imagen = json.getString("url");
+            
+            String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));
     
+            UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+            boolean res = usuarioNegocio.updUsuario_pathimagen(path_imagen, usermail);
+            if(res)
+                return new ResponseEntity<Object>(HttpStatus.OK);
+            else
+                return new ResponseEntity<Object>(HttpStatus.NOT_MODIFIED);
+            
+    	} catch (Exception ex) {
+            return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

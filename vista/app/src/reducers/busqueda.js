@@ -1,12 +1,17 @@
-import {SET_BUSQUEDA} from '../actions/types';
+import {SET_BUSQUEDA, SET_STATUS_BUSQUEDA} from '../actions/types';
 
-const initialState = [];
+const initialState = {status: false, resultados: []};
 
 export default function (state = initialState, action = {}) {
   switch (action.type) {
     case SET_BUSQUEDA:
-      return action.payload;
+      state.resultados = action.payload;
+      state.status = true;
+      return {...state};
+    case SET_STATUS_BUSQUEDA:
+      state.status = action.isBusqueda;
+      return {...state};
     default:
       return state;
   }
-} 
+}

@@ -38,6 +38,8 @@ export const PERFIL_ALBUMES       = 'PERFIL_ALBUMES';
 export const PERFIL_RESTORE       = 'PERFIL_RESTORE';
 export const PERFIL_EVENTOS       = 'PERFIL_EVENTOS';
 export const PERFIL_UPDATE_TREE   = 'PERFIL_UPDATE_TREE';
+export const GUARDAR_FOTO_PERFIL  = 'GUARDAR_FOTO_PERFIL';
+export const ACTUALIZAR_FOTO_PERFIL = 'ACTUALIZAR_FOTO_PERFIL';
 
 // Novedades
 export const GET_NOVEDADES_INICIO = 'GET_NOVEDADES_INICIO';
@@ -57,6 +59,7 @@ export const SEGUIR_USUARIO       = 'SEGUIR_USUARIO';
 // BUSCAR
 export const BUSCAR               = 'BUSCAR';
 export const SET_BUSQUEDA         = 'SET_BUSQUEDA';
+export const SET_STATUS_BUSQUEDA  = 'SET_STATUS_BUSQUEDA';
 
 
 // REPRODUCTOR

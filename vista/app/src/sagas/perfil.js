@@ -1,9 +1,9 @@
 import { put, takeEvery, call } from 'redux-saga/effects';
 
-import {_get, config} from '../utils/api';
+import {_get, _post, config} from '../utils/api';
 import {agregarArtista} from '../utils/utils';
 import {USUARIO_OYENTE} from '../utils/constants';
-import {TRAER_PERFIL} from '../actions/types';
+import {TRAER_PERFIL, GUARDAR_FOTO_PERFIL} from '../actions/types';
 import {
   loadingStatus,
   setCancionesPerfil,
@@ -15,7 +15,8 @@ import {
   setSeguidosPerfil,
   setUsuarioPerfil,
   setAlbumesPerfil,
-  setEventosPerfil
+  setEventosPerfil,
+  actualizarFotoPerfil
 } from '../actions/perfilActions'; 
 
 // Our worker Saga
@@ -68,8 +69,22 @@ export function* traerPerfil(action) {
   }
 }
 
+export function* guardarFotoPerfilSaga (action) {
+  try {
+    const headers = config();
+    yield call(
+      _post,
+      '/usuario/guardarFoto',
+      {url: action.url},
+      headers
+    );
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 // Our watcher Saga
 export default function* watchLoginSagas () {
   yield takeEvery(TRAER_PERFIL, traerPerfil);
+  yield takeEvery(GUARDAR_FOTO_PERFIL, guardarFotoPerfilSaga);
 }
