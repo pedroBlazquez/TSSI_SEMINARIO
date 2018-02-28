@@ -98,7 +98,7 @@ export function* altaDisco(action) {
       nombre: disco.nombre,
       genero: GENEROS.find(g => g.id.toString() === disco.genero).value,
       canciones: disco.canciones.map(c => c.id),
-      portada: BASE_URL + disco.portada.file.response
+      portada: disco.portada.file.response
     };
     yield call(_post, '/discos/', {...payload}, headers);
     
@@ -132,7 +132,7 @@ export function* modificarDisco(action) {
     const user = yield select(getCurrentUser);
     const artista = user.artista[0]
     const headers = config();
-    const portada = typeof disco.portada === 'string' ? disco.portada : BASE_URL + disco.portada.file.response;
+    const portada = typeof disco.portada === 'string' ? disco.portada : disco.portada.file.response;
     const payload = {
       nombre: disco.nombre,
       genero: disco.genero,
