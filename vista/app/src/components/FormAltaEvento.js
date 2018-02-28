@@ -60,6 +60,7 @@ class FormAltaEvento extends Component {
             />)
           }
         </FormItem>
+        <span>Le recomendamos que la imagen sea de 550px de ancho por 200px de alto</span>
         <FormItem>
           {form.getFieldDecorator('imagen',{rules: [{validator: validateFile(this.state.imagen)}]})
             (<Upload 
