@@ -15,6 +15,7 @@ import EventosPerfil from '../containers/EventosPerfil';
 import AdministrarPerfil from '../containers/AdministrarPerfil';
 import AdministrarListas from '../containers/AdministrarListasContainer';
 import ListasPerfil from '../containers/ListasPerfil';
+import InfoArtista from '../containers/InfoArtista';
 
 const Perfil = () => (
   <PerfilContainer>
@@ -28,6 +29,7 @@ const Perfil = () => (
       <Route path={'/perfil/:profileId/albumes'} component={AlbumesPerfil}/>
       <Route path={'/perfil/:profileId/eventos'} component={EventosPerfil}/>
       <Route path={'/perfil/:profileId/editar'} component={AdministrarPerfil}/>
+      <Route path={'/perfil/:profileId/informacion'} component={InfoArtista}/>
       <AuthRoute
         path={'/perfil/:profileId/administrar'}
         exact
