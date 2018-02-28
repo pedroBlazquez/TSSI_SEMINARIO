@@ -59,6 +59,7 @@ export const SEGUIR_USUARIO       = 'SEGUIR_USUARIO';
 // BUSCAR
 export const BUSCAR               = 'BUSCAR';
 export const SET_BUSQUEDA         = 'SET_BUSQUEDA';
+export const SET_STATUS_BUSQUEDA  = 'SET_STATUS_BUSQUEDA';
 
 
 // REPRODUCTOR

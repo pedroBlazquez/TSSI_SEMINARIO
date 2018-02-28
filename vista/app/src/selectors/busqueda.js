@@ -1,1 +1,1 @@
-export const getBusqueda = (state) => state.busqueda
+export const getBusqueda = (state) => state.busqueda;
