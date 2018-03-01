@@ -99,7 +99,7 @@ class FormAltaDisco extends Component {
         <FormItem>
           {form.getFieldDecorator('portada', {rules: [{validator: validateFile(this.state.portada)}]})
             (<Upload 
-              accept="image"
+              accept="image/*"
               name={'file'}
               action={'http://localhost:8080/archivo/subirDiscoPortada'}
               onRemove={() => {

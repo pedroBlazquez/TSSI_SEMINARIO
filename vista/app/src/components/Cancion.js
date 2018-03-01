@@ -13,13 +13,13 @@ import NoImagen from '../assets/default-cover.png';
 class Cancion extends Component {
   constructor(props) {
       super(props);
-/*
-      var url = this.props.cancion.discos && this.props.cancion.discos[0].portada ?
+
+      var url = this.props.cancion.discos.length && this.props.cancion.discos[0].portada ?
         this.props.cancion.discos[0].portada :
         NoImagen;
       this.state = {
           urlImagen: url
-      }*/
+      }
   }
  
   render () {
@@ -27,7 +27,7 @@ class Cancion extends Component {
     return (
       <Card className={'margin-10p'}>
           <div className='cancionImagenContainer'>
-              <img src={NoImagen} className=''/>
+              <img src={this.state.urlImagen} className=''/>
           </div>
           <div className='cancionInfoContainer'>
               <div className='flex flex-space-between'>

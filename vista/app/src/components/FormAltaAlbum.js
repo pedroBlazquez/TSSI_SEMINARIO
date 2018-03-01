@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Form, Button, Input, Upload, Icon} from 'antd';
+import {Form, Button, Input, Icon} from 'antd';
+import Upload from './UploadSingleFile';
 import {isEqual} from 'lodash';
 
 import ContenidoConBusqueda from './ContenidoConBusqueda';
@@ -14,6 +15,7 @@ class FormAltaAlbum extends Component {
 
     this.state = {
       discosSeleccionados: this.props.discosSeleccionados || [],
+      portada: '',
       error: false
     };
   }
@@ -49,7 +51,11 @@ class FormAltaAlbum extends Component {
     
     validateFields((errors, values) => {
       if (!errors && discosSeleccionados.length) {
-        const valuesToSend = {...values, discos: discosSeleccionados};
+        const valuesToSend = {
+          ...values,
+          discos: discosSeleccionados,
+          portada: this.state.portada
+        };
         onSubmit(e, valuesToSend);
       }
       if (!discosSeleccionados.length) {
@@ -83,9 +89,20 @@ class FormAltaAlbum extends Component {
             onRemover={this.removerDisco}
           />
         </FormItem>
+        <span>Le recomendamos que la imagen sea de 600px por 600px</span>
         <FormItem>
           {form.getFieldDecorator('imagen')
-            (<Upload accept="image">
+            (<Upload
+              accept="image/*"
+              multiple = {false}
+              name={'file'}
+              action={'http://localhost:8080/archivo/subirAlbumPortada'}
+              onChange={(data) => {
+                if (data.file.status === 'done') {
+                  this.setState({portada: data.file.response})
+                }
+              }}
+            >
               <Button>
                 <Icon type="upload" /> 
                 {'Subir imagen'}

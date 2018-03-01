@@ -1,6 +1,6 @@
 import { put, takeEvery, call, select } from 'redux-saga/effects';
 
-import {_post, _put, _delete, _get, config, BASE_URL} from '../utils/api';
+import {_post, _put, _delete, _get, config} from '../utils/api';
 import {getAuthToken} from '../utils/storage';
 import {agregarArtista} from '../utils/utils';
 import {GENEROS} from '../utils/constants';
@@ -36,7 +36,7 @@ export function* altaCancion(action) {
     const cancionToSend = {
       nombre: cancion.nombre,
       genero: GENEROS.find(g => g.id.toString() === cancion.genero).value,
-      archivo: BASE_URL + cancion.audio.file.response
+      archivo: cancion.audio.file.response
     };
 
     yield call(_post, '/canciones/', {...cancionToSend}, headers);
@@ -71,7 +71,7 @@ export function* modificarCancion(action) {
     const user = yield select(getCurrentUser);
     const artista = user.artista[0]
     const headers = config();
-    const audio = typeof cancion.audio === 'string' ? cancion.audio : BASE_URL + cancion.audio.file.response;
+    const audio = typeof cancion.audio === 'string' ? cancion.audio : cancion.audio.file.response;
     const payload = {
       nombre: cancion.nombre,
       genero: cancion.genero,
@@ -98,7 +98,7 @@ export function* altaDisco(action) {
       nombre: disco.nombre,
       genero: GENEROS.find(g => g.id.toString() === disco.genero).value,
       canciones: disco.canciones.map(c => c.id),
-      portada: BASE_URL + disco.portada.file.response
+      portada: disco.portada.file.response
     };
     yield call(_post, '/discos/', {...payload}, headers);
     
@@ -132,7 +132,7 @@ export function* modificarDisco(action) {
     const user = yield select(getCurrentUser);
     const artista = user.artista[0]
     const headers = config();
-    const portada = typeof disco.portada === 'string' ? disco.portada : BASE_URL + disco.portada.file.response;
+    const portada = typeof disco.portada === 'string' ? disco.portada : disco.portada.file.response;
     const payload = {
       nombre: disco.nombre,
       genero: disco.genero,
@@ -157,7 +157,8 @@ export function* altaAlbum(action) {
     const headers = config();
     const payload = {
       nombre: album.nombre,
-      discos: album.discos.map(c => c.id)
+      discos: album.discos.map(c => c.id),
+      portada: album.portada
     }
     yield call(_post, '/albums/', {...payload}, headers);
     
@@ -206,7 +207,7 @@ export function* altaEvento(action) {
     const headers = config();
     const payload = {
       ...evento,
-      imagen: BASE_URL + evento.imagen.file.response,
+      imagen: evento.imagen.file.response,
       fechaEvento: evento.fecha.format('YYYY-MM-DD')
     }
     yield call(_post, '/eventos/', {...payload}, headers);
@@ -239,7 +240,7 @@ export function* modificarEvento(action) {
     const user = yield select(getCurrentUser);
     const artista = user.artista[0]
     const headers = config();
-    const imagen = typeof evento.imagen === 'string' ? evento.imagen : BASE_URL + evento.imagen.file.response;
+    const imagen = typeof evento.imagen === 'string' ? evento.imagen : evento.imagen.file.response;
     const payload = {
       ...evento,
       imagen,

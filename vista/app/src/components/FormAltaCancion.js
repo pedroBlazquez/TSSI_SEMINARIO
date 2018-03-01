@@ -40,7 +40,7 @@ class FormAltaCancion extends Component {
         <FormItem>
           {form.getFieldDecorator('audio', {rules: [{validator: validateFile(this.state.audio)}]})
             (<Upload 
-              accept="audio"
+              accept="audio/*"
               name={'file'}
               action={'http://localhost:8080/archivo/subirCancion'}
               onRemove={() => {
