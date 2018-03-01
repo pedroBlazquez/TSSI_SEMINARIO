@@ -101,7 +101,8 @@ class FormBusqueda extends Component {
     this.onParametroChange({fecha});
   }
 
-  onSearch = () => {
+  onSearch = (e) => {
+    e.preventDefault();
     const {onSearch} = this.props;
     onSearch(this.state.parametros);
   }
@@ -116,18 +117,29 @@ class FormBusqueda extends Component {
     const {parametros, showOptions} = this.state;
     const {search, ...advancedOptions} = parametros;
     return (
-      <Form>
+      <Form onSubmit={this.onSearch} layout={'inline'}>
         <FormItem>
-          <InputSearch
+          <Input
             maxLength={'200'}
             type={'text'}
             value={search}
             onChange={this.onSearchChange}
-            onSearch={this.onSearch}
+            style={{width: 360}}
             placeholder='Buscar...'
           />
         </FormItem>
-        <div>
+        <FormItem>
+          <Button htmlType="submit">Buscar</Button>
+        </FormItem>
+        <FormItem>
+          <Button className={'margin-5p'} onClick={this.onLimpiarBusqueda}>
+            {'Limpiar búsqueda'}
+          </Button>
+          <span className={'margin-5p-left'} style={{cursor: 'pointer'}} onClick={this.toggleOpciones}>
+            Avanzado <Icon type={showOptions ? 'caret-up' : 'caret-down'} style={{ fontSize: 13 }} />
+          </span>
+        </FormItem>
+        <FormItem>
             {showOptions ? 
               <OpcionesBusqueda 
                 toggleOpciones={this.toggleOpciones}
@@ -140,13 +152,7 @@ class FormBusqueda extends Component {
               /> :
               null
             }
-          <span className={'margin-5p-left'} style={{cursor: 'pointer'}} onClick={this.toggleOpciones}>
-            Avanzado <Icon type={showOptions ? 'caret-up' : 'caret-down'} style={{ fontSize: 13 }} />
-          </span>
-          <Button className={'margin-5p'} onClick={this.onLimpiarBusqueda}>
-            {'Limpiar búsqueda'}
-          </Button>
-        </div>
+        </FormItem>
       </Form>
     );
   }
