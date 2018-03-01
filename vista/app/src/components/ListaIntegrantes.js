@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Table, Icon} from 'antd';
-import moment from 'moment';
+
+import {formatFecha} from '../utils/utils';
 
 import {ROLES_INTEGRANTES} from '../utils/constants';
 
@@ -32,7 +33,7 @@ class IntegrantesBanda extends Component {
         dataIndex: 'fechaNacimiento',
         key: 'fechaNacimiento',
         render: (text, record) => {
-          return moment(text).isValid() ? moment(text).format('DD-MM-YYYY') : text;
+          return formatFecha(text);
         }
       },{
         title: 'Remover',

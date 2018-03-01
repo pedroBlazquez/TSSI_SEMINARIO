@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import {Card, Avatar, Button} from 'antd';
 import {Link} from 'react-router-dom';
 
+import {formatFecha} from '../utils/utils';
+
 import Compartir from './Compartir';
 import Like from './Like';
 import BotonPlay from './BotonPlay';
@@ -34,7 +36,7 @@ class Disco extends Component {
                         <Link to={`/perfil/${disco.artista.usuario.id}`} style={{color: 'black'}}>
                             <h3>{disco.artista.nombreFantasia}</h3>
                         </Link>
-                        <h5>{disco.fechaPublicacion}</h5>
+                        <h5>{formatFecha(disco.fechaPublicacion)}</h5>
                     </div>
                     <Compartir id={disco.id} typeContent='Disco' shared={disco.compartido}/>
                 </div>

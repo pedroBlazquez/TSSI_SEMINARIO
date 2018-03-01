@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Card, Avatar} from 'antd';
 
+import {formatFecha} from '../utils/utils';
+
 import Compartir from './Compartir';
 import Like from './Like';
 
@@ -31,7 +33,7 @@ class Artista extends Component {
               </div>
               <div className='flex flex-space-between'>
                   <div className='columnLeft'>
-                      <div><strong>Inicio:</strong> {artista.fechaInicio}</div>
+                      <div><strong>Inicio:</strong> {formatFecha(artista.fechaInicio)}</div>
                       <div><strong>Generos:</strong> {generos.join(', ')}</div>
                   </div>
               </div>

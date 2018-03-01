@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function agregarArtista (records, artista) {
   if (Array.isArray(records)) {
     return records.map(r => ({...r, artista}));
@@ -13,4 +15,9 @@ export function mapContentName (content, excludeId) {
     }
     return acc;
   }, []);
+}
+
+export function formatFecha (fecha, format = 'DD-MM-YYYY') {
+  const f = moment(fecha);
+  return f.isValid() ? f.format(format) : fecha;
 }
