@@ -150,12 +150,8 @@ public class InicioNegocio {
                     int cant_artistas_genero = artistas_genero.size(); 
                     if(cant_artistas_genero>(max_result-1))
                         cant_artistas_genero = max_result;
-                    artistas_genero.subList(0,cant_artistas_genero);
-                    List<JSONObject> artistas = ArtistaNegocio.setData(cn,artistas_genero, usermail,false,true);
-                    for(JSONObject a : artistas)
-                    {
-                        top2_list.add(a);
-                    }
+                    List<Artista> list_artistas_sugeridos = artistas_genero.subList(0,cant_artistas_genero);
+                    top2_list.addAll(ArtistaNegocio.setData(cn,list_artistas_sugeridos, usermail,false,true));
                 }
             }
             
@@ -208,15 +204,11 @@ public class InicioNegocio {
                     
                     
                     Collections.shuffle(seguidos_usuarios_seguidos);
-                    int cant_artistas_genero = seguidos_usuarios_seguidos.size(); 
-                    if(cant_artistas_genero>(max_result-1))
-                        cant_artistas_genero = max_result;
-                    seguidos_usuarios_seguidos.subList(0,cant_artistas_genero);
-                    List<JSONObject> artistas = ArtistaNegocio.setData(cn,seguidos_usuarios_seguidos, usermail,false,true);
-                    for(JSONObject a : artistas)
-                    {
-                        top3_list.add(a);
-                    }
+                    int cant_artistas = seguidos_usuarios_seguidos.size(); 
+                    if(cant_artistas>(max_result-1))
+                        cant_artistas = max_result;
+                    List<Artista> list_artistas_sugeridos = seguidos_usuarios_seguidos.subList(0,cant_artistas);
+                    top3_list.addAll(ArtistaNegocio.setData(cn,list_artistas_sugeridos, usermail,false,true));
                 }
             }
 
@@ -264,29 +256,41 @@ public class InicioNegocio {
                 String typeB = b.getString("object_type");
                 
                 //A
-                if(!typeA.equals("Artista"))
+                if(!typeA.equals("Artista") && !typeA.equals("Usuario"))
                     fechaA = new Date(a.getLong("fechaPublicacion"));
                 else
                 {
+                    String variable_name = "fechaInicio";
+                    if(typeA.equals("Usuario"))
+                        variable_name = "fechaNacimiento";
+                    
                     Calendar cal = Calendar.getInstance();
-                    cal.setTime(new Date(a.getLong("fechaInicio")));
+                    cal.setTime(new Date(a.getLong(variable_name)));
+                    
                     Integer subs = cal.get(Calendar.DAY_OF_WEEK);
                     if(subs < 2)
                         subs = subs + 2;
+                    
                     fechaA = Tools.GetDateDifference(subs);
                 }
                 
                 
                 //B
-                if(!typeB.equals("Artista"))
+                if(!typeB.equals("Artista") && !typeB.equals("Usuario"))
                     fechaB = new Date(b.getLong("fechaPublicacion"));
                 else
                 {
+                    String variable_name = "fechaInicio";
+                    if(typeB.equals("Usuario"))
+                        variable_name = "fechaNacimiento";
+                    
                     Calendar cal = Calendar.getInstance();
-                    cal.setTime(new Date(b.getLong("fechaInicio")));
+                    cal.setTime(new Date(b.getLong(variable_name)));
+                    
                     Integer subs = cal.get(Calendar.DAY_OF_WEEK);
                     if(subs < 2)
                         subs = subs + 2;
+                    
                     fechaB = Tools.GetDateDifference(subs);
                 }
             }
@@ -448,7 +452,7 @@ public class InicioNegocio {
                             if(!id_artista.equals(""))
                                 filtro_artista_noseayo = " ga.idGeneroArtista.artista.id != "+id_artista+" ";
                             
-                            List<Artista> artistas_genero_noseayo = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE "+filtro_artista_noseayo+" and ga.idGeneroArtista.genero.id = "+idGenero+" "+filtro_artista_artistagenero);
+                            List<Artista> artistas_genero_noseayo = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE "+filtro_artista_noseayo+" and ga.idGeneroArtista.genero.id = "+idGenero+" "+filtro_artista_artistagenero,top_1);
                             if(!artistas_genero.isEmpty())
                             {
                                 List<JSONObject> temp_list = ArtistaNegocio.setData(cn,artistas_genero_noseayo, usermail,false,true);
@@ -480,7 +484,7 @@ public class InicioNegocio {
                         {
                             filtros = filtros.replaceFirst(" and ", "");
                             filtros = filtros.replaceFirst("artista.", "ar.");
-                            general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE  "+filtros+" order by fechaPublicacion desc"), usermail,true));
+                            general_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE  "+filtros+" order by fechaPublicacion desc",top_1), usermail,true));
                         }
                         
                         if(!busqueda_usuario.equals(""))
@@ -519,8 +523,9 @@ public class InicioNegocio {
             
 
             //mezclo ambas listas
-            Collections.shuffle(priority_list);
+            //Collections.shuffle(priority_list);
             //Collections.shuffle(general_list);
+            Collections.sort(priority_list, new DateComparator());
             Collections.sort(general_list, new DateComparator());
 
             return_list.addAll(priority_list);
