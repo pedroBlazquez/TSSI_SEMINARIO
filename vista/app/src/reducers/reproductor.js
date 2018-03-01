@@ -3,7 +3,7 @@ import {
   REPRODUCIR_SIGUIENTE,
   REPRODUCIR_ANTERIOR,
   SET_COLA,
-  AGREGAR_A_COLA
+  AGREGAR_A_COLA,
 } from '../actions/types';
 
 const initialState = {

@@ -6,7 +6,15 @@ class Reproductor extends Component {
   componentDidMount () {
     this.refs.reproductor.addEventListener('ended', () => {
       this.onNext();
-    })
+    });
+
+    this.refs.reproductor.addEventListener('pause', () => {
+      this.props.estaReproduciendo(false);
+    });
+
+    this.refs.reproductor.addEventListener('play', () => {
+      this.props.estaReproduciendo(true);
+    });
   }
 
   componentDidUpdate (prevProps) {
@@ -14,11 +22,15 @@ class Reproductor extends Component {
       this.stopPlay();
       this.refs.reproductor.play();
     }
+    if (!this.props.reproduciendo) {
+      this.stopPlay();
+    }
+
   }
 
   stopPlay = () => {
-    this.refs.reproductor.pause();
-    this.refs.reproductor.currentTime = 0;
+      this.refs.reproductor.pause();
+      this.refs.reproductor.currentTime = 0;
   }
 
   onNext = () => {
