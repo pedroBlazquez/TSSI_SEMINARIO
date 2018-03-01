@@ -16,7 +16,7 @@ class Album extends Component {
   constructor(props) {
       super(props);
 
-      var url = this.props.album.img ?
+      var url = this.props.album.portada ?
         this.props.album.portada :
         NoImagen;
       this.state = {

@@ -157,7 +157,8 @@ export function* altaAlbum(action) {
     const headers = config();
     const payload = {
       nombre: album.nombre,
-      discos: album.discos.map(c => c.id)
+      discos: album.discos.map(c => c.id),
+      portada: album.portada
     }
     yield call(_post, '/albums/', {...payload}, headers);
     
