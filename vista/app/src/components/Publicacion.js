@@ -3,6 +3,7 @@ import moment from 'moment';
 import {Link} from 'react-router-dom';
 
 import {Card, Avatar} from 'antd';
+import { formatFecha } from '../utils/utils';
 
 const CardTitle = ({nombreUsuario, usuario, fechaPublicacion}) => (
   <div className={'flex flex-space-between'}>
@@ -12,7 +13,7 @@ const CardTitle = ({nombreUsuario, usuario, fechaPublicacion}) => (
         <Link to={`/perfil/${usuario.id}`} style={{color: 'black'}}>
           <h2 className='novedadTitulo'>{nombreUsuario}</h2>
         </Link>
-        <span className='fechaPublicacion'>{fechaPublicacion}</span>
+        <span className='fechaPublicacion'>{formatFecha(fechaPublicacion)}</span>
       </div>
     </div>
   </div>
@@ -31,7 +32,7 @@ class Publicacion extends Component {
           <CardTitle
             nombreUsuario={nombreUsuario}
             usuario={usuario}
-            fechaPublicacion={moment(publicacion.fechaPublicacion).format('YYYY-MM-DD')}
+            fechaPublicacion={publicacion.fechaPublicacion}
           />
         }
       >

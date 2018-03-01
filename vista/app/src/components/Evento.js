@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import {formatFecha} from '../utils/utils';
+
 import {Link} from 'react-router-dom';
 import {Card, Avatar} from 'antd';
 
@@ -13,7 +15,7 @@ const CardTitle = ({artista, fechaPublicacion, id, compartido}) => (
         <Link to={`/perfil/${artista.usuario.id}`} style={{color: 'black'}}>
           <h2 className='novedadTitulo'>{artista.nombreFantasia}</h2>
         </Link>
-        <span className='fechaPublicacion'>{fechaPublicacion}</span>
+        <span className='fechaPublicacion'>{formatFecha(fechaPublicacion)}</span>
       </div>
     </div>
     <Compartir id={id} typeContent='Evento' shared={compartido}/>
@@ -46,7 +48,7 @@ class Evento extends Component {
                 <li><strong>Descripcion:</strong> {evento.descripcion}</li>
             </ul>
             <ul className='columnRight'>
-                <li><strong>Fecha:</strong> {evento.fechaEvento}</li>
+                <li><strong>Fecha:</strong> {formatFecha(evento.fechaEvento)}</li>
                 <li><strong>Costo:</strong> ${evento.costo}</li>
             </ul>
         </div>

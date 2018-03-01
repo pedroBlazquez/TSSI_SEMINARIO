@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import {Card, Avatar} from 'antd';
 import {Link} from 'react-router-dom';
 
+import {formatFecha} from '../utils/utils';
+
 import Compartir from './Compartir';
 import Like from './Like';
 import BotonPlay from './BotonPlay';
@@ -39,7 +41,7 @@ class Album extends Component {
                         <Link to={`/perfil/${album.artista.usuario.id}`} style={{color: 'black'}}>
                             <h3>{album.artista.nombreFantasia}</h3>
                         </Link>
-                        <h5>{album.fechaPublicacion}</h5>
+                        <h5>{formatFecha(album.fechaPublicacion)}</h5>
                     </div>
                     <Compartir id={album.id} typeContent={OBJECT_TYPES.ALBUM} shared={album.compartido}/>
                 </div>
