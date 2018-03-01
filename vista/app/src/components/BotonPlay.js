@@ -4,8 +4,8 @@ import {bindActionCreators} from 'redux';
 
 import {Avatar} from 'antd';
 
-import {reproducir} from '../actions/reproductorActions';
-import {getCurrentSong} from '../selectors/reproductor';
+import {reproducir, pausar} from '../actions/reproductorActions';
+import {getCurrentSong, estaReproduciendo} from '../selectors/reproductor';
 
 /*
     Este componente recibe el id de la cancion
@@ -13,8 +13,12 @@ import {getCurrentSong} from '../selectors/reproductor';
 class BotonPlay extends Component {
 
     clickHandler = () => {
-        const {cancion, reproducir} = this.props;
-        this.props.reproducir(cancion)
+        const {cancion, reproducir, pausar, reproduciendo} = this.props;
+        if (reproduciendo) {
+            pausar(cancion);
+        } else {
+            reproducir(cancion)
+        }
     }
 
     render () {
@@ -31,15 +35,14 @@ class BotonPlay extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    reproduciendo: getCurrentSong(state).id === ownProps.cancion.id,
+    reproduciendo: getCurrentSong(state).id === ownProps.cancion.id && estaReproduciendo(state),
     ...ownProps
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    reproducir: bindActionCreators(reproducir, dispatch)
-});
-
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    {
+        reproducir,
+        pausar
+    }
 )(BotonPlay);

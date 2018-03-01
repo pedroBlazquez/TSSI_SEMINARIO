@@ -6,19 +6,35 @@ class Reproductor extends Component {
   componentDidMount () {
     this.refs.reproductor.addEventListener('ended', () => {
       this.onNext();
-    })
+    });
+
+    this.refs.reproductor.addEventListener('pause', () => {
+      this.props.pausar();
+    });
+
+    this.refs.reproductor.addEventListener('play', () => {
+      this.props.reanudar();
+    });
   }
 
   componentDidUpdate (prevProps) {
     if(prevProps.track !== this.props.track) {
       this.stopPlay();
       this.refs.reproductor.play();
+    } else if (this.props.reproduciendo) {
+      this.refs.reproductor.play();
+    }
+
+    if (!this.props.reproduciendo) {
+      this.stopPlay(false);
     }
   }
 
-  stopPlay = () => {
+  stopPlay = (stop = true) => {
     this.refs.reproductor.pause();
-    this.refs.reproductor.currentTime = 0;
+    if (stop) {
+      this.refs.reproductor.currentTime = 0;
+    }
   }
 
   onNext = () => {
