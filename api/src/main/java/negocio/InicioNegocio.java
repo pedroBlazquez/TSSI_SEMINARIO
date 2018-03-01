@@ -265,12 +265,12 @@ public class InicioNegocio {
                 
                 //A
                 if(!typeA.equals("Artista"))
-                    fechaA = new Date(a.getInt("fechaPublicacion"));
+                    fechaA = new Date(a.getLong("fechaPublicacion"));
                 else
                 {
                     Calendar cal = Calendar.getInstance();
-                    cal.setTime(new Date(a.getInt("fechaInicio")));
-                    Integer subs = cal.get(Calendar.DAY_OF_WEEK)+1;
+                    cal.setTime(new Date(a.getLong("fechaInicio")));
+                    Integer subs = cal.get(Calendar.DAY_OF_WEEK);
                     if(subs < 2)
                         subs = subs + 2;
                     fechaA = Tools.GetDateDifference(subs);
@@ -279,12 +279,12 @@ public class InicioNegocio {
                 
                 //B
                 if(!typeB.equals("Artista"))
-                    fechaB = new Date(b.getInt("fechaPublicacion"));
+                    fechaB = new Date(b.getLong("fechaPublicacion"));
                 else
                 {
                     Calendar cal = Calendar.getInstance();
-                    cal.setTime(new Date(b.getInt("fechaInicio")));
-                    Integer subs = cal.get(Calendar.DAY_OF_WEEK)+1;
+                    cal.setTime(new Date(b.getLong("fechaInicio")));
+                    Integer subs = cal.get(Calendar.DAY_OF_WEEK);
                     if(subs < 2)
                         subs = subs + 2;
                     fechaB = Tools.GetDateDifference(subs);
