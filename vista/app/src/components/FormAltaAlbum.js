@@ -39,8 +39,8 @@ class FormAltaAlbum extends Component {
     const {discos} = this.props;
     const {discosSeleccionados} = this.state;
 
-    return discos.filter(c => discosSeleccionados.findIndex(s => isEqual(s, c)) === -1)
-      .map(c => ({id: c.id, descripcion: c.nombre}));
+    return discos.filter(d => discosSeleccionados.findIndex(s => d.id === s.id) === -1)
+      .map(d => ({id: d.id, descripcion: d.nombre}));
   }
 
   handleSubmit = (e, values) => {

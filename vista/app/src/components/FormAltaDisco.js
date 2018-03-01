@@ -45,7 +45,7 @@ class FormAltaDisco extends Component {
     const {canciones} = this.props;
     const {cancionesSeleccionadas} = this.state;
 
-    return canciones.filter(c => cancionesSeleccionadas.findIndex(s => isEqual(s, c)) === -1)
+    return canciones.filter(c => cancionesSeleccionadas.findIndex(s => c.id === s.id) === -1)
       .map(c => ({id: c.id, descripcion: c.nombre}));
   }
 
