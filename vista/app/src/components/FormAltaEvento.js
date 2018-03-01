@@ -64,7 +64,7 @@ class FormAltaEvento extends Component {
         <FormItem>
           {form.getFieldDecorator('imagen',{rules: [{validator: validateFile(this.state.imagen)}]})
             (<Upload 
-              accept="image"
+              accept="image/*"
               name={'file'}
               action={'http://localhost:8080/archivo/subirEventoFoto'}
               onRemove={() => {
