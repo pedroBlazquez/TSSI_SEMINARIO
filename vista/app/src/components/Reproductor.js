@@ -9,11 +9,11 @@ class Reproductor extends Component {
     });
 
     this.refs.reproductor.addEventListener('pause', () => {
-      this.props.pausar();
+      this.props.estaReproduciendo(false);
     });
 
     this.refs.reproductor.addEventListener('play', () => {
-      this.props.reanudar();
+      this.props.estaReproduciendo(true);
     });
   }
 
@@ -21,20 +21,16 @@ class Reproductor extends Component {
     if(prevProps.track !== this.props.track) {
       this.stopPlay();
       this.refs.reproductor.play();
-    } else if (this.props.reproduciendo) {
-      this.refs.reproductor.play();
+    }
+    if (!this.props.reproduciendo) {
+      this.stopPlay();
     }
 
-    if (!this.props.reproduciendo) {
-      this.stopPlay(false);
-    }
   }
 
-  stopPlay = (stop = true) => {
-    this.refs.reproductor.pause();
-    if (stop) {
+  stopPlay = () => {
+      this.refs.reproductor.pause();
       this.refs.reproductor.currentTime = 0;
-    }
   }
 
   onNext = () => {

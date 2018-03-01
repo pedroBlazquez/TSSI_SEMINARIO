@@ -5,7 +5,7 @@ import {
   SET_COLA,
   AGREGAR_A_COLA,
   PAUSAR_REPRODUCCION,
-  REANUDAR_REPRODUCCION
+  ESTA_REPRODUCIENDO
 } from './types';
 
 export const reproducir = (cancion) => ({type: REPRODUCIR, cancion});
@@ -14,4 +14,4 @@ export const anterior = () => ({type: REPRODUCIR_ANTERIOR});
 export const setCola = (queue) => ({type: SET_COLA, queue});
 export const agregarCola = (cancion) => ({type: AGREGAR_A_COLA, cancion});
 export const pausar = () => ({type: PAUSAR_REPRODUCCION});
-export const reanudar = () => ({type: REANUDAR_REPRODUCCION});
+export const setIsPlaying = (estaReproduciendo) => ({type: ESTA_REPRODUCIENDO, estaReproduciendo});

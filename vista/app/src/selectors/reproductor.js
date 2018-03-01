@@ -1,10 +1,16 @@
 import {createSelector} from 'reselect';
 
 export const getReproductor = (state) => state.reproductor;
+export const getEstadoReproduccion = state => state.estadoReproduccion;
 
 export const estaReproduciendo = createSelector(
-  [getReproductor],
-  reprocutor => reprocutor.reproduciendo
+  [getEstadoReproduccion],
+  reproductor => reproductor.estaReproduciendo
+)
+
+export const forzarReproduccion = createSelector(
+  [getEstadoReproduccion],
+  reproductor => reproductor.forzarReproducir
 )
 
 export const getCurrentSong = createSelector(
