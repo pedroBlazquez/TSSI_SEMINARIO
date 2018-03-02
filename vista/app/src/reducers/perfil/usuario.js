@@ -8,12 +8,13 @@ export default function (state = initialState, action) {
     case PERFIL_USUARIO:
       return action.usuario || initialState;
     case PERFIL_UPDATE_TREE:
-      let {nombre, apellido, nombreFantasia, descripcion} = action.data;
+      let {nombre, apellido, nombreFantasia, descripcion, integrantes} = action.data;
       state.nombre = nombre;
       state.apellido = apellido;
       if (descripcion && nombreFantasia) {
         state.artista[0].nombreFantasia = nombreFantasia;
         state.artista[0].descripcion = descripcion;
+        state.artista[0].integrantes = integrantes;
       }
       return {...state};
     case ACTUALIZAR_FOTO_PERFIL:
