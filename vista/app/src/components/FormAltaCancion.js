@@ -82,7 +82,7 @@ export default Form.create({
   mapPropsToFields (props) {
     return {
       nombre: Form.createFormField({...props.nombre}),
-      genero: Form.createFormField({...props.genero, defaultValue: props.genero.value})
+      genero: Form.createFormField({...props.genero})
     }
   }
 })(ExtendedForm(FormAltaCancion));
