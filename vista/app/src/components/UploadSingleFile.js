@@ -8,7 +8,7 @@ class UploadSingleFile extends Component {
     super(props);
 
     this.state = {
-      fileList: []
+      fileList: props.fileList || []
     };
   }
   

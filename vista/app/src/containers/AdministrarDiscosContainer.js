@@ -7,13 +7,16 @@ import {mapContentName} from '../utils/utils';
 
 import AltaDisco from '../components/FormAltaDisco';
 import AdministrarContenido from '../components/AdministrarContenido';
+import ListaCanciones from '../components/ListaCanciones';
+
 
 import {getDiscosPerfil, getCancionesPerfil} from '../selectors/perfil';
 import {altaDisco, modDisco, bajaDisco} from '../actions/contenidoActions';
 
 const initialState = {
   editando: null,
-  disco: null
+  disco: null,
+  portada: ''
 };
 
 class AdministrarCancionesContainer extends Component {
@@ -90,6 +93,7 @@ class AdministrarCancionesContainer extends Component {
           onChange: this.onFormChange,
           discos: mapContentName(discos, this.state.editando),
           canciones,
+          portada: this.state.portada,
           ...this.state.disco
         }}
         modalTitle={this.state.editando === null ? 'Alta Disco' : 'Actualizar Disco'}
@@ -97,7 +101,10 @@ class AdministrarCancionesContainer extends Component {
           onEliminar: this.onEliminar,
           onEditar: this.onEditar,
           actions: {editable: true},
-          items: discos.map(d => ({id: d.id, descripcion: d.nombre})),
+          items: discos.map(d => ({id: d.id, descripcion: d.nombre, canciones: d.canciones})),
+          render: (disco) => {
+            return (<ListaCanciones agregar={false} like={false} share={false} canciones={canciones}/>)
+          },
           agregarButtonText: 'Agregar Disco'
         }}
       />

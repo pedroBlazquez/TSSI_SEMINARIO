@@ -12,6 +12,7 @@ import {
   validateFile,
   NombreContenidoValidator
 } from '../utils/validators';
+import { buildFileList } from '../utils/utils';
 
 const FormItem = Form.Item;
 
@@ -21,8 +22,10 @@ class FormAltaDisco extends Component {
 
     this.state = {
       portada: this.props.portada || '',
+      fileList: this.props.portada ? buildFileList(this.props.portada): [],
       cancionesSeleccionadas: this.props.cancionesSeleccionadas || [],
-      error: false
+      error: false,
+      errorPortada: false
     };
   }
 
@@ -50,19 +53,22 @@ class FormAltaDisco extends Component {
   }
 
   handleSubmit = (e, values) => {
-    const {cancionesSeleccionadas} = this.state;
-    const {onSubmit, form} = this.props;
+    const {cancionesSeleccionadas, portada} = this.state;
+    const {onSubmit, form, onFormValidationFail} = this.props;
     const {validateFields} = form;
     e.preventDefault();
     
     validateFields((errors, values) => {
       if (!errors && cancionesSeleccionadas.length) {
-        const valuesToSend = {...values, canciones: cancionesSeleccionadas};
+        const valuesToSend = {...values, canciones: cancionesSeleccionadas, portada};
         onSubmit(e, valuesToSend);
       }
       if (!cancionesSeleccionadas.length) {
         // Seteamos el flag de error para las canciones
         this.setState({error: true});
+      }
+      if (!portada) {
+        this.setState({errorPortada: true});
       }
     });
   }
@@ -96,19 +102,24 @@ class FormAltaDisco extends Component {
             onRemover={this.removerCancion}
           />
         </FormItem>
-        <FormItem>
+        <FormItem
+          validateStatus={this.state.errorPortada ? 'error' : ''}
+          help={this.state.errorPortada ? 'Cargue un archivo' : ''}
+        >
           {form.getFieldDecorator('portada', {rules: [{validator: validateFile(this.state.portada)}]})
             (<Upload 
               accept="image/*"
               name={'file'}
+              fileList={this.state.fileList}
+              listType={'picture'}
               action={'http://localhost:8080/archivo/subirDiscoPortada'}
               onRemove={() => {
-                this.setState({portada: ''});
+                this.setState({portada: '', fileList: []});
               }}
               onChange={(info) => {
                 const fileList = info.fileList;
-                if (fileList.length) {
-                  this.setState({portada: fileList[0].response});
+                if (fileList.length && fileList[0].response) {
+                  this.setState({portada: fileList[0].response, fileList});
                 }
               }}
             >

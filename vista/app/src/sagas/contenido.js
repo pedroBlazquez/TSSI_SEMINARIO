@@ -98,7 +98,7 @@ export function* altaDisco(action) {
       nombre: disco.nombre,
       genero: GENEROS.find(g => g.id.toString() === disco.genero).value,
       canciones: disco.canciones.map(c => c.id),
-      portada: disco.portada.file.response
+      portada: disco.portada
     };
     yield call(_post, '/discos/', {...payload}, headers);
     
