@@ -61,7 +61,7 @@ public class InicioControlador {
             String artista = json.getString("nombre_artista");
             String direccion = json.getString("direccion");
             String desdehasta = json.getString("desdehasta");
-            Date fecha = Tools.DateFormatter(json.getString("fecha"));
+            Date fecha = Tools.DateFormatter(json.getString("fecha"),"dd-MM-yyyy");
            
             //busca mail de usuario
             String usermail = Token.getMailFromToken(request.getHeader(HEADER_STRING));

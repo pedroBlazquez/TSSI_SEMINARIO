@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import aplicacion.Tools;
 import conexion.Conexion;
 import modelos.Artista;
+import modelos.Cancion;
 
 public class InicioNegocio {
     
@@ -212,8 +213,10 @@ public class InicioNegocio {
                 }
             }
 
+            
             //--------------------------------------------------------------------
 
+            
             //mezclo ambas listas
             //Collections.shuffle(priority_list);
             //Collections.shuffle(general_list);
@@ -225,6 +228,40 @@ public class InicioNegocio {
             return_list.addAll(top1_list);
             return_list.addAll(top2_list);
             return_list.addAll(top3_list);
+            
+            
+          //--------------------------------------------------------------------
+
+            if(return_list.isEmpty())
+            {
+                //agrega 5 artistas random
+                int max_artista = 5;
+                String filtro_art = "";
+                if(!id_artista.equals(""))
+                    filtro_art = " WHERE id != "+id_artista; //Y artista NO SEA YO
+                List<Artista> art_list = cn.getListQuery("from Artista"+filtro_art);
+                Collections.shuffle(art_list);
+                int cant_artistas = art_list.size(); 
+                if(cant_artistas>(max_artista-1))
+                    cant_artistas = max_artista;
+                return_list.addAll(ArtistaNegocio.setData(cn,art_list.subList(0,cant_artistas), usermail,false,true));
+                
+                //agrega 10 canciones random, sobre las ultimas 30 publicadas
+                int max_canciones = 10;
+                String filtro_can = "";
+                if(!id_artista.equals(""))
+                    filtro_can = " WHERE ar.id != "+id_artista+" "; //Y artista NO SEA YO
+                List<Cancion> can_list = cn.getListQuery("from Cancion c JOIN FETCH c.artista ar "+filtro_can+" order by fechaPublicacion desc",30);
+                Collections.shuffle(can_list);
+                int cant_canciones = can_list.size(); 
+                if(cant_canciones>(max_canciones-1))
+                    cant_canciones = max_canciones;
+                return_list.addAll(CancionNegocio.setData(cn,can_list.subList(0,cant_canciones), usermail,true,true));
+                
+                //mescla los resultados
+                Collections.shuffle(return_list);
+            }
+            
             
             //cn.cerrarConexion();
             return return_list;
@@ -330,7 +367,7 @@ public class InicioNegocio {
             
             
             //fecha actual
-            String date_now = Tools.DateFormatter(Tools.GetDateDifference(1));
+            String date_now = Tools.DateFormatter(Tools.GetDateDifference(1)); //se le resta 1, para que traiga los eventos del dia actual
             
             int top_1 = 20;
             //int top_2 = 2;
@@ -367,9 +404,9 @@ public class InicioNegocio {
                 String filtro_fechaEvento = " > '"+date_now+"' ";
                 if(fecha != null)
                 {
-                    String signo = "<";
+                    String signo = "<=";
                     if(desdehasta.equals("Desde"))
-                        signo = ">";
+                        signo = ">=";
                     filtro_fechaEvento += "and fechaEvento "+signo+" '"+Tools.DateFormatter(fecha)+"' ";
                 }
                 String st_nombre = "";
