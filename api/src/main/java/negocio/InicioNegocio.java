@@ -487,9 +487,9 @@ public class InicioNegocio {
                             //artista no sea yo
                             String filtro_artista_noseayo = "";
                             if(!id_artista.equals(""))
-                                filtro_artista_noseayo = " ga.idGeneroArtista.artista.id != "+id_artista+" ";
+                                filtro_artista_noseayo = " ga.idGeneroArtista.artista.id != "+id_artista+" and ";
                             
-                            List<Artista> artistas_genero_noseayo = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE "+filtro_artista_noseayo+" and ga.idGeneroArtista.genero.id = "+idGenero+" "+filtro_artista_artistagenero,top_1);
+                            List<Artista> artistas_genero_noseayo = cn.getListQuery("select distinct ga.idGeneroArtista.artista from GeneroArtista ga WHERE "+filtro_artista_noseayo+" ga.idGeneroArtista.genero.id = "+idGenero+" "+filtro_artista_artistagenero,top_1);
                             if(!artistas_genero.isEmpty())
                             {
                                 List<JSONObject> temp_list = ArtistaNegocio.setData(cn,artistas_genero_noseayo, usermail,false,true);
