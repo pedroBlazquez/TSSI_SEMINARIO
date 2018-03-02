@@ -52,10 +52,11 @@ class IntegrantesBanda extends Component {
   }
 
   render () {
+    const {integrantes} = this.props;
     return (
       <Table 
         columns={this.columns}
-        dataSource={this.props.integrantes}
+        dataSource={integrantes}
         size={'small'}
         pagination={false}
       />

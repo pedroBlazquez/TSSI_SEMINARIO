@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Tabs} from 'antd';
 import moment from 'moment';
+import {isEqual} from 'lodash';
 
 import '../styles/AdministrarContenido.css';
 
@@ -15,6 +16,8 @@ import DatosArtista from '../components/FormDatosArtista';
 import DatosUsuario from '../components/FormRegistroUsuario';
 import FormFotoPerfil from '../components/FormFotoPerfil';
 import {getUsuarioPerfil} from '../selectors/perfil';
+
+import {ROLES_INTEGRANTES} from '../utils/constants';
 
 const TabPane = Tabs.TabPane;
 
@@ -82,7 +85,7 @@ class AdministrarPerfil extends Component {
   onSubmit = (e, values) => {
     const {actualizarUsuario, actualizarUsuarioStore} = this.props,
           {nombre, apellido} = this.state.usuarioFields,
-          {descripcion, nombreFantasia} = this.state.artistaFields || {};
+          {descripcion, nombreFantasia, integrantes} = this.state.artistaFields || {};
     let data = {'nombre': nombre.value, 'apellido': apellido.value}
 
     actualizarUsuario(this.state);
@@ -90,6 +93,7 @@ class AdministrarPerfil extends Component {
     if (descripcion && nombreFantasia) {
       data.nombreFantasia = nombreFantasia.value;
       data.descripcion = descripcion.value;
+      data.integrantes = integrantes;
     }
 
     actualizarUsuarioStore(data);
@@ -99,13 +103,15 @@ class AdministrarPerfil extends Component {
     const {artistaFields} = this.state;
     const integrantes = [...artistaFields.integrantes];
     const integranteNuevo = {...integrante, key: integrantes.length};
+    const nuevoIntegranteRol = ROLES_INTEGRANTES.find(r => r.id === integranteNuevo.rol);
+    integranteNuevo.rol = {id: nuevoIntegranteRol.id, descripcion: nuevoIntegranteRol.value};
     integrantes.push(integranteNuevo);
     this.setState({artistaFields: Object.assign({}, artistaFields, {integrantes})});
   }
 
   removerIntegrante = (integrante) => {
     const {artistaFields} = this.state;
-    const integrantes = [...artistaFields.integrantes].filter(i => i.key !== integrante.key);
+    const integrantes = [...artistaFields.integrantes].filter(i => !isEqual(i, integrante));
     this.setState({artistaFields: {...artistaFields, integrantes}});
   }
   
