@@ -52,8 +52,7 @@ class IntegrantesBanda extends Component {
   }
 
   render () {
-    let {integrantes} = this.props;
-    integrantes.map((i, index) => i.key = index);
+    const {integrantes} = this.props;
     return (
       <Table 
         columns={this.columns}

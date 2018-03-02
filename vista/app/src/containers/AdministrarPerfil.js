@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Tabs} from 'antd';
 import moment from 'moment';
+import {isEqual} from 'lodash';
 
 import '../styles/AdministrarContenido.css';
 
@@ -110,7 +111,7 @@ class AdministrarPerfil extends Component {
 
   removerIntegrante = (integrante) => {
     const {artistaFields} = this.state;
-    const integrantes = [...artistaFields.integrantes].filter(i => i.key !== integrante.key);
+    const integrantes = [...artistaFields.integrantes].filter(i => !isEqual(i, integrante));
     this.setState({artistaFields: {...artistaFields, integrantes}});
   }
   
