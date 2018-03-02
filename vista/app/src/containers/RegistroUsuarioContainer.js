@@ -83,7 +83,10 @@ class RegistroUsuarioContainer extends Component {
           <DatosArtistaForm
             onSubmit={this.onSubmit}
             onChange={this.onDatosArtistaChange}
-            onCancel={this.onCancel}
+            onCancel={() => {
+              console.log('asdjakjhdjasjkdhkasj')
+              this.onCancel();
+            }}
             esBanda={formType === USUARIO_BANDA.id}
             agregarIntegrante={this.agregarIntegrante}
             removerIntegrante={this.removerIntegrante}
@@ -111,10 +114,6 @@ class RegistroUsuarioContainer extends Component {
     }
   }
 
-  onCancel = () => {
-    this.setState({formType: USUARIO_OYENTE.id, artistaFields: initialArtistaFields});
-  }
-
   agregarIntegrante = (integrante) => {
     const {artistaFields} = this.state;
     const integrantes = [...artistaFields.integrantes];
@@ -131,7 +130,11 @@ class RegistroUsuarioContainer extends Component {
 
   onCancel = () => {
     const {history} = this.props;
-    history.push('/login');
+    if (this.state.formType === USUARIO_OYENTE.id) {
+      history.push('/login');
+    } else {
+      this.setState({formType: USUARIO_OYENTE.id, artistaFields: initialArtistaFields});
+    }
   }
 
   render () {
