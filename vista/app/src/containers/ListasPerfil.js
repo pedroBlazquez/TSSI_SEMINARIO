@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Card} from 'antd';
 
 import withProfile from '../hoc/withProfile';
 import {withRouter} from 'react-router-dom';
@@ -17,6 +18,12 @@ export class ListasPerfil extends Component {
       esPerfilPropio ? 
         <AdministrarListasContainer/> :
         <MainContent>
+          {
+            !listas.length && 
+            <Card className={'margin-10p'}>
+              {'Este usuario no dispone de listas públicas'}
+            </Card>
+          }
           {listas.map(lista => 
             <ListaReproduccion key={lista.id} lista={lista}/>
           )}
