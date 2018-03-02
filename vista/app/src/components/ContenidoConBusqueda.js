@@ -30,6 +30,7 @@ class ContenidoConBusqueda extends Component {
   }
 
   onSelect = (value) => {
+    this.onSearch('');
     this.props.onSelect(value);
   }
 
@@ -53,6 +54,7 @@ class ContenidoConBusqueda extends Component {
           'No hay items seleccionados'
         }
         <AutoComplete
+          value={this.state.filtro}
           dataSource={this.state.dataSource}
           onSearch={this.onSearch}
           onSelect={this.onSelect}
