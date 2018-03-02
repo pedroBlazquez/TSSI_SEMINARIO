@@ -62,18 +62,18 @@ class FormAltaEvento extends Component {
         </FormItem>
         <span>Le recomendamos que la imagen sea de 550px de ancho por 200px de alto</span>
         <FormItem>
-          {form.getFieldDecorator('imagen',{rules: [{validator: validateFile(this.state.imagen)}]})
+          {form.getFieldDecorator('imagen',{initialValue: this.state.imagen})
             (<Upload 
               accept="image/*"
+              multiple = {false}
               name={'file'}
               action={'http://localhost:8080/archivo/subirEventoFoto'}
               onRemove={() => {
                 this.setState({imagen: ''});
               }}
-              onChange={(info) => {
-                const fileList = info.fileList;
-                if (fileList.length) {
-                  this.setState({imagen: fileList[0].response});
+              onChange={(data) => {
+                if (data.file.status === "done") {
+                  this.setState({imagen: data.file.response});
                 }
               }}
             >
