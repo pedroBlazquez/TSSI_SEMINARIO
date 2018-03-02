@@ -22,28 +22,28 @@ class RegistroUsuarioForm extends Component {
     const {form, onSubmit, onCancel, onTipoUsuarioChange, update} = this.props;
     return (
       <Form onSubmit={onSubmit}>
-        <FormItem>
+        <FormItem label="Nombre">
           {
             DatosPersonalesValidator({form})('nombre')
             (<Input type="text" placeholder="Ingrese su nombre" maxLength={'100'}/>)
           }
         </FormItem>
-        <FormItem>
+        <FormItem label="Apellido">
           {
             DatosPersonalesValidator({form})('apellido')
             (<Input placeholder={'Ingrese su apellido'} type="text" maxLength={'100'}/>)
           }
         </FormItem>
-        <FormItem>
+        <FormItem label="Fecha de nacimiento">
           {
             FechaValidator({form})('fechaNacimiento')
             (<FechaNacimiento className="full-width" placeholder={'Fecha de nacimiento'}/>)
           }
         </FormItem>
-        <FormItem>
+        <FormItem label="Mail">
           {MailValidator({form})('usuario')(<MailInput disabled={update} maxLength={'100'}/>)}
         </FormItem>
-        <FormItem>
+        <FormItem label="Password">
           {PasswordValidator({form})('password')(<PasswordInput maxLength={'100'}/>)}  
         </FormItem>
         {!update &&
