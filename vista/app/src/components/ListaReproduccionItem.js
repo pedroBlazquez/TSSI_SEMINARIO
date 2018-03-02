@@ -6,11 +6,11 @@ import {bindActionCreators} from 'redux';
 import {pushSongToList} from '../actions/listasReproduccionActions';
 import Imagen from '../assets/playlist.png';
 
-class ListaReproduccionItem extends Component {
+export class ListaReproduccionItem extends Component {
     
     clickHandler = () => {
-        let {idCancion, lista} = this.props;
-        this.props.pushSongToList(idCancion.toString(), lista.id.toString());
+        let {cancion, lista} = this.props;
+        this.props.pushSongToList(cancion, lista);
     }
 
     render () {

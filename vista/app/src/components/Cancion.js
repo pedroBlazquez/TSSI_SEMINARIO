@@ -39,7 +39,7 @@ class Cancion extends Component {
                         </Link>
                           <h1>{cancion.nombre}</h1>
                       </div>
-                      <AgregarCancionLista id={cancion.id}/>
+                      <AgregarCancionLista cancion={cancion}/>
                   </div>
                   <Compartir id={cancion.id} typeContent='Cancion' shared={cancion.compartido}/>
               </div>
