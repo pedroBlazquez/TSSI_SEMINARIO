@@ -10,6 +10,7 @@ import {
   validateFile,
   NombreContenidoValidator
 } from '../utils/validators';
+import { buildFileList } from '../utils/utils';
 
 const TextArea = Input.TextArea;
 const FormItem = Form.Item;
@@ -18,14 +19,34 @@ class FormAltaEvento extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      imagen: props.imagen || ''
+      portada: props.imagen || '',
+      fileList: props.imagen ? buildFileList(props.imagen) : '',
+      errorPortada: false
     };
   }
 
+  handleSubmit = (e, values) => {
+    const { portada} = this.state;
+    const {onSubmit, form, onFormValidationFail} = this.props;
+    const {validateFields} = form;
+    e.preventDefault();
+    
+    validateFields((errors, values) => {
+      if (!errors) {
+        const valuesToSend = {...values, imagen: portada};
+        onSubmit(e, valuesToSend);
+      }
+      if (!portada) {
+        this.setState({errorPortada: true});
+      }
+    });
+  }
+
+
   render () {
-    const {onSubmit, onCancel, form, eventos} = this.props;
+    const {onCancel, form, eventos} = this.props;
     return (
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <FormItem>
           {NombreContenidoValidator(eventos)
             ('Ya existe un evento con ese nombre')
@@ -61,19 +82,24 @@ class FormAltaEvento extends Component {
           }
         </FormItem>
         <span>Le recomendamos que la imagen sea de 550px de ancho por 200px de alto</span>
-        <FormItem>
-          {form.getFieldDecorator('imagen',{rules: [{validator: validateFile(this.state.imagen)}]})
+        <FormItem
+          validateStatus={this.state.errorPortada ? 'error' : ''}
+          help={this.state.errorPortada ? 'Cargue un archivo' : ''}
+        >
+          {form.getFieldDecorator('imagen',{rules: [{validator: validateFile(this.state.portada)}]})
             (<Upload 
               accept="image/*"
               name={'file'}
+              fileList={this.state.fileList}
+              listType={'picture'}
               action={'http://localhost:8080/archivo/subirEventoFoto'}
               onRemove={() => {
-                this.setState({imagen: ''});
+                this.setState({portada: '', fileList: []});
               }}
               onChange={(info) => {
                 const fileList = info.fileList;
-                if (fileList.length) {
-                  this.setState({imagen: fileList[0].response});
+                if (fileList.length && fileList[0].response) {
+                  this.setState({portada: fileList[0].response, fileList});
                 }
               }}
             >
@@ -114,4 +140,4 @@ export default Form.create({
       costo: Form.createFormField({...props.costo})
     }
   }
-})(ExtendedForm(FormAltaEvento));
+})(FormAltaEvento);
