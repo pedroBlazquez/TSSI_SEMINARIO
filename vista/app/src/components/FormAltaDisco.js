@@ -12,7 +12,6 @@ import {
   validateFile,
   NombreContenidoValidator
 } from '../utils/validators';
-import { buildFileList } from '../utils/utils';
 
 const FormItem = Form.Item;
 
@@ -22,7 +21,6 @@ class FormAltaDisco extends Component {
 
     this.state = {
       portada: this.props.portada || '',
-      fileList: this.props.portada ? buildFileList(this.props.portada): [],
       cancionesSeleccionadas: this.props.cancionesSeleccionadas || [],
       error: false,
       errorPortada: false
@@ -110,7 +108,7 @@ class FormAltaDisco extends Component {
             (<Upload 
               accept="image/*"
               name={'file'}
-              fileList={this.state.fileList}
+              preloadedFile={this.state.portada}
               listType={'picture'}
               action={'http://localhost:8080/archivo/subirDiscoPortada'}
               onRemove={() => {
@@ -119,7 +117,7 @@ class FormAltaDisco extends Component {
               onChange={(info) => {
                 const fileList = info.fileList;
                 if (fileList.length && fileList[0].response) {
-                  this.setState({portada: fileList[0].response, fileList});
+                  this.setState({portada: fileList[0].response});
                 }
               }}
             >

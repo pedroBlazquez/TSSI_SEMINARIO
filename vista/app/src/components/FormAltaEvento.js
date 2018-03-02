@@ -20,7 +20,6 @@ class FormAltaEvento extends Component {
     super(props);
     this.state = {
       portada: props.imagen || '',
-      fileList: props.imagen ? buildFileList(props.imagen) : '',
       errorPortada: false
     };
   }
@@ -90,16 +89,16 @@ class FormAltaEvento extends Component {
             (<Upload 
               accept="image/*"
               name={'file'}
-              fileList={this.state.fileList}
+              preloadedFile={this.state.portada}
               listType={'picture'}
               action={'http://localhost:8080/archivo/subirEventoFoto'}
               onRemove={() => {
-                this.setState({portada: '', fileList: []});
+                this.setState({portada: ''});
               }}
               onChange={(info) => {
                 const fileList = info.fileList;
                 if (fileList.length && fileList[0].response) {
-                  this.setState({portada: fileList[0].response, fileList});
+                  this.setState({portada: fileList[0].response});
                 }
               }}
             >
