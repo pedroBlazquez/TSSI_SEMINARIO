@@ -9,6 +9,8 @@ import {crearLista, eliminarLista, modificarLista} from '../actions/listasReprod
 import MainContent from '../components/MainContent';
 import AltaLista from '../components/FormAltaLista';
 import AdministrarContenido from '../components/AdministrarContenido';
+import ListaCanciones from '../components/ListaCanciones';
+import { setCola } from '../actions/reproductorActions';
 
 const initialState = {
   editando: null,
@@ -43,6 +45,10 @@ class AdministrarListasContainer extends Component {
     const {baja} = this.props;
     baja(id);
   }
+
+  reproducir = (lista) => {
+    this.props.reproducir(lista.canciones);
+  } 
 
   onFormChange = (changedFields) => {
     if (this.state.editando !== null) {
@@ -89,8 +95,13 @@ class AdministrarListasContainer extends Component {
             contenidoProps={{
               onEliminar: this.onEliminar,
               onEditar: this.onEditar,
-              items: listas.map(c => ({id: c.id, descripcion: c.nombre})),
-              agregarButtonText: 'Agregar Lista'
+              reproducir: this.reproducir,
+              actions: {editable: true, reproducible: true},
+              items: listas.map(l => ({id: l.id, descripcion: l.nombre, canciones: l.canciones})),
+              agregarButtonText: 'Agregar Lista',
+              render: ({canciones}) => {
+                return (<ListaCanciones canciones={canciones}/>);
+              }
             }}
           />
         </div>
@@ -102,7 +113,8 @@ class AdministrarListasContainer extends Component {
 const mapDispatchToProps = (dispatch) => ({
   alta: bindActionCreators(crearLista, dispatch),
   modificar: bindActionCreators(modificarLista, dispatch),
-  baja: bindActionCreators(eliminarLista, dispatch)
+  baja: bindActionCreators(eliminarLista, dispatch),
+  reproducir: bindActionCreators(setCola, dispatch)
 });
 
 const mapStateToProps = (state) => ({
