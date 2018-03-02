@@ -33,9 +33,7 @@ class FormAltaCancion extends Component {
           }
         </FormItem>
         <FormItem>
-          {RequiredValidator({form})('genero')
-            (<GenerosMusicalesDD />)
-          }
+          {RequiredValidator({form})('genero')(<GenerosMusicalesDD />)}
         </FormItem>
         <FormItem>
           {form.getFieldDecorator('audio', {rules: [{validator: validateFile(this.state.audio)}]})
