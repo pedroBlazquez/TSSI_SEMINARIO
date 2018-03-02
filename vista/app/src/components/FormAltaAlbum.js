@@ -15,8 +15,9 @@ class FormAltaAlbum extends Component {
 
     this.state = {
       discosSeleccionados: this.props.discosSeleccionados || [],
-      portada: '',
-      error: false
+      portada: props.portada || '',
+      error: false,
+      errorPortada: false
     };
   }
 
@@ -44,19 +45,22 @@ class FormAltaAlbum extends Component {
   }
 
   handleSubmit = (e, values) => {
-    const {discosSeleccionados} = this.state;
+    const {discosSeleccionados, portada} = this.state;
     const {onSubmit, form} = this.props;
     const {validateFields} = form;
     e.preventDefault();
     
     validateFields((errors, values) => {
-      if (!errors && discosSeleccionados.length) {
+      if (!errors && discosSeleccionados.length && portada) {
         const valuesToSend = {
           ...values,
           discos: discosSeleccionados,
-          portada: this.state.portada
+          portada
         };
         onSubmit(e, valuesToSend);
+      }
+      if (!portada) {
+        this.setState({errorPortada: true});
       }
       if (!discosSeleccionados.length) {
         // Seteamos el flag de error para los discos
@@ -90,25 +94,31 @@ class FormAltaAlbum extends Component {
           />
         </FormItem>
         <span>Le recomendamos que la imagen sea de 600px por 600px</span>
-        <FormItem>
-          {form.getFieldDecorator('imagen')
-            (<Upload
-              accept="image/*"
-              multiple = {false}
-              name={'file'}
-              action={'http://localhost:8080/archivo/subirAlbumPortada'}
-              onChange={(data) => {
-                if (data.file.status === 'done') {
-                  this.setState({portada: data.file.response})
-                }
-              }}
-            >
-              <Button>
-                <Icon type="upload" /> 
-                {'Subir imagen'}
-              </Button>
-            </Upload>)
-          }
+        <FormItem
+          validateStatus={this.state.errorPortada ? 'error' : ''}
+          help={this.state.errorPortada ? 'Cargue un archivo' : ''}
+        >
+          <Upload
+            accept="image/*"
+            multiple = {false}
+            preloadedFile={this.state.portada}
+            name={'file'}
+            listType={'picture'}
+            action={'http://localhost:8080/archivo/subirAlbumPortada'}
+            onRemove={() => {
+              this.setState({portada: ''});
+            }}
+            onChange={(data) => {
+              if (data.file.status === 'done') {
+                this.setState({portada: data.file.response})
+              }
+            }}
+          >
+            <Button>
+              <Icon type="upload" /> 
+              {'Subir imagen'}
+            </Button>
+           </Upload>
         </FormItem>
         <FormItem>
           <div className={'flex flex-space-between'}>

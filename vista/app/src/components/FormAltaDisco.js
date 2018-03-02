@@ -112,7 +112,7 @@ class FormAltaDisco extends Component {
               listType={'picture'}
               action={'http://localhost:8080/archivo/subirDiscoPortada'}
               onRemove={() => {
-                this.setState({portada: '', fileList: []});
+                this.setState({portada: ''});
               }}
               onChange={(info) => {
                 const fileList = info.fileList;
