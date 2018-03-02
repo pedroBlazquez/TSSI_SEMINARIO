@@ -9,6 +9,7 @@ import {REQUEST_LOGIN, REGISTER_USER, CHECK_TOKEN, UPDATE_USER, BAJA_USUARIO} fr
 import {errorLogin, successLogin} from '../actions/loginActions'; 
 import {failRegister, successRegister} from '../actions/registerActions'; 
 import {logOut} from '../actions/loginActions';
+import { setUsuarioPerfil } from '../actions/perfilActions';
 
 // Our worker Saga
 export function* requestLoginSaga(action) {
@@ -115,6 +116,8 @@ export function* modificarUsuario ({user}) {
     }
 
     yield call(_put, '/usuario/', {...payload}, headers);
+    const usuario = yield call(_get, `/usuario/0`, headers);
+    yield put(setUsuarioPerfil(usuario.data));
     
     yield call(message.success, 'Actualizado con éxito', 1);
   } catch (e) {
