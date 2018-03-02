@@ -33,9 +33,7 @@ class FormAltaCancion extends Component {
           }
         </FormItem>
         <FormItem>
-          {RequiredValidator({form})('genero')
-            (<GenerosMusicalesDD />)
-          }
+          {RequiredValidator({form})('genero')(<GenerosMusicalesDD />)}
         </FormItem>
         <FormItem>
           {form.getFieldDecorator('audio', {rules: [{validator: validateFile(this.state.audio)}]})
@@ -84,7 +82,7 @@ export default Form.create({
   mapPropsToFields (props) {
     return {
       nombre: Form.createFormField({...props.nombre}),
-      genero: Form.createFormField({...props.genero})
+      genero: Form.createFormField({...props.genero, defaultValue: props.genero.value})
     }
   }
 })(ExtendedForm(FormAltaCancion));
