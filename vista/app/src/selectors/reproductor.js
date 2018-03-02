@@ -6,12 +6,17 @@ export const getEstadoReproduccion = state => state.estadoReproduccion;
 export const estaReproduciendo = createSelector(
   [getEstadoReproduccion],
   reproductor => reproductor.estaReproduciendo
-)
+);
 
-export const forzarReproduccion = createSelector(
+export const latestPlay = createSelector(
   [getEstadoReproduccion],
-  reproductor => reproductor.forzarReproducir
-)
+  reproductor => reproductor.latestPlay
+);
+
+export const latestPause = createSelector(
+  [getEstadoReproduccion],
+  reproductor => reproductor.latestPause
+);
 
 export const getCurrentSong = createSelector(
   [getReproductor],
