@@ -24,6 +24,11 @@ class Like extends Component {
         }
     }
 
+    componentWillReceiveProps (nextProps) {
+        const {liked, likes} = nextProps;
+        this.setState({liked, likes});
+    }
+
     //Envia a la api la accion de like o unlike
     clickHandler = () => {
         let {id, typeContent} = this.props;
