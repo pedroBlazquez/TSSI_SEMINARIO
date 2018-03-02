@@ -42,7 +42,7 @@ export function* altaLista(action) {
         };
 
         yield call(_post, '/listas/', payload, headers);
-        yield put({type: 'GET_LISTAS_PERFIL'});
+        yield put({type: GET_LISTAS});
     } catch (e) {
         console.log(e);
     }
