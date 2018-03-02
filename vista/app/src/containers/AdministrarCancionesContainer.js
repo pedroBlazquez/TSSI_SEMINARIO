@@ -94,6 +94,7 @@ class AdministrarCancionesContainer extends Component {
         contenidoProps={{
           onEliminar: this.onEliminar,
           onEditar: this.onEditar,
+          actions: {editable: true},
           items: canciones.map(c => ({id: c.id, descripcion: c.nombre})),
           agregarButtonText: 'Agregar Cancion'
         }}

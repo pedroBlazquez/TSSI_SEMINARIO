@@ -7,7 +7,7 @@ import Like from './Like';
 import BotonPlay from './BotonPlay';
 import Agregar from './AgregarCancionLista';
 
-import {List} from 'antd';
+import {List, Divider} from 'antd';
 import { OBJECT_TYPES } from '../utils/constants';
 
 const ListItem = List.Item;
@@ -19,19 +19,34 @@ class ListaCanciones extends Component {
       like: true,
       agregar: true
     }
+    constructor (props) {
+      super(props);
+      this.state = {
+        mostrarCanciones: false
+      }
+    }
+
+    toggleMostrarCanciones = () => {
+      this.setState({mostrarCanciones: !this.state.mostrarCanciones});
+    }
+
     render () {
-      const {canciones, play, share, like, agregar} = this.props;
+      const {canciones, play, share, like, agregar, title} = this.props;
       if (!this.props.canciones.length) return <p>{'No hay canciones para mostrar'}</p>;
+      if (!this.state.mostrarCanciones) {
+        return (<p onClick={this.toggleMostrarCanciones} >{'Mostrar canciones'}</p>); 
+      }
       return(
         <div>
-          <h2>Canciones</h2>
+          <p onClick={this.toggleMostrarCanciones}>{'Ocultar canciones'}</p>
+          <Divider />
           <List
             size={'small'}
             dataSource={this.props.canciones}
             renderItem={(cancion) => 
               <ListItem>
                 <div className={'flex flex-space-between'} style={{width: '100%'}}>
-                  <span>{cancion.nombre}</span>
+                  <span style={{maxWidth: 230, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{cancion.nombre}</span>
                   <div className={'flex flex-space-around'} style={{width: '30%'}}>
                     {play && 
                       <BotonPlay

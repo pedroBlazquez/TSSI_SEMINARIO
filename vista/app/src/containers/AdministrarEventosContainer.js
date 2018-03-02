@@ -100,6 +100,7 @@ class AdministrarEventosContainer extends Component {
         contenidoProps={{
           onEliminar: this.onEliminar,
           onEditar: this.onEditar,
+          actions: {editable: true},
           items: eventos.map(c => ({id: c.id, descripcion: c.nombre})),
           agregarButtonText: 'Agregar Evento'
         }}

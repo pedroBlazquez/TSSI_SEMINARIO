@@ -50,7 +50,6 @@ class AdministrarContenido extends Component {
           onAgregar={this.toggleModal}
           onEditar={this.openModalAndEdit}
           agregar
-          showOptions
         />
         {modalOpen && 
           <Modal

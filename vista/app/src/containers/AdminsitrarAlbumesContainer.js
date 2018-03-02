@@ -86,6 +86,7 @@ class AdministrarCancionesContainer extends Component {
         contenidoProps={{
           onEliminar: this.onEliminar,
           onEditar: this.onEditar,
+          actions: {editable: true},
           items: albumes.map(d => ({id: d.id, descripcion: d.nombre})),
           agregarButtonText: 'Agregar Album'
         }}

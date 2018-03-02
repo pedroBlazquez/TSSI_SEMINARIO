@@ -16,6 +16,7 @@ import '../styles/novedades.css'
 export default class Novedades extends Component {
   getElements = () => {
     const {records} = this.props;
+    if (!records.length) return null;
     return records.map(function(record) {
       let element;
       switch(record.object_type) {
