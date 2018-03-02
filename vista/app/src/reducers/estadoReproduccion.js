@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
   PAUSAR_REPRODUCCION,
   ESTA_REPRODUCIENDO,
@@ -8,7 +9,8 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  forzarReproducir: false,
+  latestPlay: moment().valueOf(),
+  latestPause: moment().valueOf(),
   estaReproduciendo: false
 }
 
@@ -18,11 +20,14 @@ export default function (state = initialState, action = {}) {
     case SET_COLA:
     case REPRODUCIR_SIGUIENTE:
     case REPRODUCIR_ANTERIOR:
-      return {...state, forzarReproducir: true};
+      return {...state, latestPlay: moment().valueOf()};
     case PAUSAR_REPRODUCCION: 
-      return {...state, forzarReproducir: false};
+      return {...state, latestPause: moment().valueOf()};
     case ESTA_REPRODUCIENDO:
-      return {...state, estaReproduciendo: action.estaReproduciendo}
+      return {
+        ...state,
+        estaReproduciendo: action.estaReproduciendo
+      };
     default:
       return state;
   }
