@@ -131,7 +131,7 @@ export function* bajaUsuario () {
   } catch (e) {
     console.log(e);
   } finally {
-    yield put(logOut);
+    yield put(logOut());
   }
 }
 
