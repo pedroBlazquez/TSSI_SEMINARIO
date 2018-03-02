@@ -17,7 +17,7 @@ class FormAltaAlbum extends Component {
       discosSeleccionados: this.props.discosSeleccionados || [],
       portada: props.portada || '',
       error: false,
-      errorPortada: false
+      errorPortada: ''
     };
   }
 
@@ -45,13 +45,13 @@ class FormAltaAlbum extends Component {
   }
 
   handleSubmit = (e, values) => {
-    const {discosSeleccionados, portada} = this.state;
+    const {discosSeleccionados, portada, errorPortada} = this.state;
     const {onSubmit, form} = this.props;
     const {validateFields} = form;
     e.preventDefault();
     
     validateFields((errors, values) => {
-      if (!errors && discosSeleccionados.length && portada) {
+      if (!errors && discosSeleccionados.length && portada && !errorPortada) {
         const valuesToSend = {
           ...values,
           discos: discosSeleccionados,
@@ -60,7 +60,7 @@ class FormAltaAlbum extends Component {
         onSubmit(e, valuesToSend);
       }
       if (!portada) {
-        this.setState({errorPortada: true});
+        this.setState({errorPortada: 'Carge un archivo'});
       }
       if (!discosSeleccionados.length) {
         // Seteamos el flag de error para los discos
@@ -96,7 +96,7 @@ class FormAltaAlbum extends Component {
         <span>Le recomendamos que la imagen sea de 600px por 600px</span>
         <FormItem
           validateStatus={this.state.errorPortada ? 'error' : ''}
-          help={this.state.errorPortada ? 'Cargue un archivo' : ''}
+          help={this.state.errorPortada}
         >
           <Upload
             accept="image/*"
@@ -104,6 +104,13 @@ class FormAltaAlbum extends Component {
             preloadedFile={this.state.portada}
             name={'file'}
             listType={'picture'}
+            beforeUpload={(file, fileList) => {
+              if(file && !file.type.includes('image')) {
+                this.setState({errorPortada: 'El archivo no es una imagen'});
+              } else {
+                this.setState({errorPortada: ''});
+              }
+            }}
             action={'http://localhost:8080/archivo/subirAlbumPortada'}
             onRemove={() => {
               this.setState({portada: ''});

@@ -23,7 +23,7 @@ class FormAltaDisco extends Component {
       portada: this.props.portada || '',
       cancionesSeleccionadas: this.props.cancionesSeleccionadas || [],
       error: false,
-      errorPortada: false
+      errorPortada: ''
     };
   }
 
@@ -51,13 +51,13 @@ class FormAltaDisco extends Component {
   }
 
   handleSubmit = (e, values) => {
-    const {cancionesSeleccionadas, portada} = this.state;
+    const {cancionesSeleccionadas, portada, errorPortada} = this.state;
     const {onSubmit, form, onFormValidationFail} = this.props;
     const {validateFields} = form;
     e.preventDefault();
     
     validateFields((errors, values) => {
-      if (!errors && cancionesSeleccionadas.length) {
+      if (!errors && cancionesSeleccionadas.length && portada && !errorPortada) {
         const valuesToSend = {...values, canciones: cancionesSeleccionadas, portada};
         onSubmit(e, valuesToSend);
       }
@@ -66,7 +66,7 @@ class FormAltaDisco extends Component {
         this.setState({error: true});
       }
       if (!portada) {
-        this.setState({errorPortada: true});
+        this.setState({errorPortada: 'Cargue un archivo'});
       }
     });
   }
@@ -102,31 +102,36 @@ class FormAltaDisco extends Component {
         </FormItem>
         <FormItem
           validateStatus={this.state.errorPortada ? 'error' : ''}
-          help={this.state.errorPortada ? 'Cargue un archivo' : ''}
+          help={this.state.errorPortada}
         >
-          {form.getFieldDecorator('portada', {rules: [{validator: validateFile(this.state.portada)}]})
-            (<Upload 
-              accept="image/*"
-              name={'file'}
-              preloadedFile={this.state.portada}
-              listType={'picture'}
-              action={'http://localhost:8080/archivo/subirDiscoPortada'}
-              onRemove={() => {
-                this.setState({portada: ''});
-              }}
-              onChange={(info) => {
-                const fileList = info.fileList;
-                if (fileList.length && fileList[0].response) {
-                  this.setState({portada: fileList[0].response});
-                }
-              }}
-            >
-              <Button>
-                <Icon type="upload" /> 
-                {'Subir Portada'}
-              </Button>
-            </Upload>)
-          }
+          <Upload 
+            accept="image/*"
+            name={'file'}
+            preloadedFile={this.state.portada}
+            listType={'picture'}
+            beforeUpload={(file, fileList) => {
+              if(file && !file.type.includes('image')) {
+                this.setState({errorPortada: 'El archivo no es una imagen'});
+              } else {
+                this.setState({errorPortada: ''});
+              }
+            }}
+            action={'http://localhost:8080/archivo/subirDiscoPortada'}
+            onRemove={() => {
+              this.setState({portada: ''});
+            }}
+            onChange={(info) => {
+              const fileList = info.fileList;
+              if (fileList.length && fileList[0].response) {
+                this.setState({portada: fileList[0].response});
+              }
+            }}
+          >
+            <Button>
+              <Icon type="upload" /> 
+              {'Subir Portada'}
+            </Button>
+          </Upload>
         </FormItem>
         <FormItem>
           <div className={'flex flex-space-between'}>
