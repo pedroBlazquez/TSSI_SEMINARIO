@@ -109,7 +109,7 @@ export default Form.create({
     return {
       nombre: Form.createFormField({...props.nombre}),
       descripcion: Form.createFormField({...props.descripcion}),
-      direccion: Form.createFormField({...props.descripcion}),
+      direccion: Form.createFormField({...props.direccion}),
       fecha: Form.createFormField({...props.fecha}),
       costo: Form.createFormField({...props.costo})
     }
