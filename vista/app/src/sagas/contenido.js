@@ -35,7 +35,7 @@ export function* altaCancion(action) {
     const artista = user.artista[0]
     const cancionToSend = {
       nombre: cancion.nombre,
-      genero: GENEROS.find(g => g.id.toString() === cancion.genero).value,
+      genero: GENEROS.find(g => g.id.toString() === cancion.genero.toString()).value,
       archivo: cancion.audio.file.response
     };
 
@@ -96,7 +96,7 @@ export function* altaDisco(action) {
     const headers = config();
     const payload = {
       nombre: disco.nombre,
-      genero: GENEROS.find(g => g.id.toString() === disco.genero).value,
+      genero: GENEROS.find(g => g.id.toString() === disco.genero.toString()).value,
       canciones: disco.canciones.map(c => c.id),
       portada: disco.portada
     };
