@@ -38,7 +38,6 @@ export function* altaLista(action) {
         const lista = action.lista;
         const payload = {
             ...lista,
-            privacidad: false,
             canciones: []
         };
 
