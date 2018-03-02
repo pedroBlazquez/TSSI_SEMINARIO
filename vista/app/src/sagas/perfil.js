@@ -41,13 +41,13 @@ export function* traerPerfil(action) {
       // Llamadas relacionadas a artistas
       const artista = usuario.artista[0]
       const idArtista = artista.id;
-      const publicaciones = yield call(_get, `/publicaciones/getArtista/${idArtista}`, headers);
+      const publicaciones = yield call(_get, `/compartir/getCompartidos/${idUsuario}`, headers);
       const canciones = yield call(_get, `/canciones/getArtista/${idArtista}`, headers);
       const discos = yield call(_get, `/discos/getArtista/${idArtista}`, headers);
       const albumes = yield call(_get, `/albums/getArtista/${idArtista}`, headers);
       const eventos = yield call(_get, `/eventos/getArtista/${idArtista}`, headers);
 
-      yield put(setPublicacionesPerfil(agregarArtista(publicaciones.data, artista)));
+      yield put(setPublicacionesPerfil(publicaciones.data));
       yield put(setCancionesPerfil(agregarArtista(canciones.data, artista)));
       yield put(setDiscosPerfil(agregarArtista(discos.data, artista)));
       yield put(setAlbumesPerfil(agregarArtista(albumes.data, artista)));

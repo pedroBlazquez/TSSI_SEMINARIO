@@ -15,8 +15,8 @@ class Artista extends Component {
   }
 
   render () {
-    const {artista}= this.props,
-          generos = this.getGeneros(this.props.artista.generos);
+    const {artista}= this.props;
+    const generos = this.getGeneros(artista.generos);
     return (
       <Card className={'margin-10p'}>
           <div className='avatarArtistaContainer'>
