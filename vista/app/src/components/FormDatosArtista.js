@@ -34,7 +34,8 @@ class DatosArtistaForm extends Component {
     e.preventDefault();
     
     validateFields((errors, values) => {
-      if (!errors && integrantes.length) {
+      const fieldIntegrantes = esBanda ? !!integrantes.length : true;
+      if (!errors && fieldIntegrantes) {
         onSubmit(e, values);
       }
       if (!integrantes.length) {
