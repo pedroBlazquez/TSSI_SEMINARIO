@@ -19,8 +19,8 @@ export function* realizarPublicacion (action) {
 
     yield call(_post, '/publicaciones/', {...nuevaPublicacion}, headers);
 
-    const publicaciones = yield call(_get, `/publicaciones/getArtista/${idArtista}`, headers);
-    yield put(setPublicacionesPerfil(agregarArtista(publicaciones.data, artista)));
+    const publicaciones = yield call(_get, `/compartir/getCompartidos/${user.id}`, headers);
+    yield put(setPublicacionesPerfil(publicaciones.data));
   } catch (e){
     console.log(e);
   }
