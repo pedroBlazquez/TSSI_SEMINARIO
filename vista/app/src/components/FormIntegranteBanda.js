@@ -4,7 +4,7 @@ import {Form, Button, Input} from 'antd';
 import ExtendedForm from './ExtendedForm';
 import FechaNacimiento from './FechaNacimiento';
 import RolesIntegrante from './RolesIntegrante';
-import {DatosPersonalesValidator, FechaValidator} from '../utils/validators';
+import {DatosPersonalesValidator, FechaValidator, RequiredValidator} from '../utils/validators';
 import {VOCALISTA} from '../utils/constants';
 
 const FormItem = Form.Item;
@@ -26,7 +26,7 @@ class FormIntegranteBanda extends Component {
           }
         </FormItem>
         <FormItem>
-          {form.getFieldDecorator('rol')(<RolesIntegrante />)}
+          {RequiredValidator({form})('rol')(<RolesIntegrante />)}
         </FormItem>
         <FormItem>
           {FechaValidator({form})('fechaNacimiento')

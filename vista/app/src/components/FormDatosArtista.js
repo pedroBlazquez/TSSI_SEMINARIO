@@ -21,10 +21,27 @@ class DatosArtistaForm extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      modalIntegrantes: false
+      modalIntegrantes: false,
+      errorIntegrantes: false
     };
 
     this.toggleModalIntegrantes = this.toggleModalIntegrantes.bind(this);
+  }
+
+  handleSubmit = (e, values) => {
+    const {onSubmit, form, esBanda, integrantes} = this.props;
+    const {validateFields} = form;
+    e.preventDefault();
+    
+    validateFields((errors, values) => {
+      if (!errors && integrantes.length) {
+        onSubmit(e, values);
+      }
+      if (!integrantes.length) {
+        // Seteamos el flag de error para las canciones
+        this.setState({error: true});
+      }
+    });
   }
 
   toggleModalIntegrantes () {
@@ -34,7 +51,6 @@ class DatosArtistaForm extends Component {
   render () {
     const {
       form,
-      onSubmit,
       esBanda,
       onCancel,
       integrantes,
@@ -44,7 +60,7 @@ class DatosArtistaForm extends Component {
     } = this.props;
     return (
       <div>
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           <FormItem 
             error={form.getFieldError('nombreFantasia')}
             validateStatus={form.getFieldError('nombreFantasia') ? 'error': ''}
@@ -62,7 +78,7 @@ class DatosArtistaForm extends Component {
             }
           </FormItem>
           <FormItem label="Seleccione los generos">
-            {form.getFieldDecorator('generos')(<GenerosMusicales />)}
+            {RequiredValidator({form})('generos')(<GenerosMusicales />)}
           </FormItem>
           <FormItem label={"Descripción"}>
             {
@@ -71,7 +87,10 @@ class DatosArtistaForm extends Component {
             }
           </FormItem>
           {esBanda && 
-            <FormItem>
+            <FormItem
+              validateStatus={this.state.error && !integrantes.length ? 'error' : ''}
+              help={this.state.error && !integrantes.length ? 'Ingrese al menos un integrante' : ''} 
+            >
               <Button className={'green-button margin-5p'} onClick={this.toggleModalIntegrantes}>
                 {'Agregar nuevo integrante'}
               </Button>
@@ -120,4 +139,4 @@ export default Form.create({
       descripcion: Form.createFormField({...props.descripcion})
     };
   } 
-})(ExtendedForm(DatosArtistaForm));
+})(DatosArtistaForm);
