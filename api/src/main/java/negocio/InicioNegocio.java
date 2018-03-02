@@ -367,7 +367,7 @@ public class InicioNegocio {
             
             
             //fecha actual
-            String date_now = Tools.DateFormatter(Tools.GetDateDifference(1));
+            String date_now = Tools.DateFormatter(Tools.GetDateDifference(1)); //se le resta 1, para que traiga los eventos del dia actual
             
             int top_1 = 20;
             //int top_2 = 2;
@@ -404,9 +404,9 @@ public class InicioNegocio {
                 String filtro_fechaEvento = " > '"+date_now+"' ";
                 if(fecha != null)
                 {
-                    String signo = "<";
+                    String signo = "<=";
                     if(desdehasta.equals("Desde"))
-                        signo = ">";
+                        signo = ">=";
                     filtro_fechaEvento += "and fechaEvento "+signo+" '"+Tools.DateFormatter(fecha)+"' ";
                 }
                 String st_nombre = "";

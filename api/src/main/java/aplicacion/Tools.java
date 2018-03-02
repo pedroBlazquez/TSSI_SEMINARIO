@@ -38,6 +38,17 @@ public class Tools {
         }
     }
     
+    public static Date DateFormatter (String date,String dateformatstr)
+    {
+        try {
+            DateFormat ft = new SimpleDateFormat(dateformatstr);
+            return ft.parse(date);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            return null;
+        }
+    }
+    
     public static String DateFormatter (Date date)
     {
         return format.format(date);
