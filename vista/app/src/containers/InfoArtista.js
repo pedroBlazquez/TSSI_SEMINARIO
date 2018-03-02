@@ -17,7 +17,7 @@ class InfoArtista extends Component {
           <br/>
           Generos Musicales:
           <ul>
-            {artista[0].generos.map(g => <li>  {g.descripcion}  </li>)}
+            {artista[0].generos.map((g, index) => <li key={index}>  {g.descripcion}  </li>)}
           </ul>
         </Card>
         <Card title="Historia" className={'margin-10p'}>
@@ -25,7 +25,7 @@ class InfoArtista extends Component {
         </Card>
         <Card title="Integrantes" className={'margin-10p'}>
           <ul>
-            {artista[0].integrantes.map((i) => <li>{i.nombre} {i.apellido} - {i.rol.descripcion}</li>)}
+            {artista[0].integrantes.map((i, index) => <li key={index}>{i.nombre} {i.apellido} - {i.rol.descripcion}</li>)}
           </ul>
         </Card>
       </div>
