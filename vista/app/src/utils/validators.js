@@ -24,6 +24,7 @@ export const DatosPersonalesValidator = ruleValidator([REQUIRED, ONLY_STRING]);
 export const FechaValidator = RequiredValidator;
 
 export const NombreContenidoValidator = dataset => errorMsg => ruleValidator([REQUIRED, (rule, value, callback) => {
+  value = value || '';
   let exists =  dataset.find(d => {
     return d.toLowerCase().trim() === value.toLowerCase().trim()
   });
