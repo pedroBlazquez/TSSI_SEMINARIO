@@ -16,23 +16,23 @@ class FormAltaCancion extends Component {
 
     this.state = {
       audio: props.audio || '',
-      errorAudio: false
+      errorAudio: ''
     }
   }
 
   handleSubmit = (e, values) => {
-    const {cancionesSeleccionadas, audio} = this.state;
+    const {cancionesSeleccionadas, audio, errorAudio} = this.state;
     const {onSubmit, form, onFormValidationFail} = this.props;
     const {validateFields} = form;
     e.preventDefault();
     
     validateFields((errors, values) => {
-      if (!errors && audio) {
+      if (!errors && audio && !errorAudio) {
         const valuesToSend = {...values, canciones: cancionesSeleccionadas, audio};
         onSubmit(e, valuesToSend);
       }
       if (!audio) {
-        this.setState({errorAudio: true});
+        this.setState({errorAudio: 'Cargue un archivo por favor'});
       }
     });
   }
@@ -55,11 +55,18 @@ class FormAltaCancion extends Component {
         </FormItem>
         <FormItem
           validateStatus={this.state.errorAudio ? 'error' : ''}
-          help={this.state.errorAudio ? 'Cargue un archivo' : ''}
+          help={this.state.errorAudio}
         >
           <Upload 
             accept="audio/*"
             name={'file'}
+            beforeUpload={(file, fileList) => {
+              if(file && !file.type.includes('audio')) {
+                this.setState({errorAudio: 'El archivo no es un audio'});
+              } else {
+                this.setState({errorAudio: ''});
+              }
+            }}
             action={'http://localhost:8080/archivo/subirCancion'}
             preloadedFile={this.state.audio}
             onRemove={() => {
