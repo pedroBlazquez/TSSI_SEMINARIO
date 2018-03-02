@@ -5,7 +5,7 @@ const initialState = {modalOpen: false};
 export default function (state = initialState, action) {
     switch (action.type) {
         case ABRIR_MODAL:
-            return Object.assign({}, state, {modalOpen: true, idCancion: action.idCancion});
+            return Object.assign({}, state, {modalOpen: true, cancion: action.cancion});
         case CERRAR_MODAL:
             return Object.assign({}, state, {modalOpen: false});
         case SET_LISTAS:

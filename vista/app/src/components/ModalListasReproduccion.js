@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Modal} from 'antd';
+import {Modal, Divider} from 'antd';
 import {connect} from 'react-redux';
 
 import {ocultarListas, getListas} from '../actions/listasReproduccionActions';
-import ListaReproduccionItem from './ListaReproduccionItem';
+import ListaReproduccionItem, {ListaReproduccionItem as AgregarAColaDeReproduccion} from './ListaReproduccionItem';
 import { getCurrentUser } from '../selectors/login';
+import { getCancionAgregarALista } from '../selectors/listasReproduccion';
+import { agregarCola } from '../actions/reproductorActions';
 
 
 class ModalListasReproduccion extends Component {
@@ -16,7 +18,7 @@ class ModalListasReproduccion extends Component {
   }
 
   render () {
-    const {modalOpen, cerrarModal, listas} = this.props;
+    const {modalOpen, cerrarModal, listas, cancion, agregarCola} = this.props;
 
     return(
       <Modal
@@ -25,6 +27,12 @@ class ModalListasReproduccion extends Component {
         footer={[]}
         onCancel={this.props.ocultarListas}
       >
+        <AgregarAColaDeReproduccion 
+          lista={{nombre: 'Agregar a cola de reproduccion'}}
+          pushSongToList={agregarCola}
+          cancion={cancion}
+        />
+        <Divider />
         {
           !listas &&
           <Link to={`/perfil/${this.props.userId}/listas`} onClick={this.props.ocultarListas} style={{color: 'black'}}>
@@ -34,7 +42,7 @@ class ModalListasReproduccion extends Component {
         {  
           !!listas &&
           listas.map((lista, index) => {
-            return <ListaReproduccionItem key={index + lista.id} lista={lista} idCancion={this.props.idCancion}/>
+            return <ListaReproduccionItem key={index + lista.id} lista={lista} cancion={cancion}/>
           })
         }
       </Modal>
@@ -44,7 +52,7 @@ class ModalListasReproduccion extends Component {
 
 const mapStateToProps = (state) => ({
   modalOpen: state.listasReproduccion.modalOpen,
-  idCancion: state.listasReproduccion.idCancion,
+  cancion: getCancionAgregarALista(state),
   listas: state.listasReproduccion.listas,
   userId: getCurrentUser(state).id
 });
@@ -53,6 +61,7 @@ export default connect(
   mapStateToProps,
   {
     getListas,
-    ocultarListas
+    ocultarListas,
+    agregarCola
   }
 )(ModalListasReproduccion);

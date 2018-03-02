@@ -9,7 +9,7 @@ import {
   MOD_LISTA
 } from './types';
 
-export const mostrarListas = (idCancion) => ({type: ABRIR_MODAL, idCancion});
+export const mostrarListas = (cancion) => ({type: ABRIR_MODAL, cancion});
 
 export const ocultarListas = () => ({type: CERRAR_MODAL});
 
@@ -17,7 +17,11 @@ export const setListas = (listas) => ({type: SET_LISTAS, listas});
 
 export const getListas = () => ({type: GET_LISTAS});
 
-export const pushSongToList = (idCancion, idLista) => ({type: PUSH_SONG_TO_LIST, idCancion, idLista});
+export const pushSongToList = (cancion, lista) => ({
+  type: PUSH_SONG_TO_LIST,
+  idCancion: cancion.id.toString(),
+  idLista: lista.id.toString()
+});
 
 export const crearLista = (lista) => ({type: ALTA_LISTA, lista});
 

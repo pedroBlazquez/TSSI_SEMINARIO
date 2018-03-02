@@ -15,8 +15,8 @@ import {mostrarListas} from '../actions/listasReproduccionActions';
 class AgregarCancionLista extends Component {
 
   clickHandler = () => {
-      let {id} = this.props;
-      this.props.mostrarListas(id);
+      let {cancion} = this.props;
+      this.props.mostrarListas(cancion);
   }
 
   render () {
