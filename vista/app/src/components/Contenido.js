@@ -27,19 +27,25 @@ class ContenidoBis extends Component {
           bordered
           itemLayout="vertical"
           dataSource={items}
-          renderItem={item => (
-            <List.Item 
-              actions={[
-                actions.reproducible && <Button onClick={(e) => {reproducir(item)}} size={'small'}>Reproducir</Button>,
-                actions.editable && <Icon type="edit" className={'icon-edit'} onClick={(e) => {onEditar(item.id);}}/>,
-                actions.editable && <Icon type="delete" className={'icon-delete'} onClick={(e) => {onEliminar(item.id);}}/>
-              ].filter(a => typeof a !== 'boolean')}>
-              <List.Item.Meta title={<span>{item.descripcion}</span>}/>
-              <div>
-                {render && render(item)}
-              </div>
-            </List.Item>
-          )}
+          renderItem={item => {
+            const actionItems = [];
+            if (actions.reproducible) {
+              actionItems.push(<Button onClick={(e) => {reproducir(item)}} size={'small'}>Reproducir</Button>);
+            }
+
+            if (actions.editable) {
+              actionItems.push(<Icon type="edit" className={'icon-edit'} onClick={(e) => {onEditar(item.id);}}/>);
+              actionItems.push(<Icon type="delete" className={'icon-delete'} onClick={(e) => {onEliminar(item.id);}}/>);
+            }
+            return (
+              <List.Item actions={actionItems}>
+                <List.Item.Meta title={<span>{item.descripcion}</span>}/>
+                <div>
+                  {render && render(item)}
+                </div>
+              </List.Item>
+            );
+          }}
         />
       </div>
     );
