@@ -14,7 +14,8 @@ import {altaCancion, modCancion, bajaCancion} from '../actions/contenidoActions'
 
 const initialState = {
   editando: null,
-  cancion: null
+  cancion: null,
+  audio: ''
 };
 
 class AdministrarCancionesContainer extends Component {
