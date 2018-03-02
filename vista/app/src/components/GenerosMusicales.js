@@ -20,7 +20,7 @@ export class GenerosMusicalesDD extends Component {
   render () {
     const {value, ...other} = this.props;
     return (
-      <Select {...other} defaultValue={value.toString()} placeholder="Seleccione un genero musical">
+      <Select {...other} defaultValue={value ? value.toString() : ''} placeholder="Seleccione un genero musical">
         {GENEROS.map(g => <Option value={g.id.toString()} key={g.id}>{g.value}</Option>)}
       </Select>
     );
