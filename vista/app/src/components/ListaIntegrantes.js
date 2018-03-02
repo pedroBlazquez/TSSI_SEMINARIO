@@ -52,10 +52,12 @@ class IntegrantesBanda extends Component {
   }
 
   render () {
+    let {integrantes} = this.props;
+    integrantes.map((i, index) => i.key = index);
     return (
       <Table 
         columns={this.columns}
-        dataSource={this.props.integrantes}
+        dataSource={integrantes}
         size={'small'}
         pagination={false}
       />
