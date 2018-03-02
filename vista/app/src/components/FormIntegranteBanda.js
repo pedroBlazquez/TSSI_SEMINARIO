@@ -15,20 +15,20 @@ class FormIntegranteBanda extends Component {
     const {onSubmit, onCancel, form} = this.props;
     return (
       <Form onSubmit={onSubmit}>
-        <FormItem>
+        <FormItem label="Nombre">
           {DatosPersonalesValidator({form})('nombre')
             (<Input type={'text'} placeholder='Ingrese el nombre del integrante' maxLength={'100'}/>)
           }
         </FormItem>
-        <FormItem>
+        <FormItem label="Apellido">
           {DatosPersonalesValidator({form})('apellido')
             (<Input type={'text'} placeholder='Apellido' maxLength={'100'}/>)
           }
         </FormItem>
-        <FormItem>
+        <FormItem label="Rol dentro de la banda">
           {RequiredValidator({form})('rol')(<RolesIntegrante />)}
         </FormItem>
-        <FormItem>
+        <FormItem label="Fecha de nacimiento">
           {FechaValidator({form})('fechaNacimiento')
             (<FechaNacimiento className={'full-width'} placeholder='Ingrese la fecha de nacimiento del integrante'/>)
           }

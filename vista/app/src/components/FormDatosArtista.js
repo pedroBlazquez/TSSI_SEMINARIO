@@ -63,6 +63,7 @@ class DatosArtistaForm extends Component {
       <div>
         <Form onSubmit={this.handleSubmit}>
           <FormItem 
+            label="Nombre de fantasía:"
             error={form.getFieldError('nombreFantasia')}
             validateStatus={form.getFieldError('nombreFantasia') ? 'error': ''}
             help={form.getFieldError('nombreFantasia') ? form.getFieldError('nombreFantasia')[0] : ''}
@@ -72,7 +73,7 @@ class DatosArtistaForm extends Component {
               icon={(<InfoTooltip title={'Las personas podrán encontrarte a través de tu nombre de fantasía!'}/>)}
             />
           </FormItem>
-          <FormItem>
+          <FormItem label="Fecha de inicio como artista / banda">
             {
               FechaValidator({form})('fechaInicio')
               (<FechaNacimiento className="full-width"/>)
