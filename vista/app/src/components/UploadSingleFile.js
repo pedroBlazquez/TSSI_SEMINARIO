@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 
 import {Upload} from 'antd';
 import {config} from '../utils/api';
+import { buildFileList } from '../utils/utils';
 
 class UploadSingleFile extends Component {
   constructor (props) {
     super(props);
 
     this.state = {
-      fileList: props.fileList || []
+      fileList: props.preloadedFile ? buildFileList(props.preloadedFile) : []
     };
   }
   

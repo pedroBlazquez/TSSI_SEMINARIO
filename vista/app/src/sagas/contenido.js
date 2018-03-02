@@ -207,7 +207,7 @@ export function* altaEvento(action) {
     const headers = config();
     const payload = {
       ...evento,
-      imagen: evento.imagen.file.response,
+      imagen: evento.imagen,
       fechaEvento: evento.fecha.format('YYYY-MM-DD')
     }
     yield call(_post, '/eventos/', {...payload}, headers);

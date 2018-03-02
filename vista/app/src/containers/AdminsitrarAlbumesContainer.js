@@ -13,7 +13,8 @@ import {altaAlbum, bajaAlbum, modAlbum} from '../actions/contenidoActions';
 
 const initialState = {
   editando: null,
-  album: null
+  album: null,
+  portada: ''
 };
 
 class AdministrarCancionesContainer extends Component {
@@ -26,12 +27,16 @@ class AdministrarCancionesContainer extends Component {
     const {albumes} = this.props;
     const album = albumes.find(c => c.id === id);
 
-    this.setState({album: {
-      nombre: {
-        value: album.nombre
+    this.setState({
+      album: {
+        nombre: {
+          value: album.nombre
+        },
+        discosSeleccionados: album.discos
       },
-      discosSeleccionados: album.discos
-    }, editando: id});
+      editando: id,
+      portada: album.portada
+    });
   }
 
   onEliminar = (id) => {
@@ -49,7 +54,7 @@ class AdministrarCancionesContainer extends Component {
   onSubmit = (e, values) => {
     const {onSubmit, onUpdate, alta, modificar} = this.props;
     if (this.state.editando !== null) {
-      const {editando} = this.state;
+      const {editando, portada} = this.state;
       const album = {
         ...values,
         idAlbum: editando.toString(),
@@ -80,6 +85,7 @@ class AdministrarCancionesContainer extends Component {
           onChange: this.onFormChange,
           albumes: mapContentName(albumes, this.state.editando),
           discos,
+          portada: this.state.portada,
           ...this.state.album
         }}
         modalTitle={this.state.editando === null ? 'Alta Album' : 'Actualizar Album'}

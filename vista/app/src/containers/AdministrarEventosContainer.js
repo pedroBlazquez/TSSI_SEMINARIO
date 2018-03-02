@@ -13,7 +13,8 @@ import {altaEvento, modEvento, bajaEvento} from '../actions/contenidoActions';
 
 const initialState = {
   editando: null,
-  evento: null
+  evento: null,
+  imagen: ''
 };
 
 class AdministrarEventosContainer extends Component {
