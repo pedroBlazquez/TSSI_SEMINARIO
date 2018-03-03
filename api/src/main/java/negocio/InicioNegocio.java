@@ -69,13 +69,14 @@ public class InicioNegocio {
                     query_artistas_seguidos.append(seguido).append(",");
                 query_artistas_seguidos.deleteCharAt(query_artistas_seguidos.length() - 1);
                 
+                int max_result = 20;
                 
                 //NOVEDADES DE ARTISTAS SEGUIDOS
-                top1_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("from Cancion c JOIN FETCH c.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and c.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,true,true));
-                top1_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("from Disco d JOIN FETCH d.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and d.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,false,true));
-                top1_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,false,true));
-                top1_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc"), usermail,true));
-                top1_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and e.fechaEvento > '"+date_now+"' and (e.fechaPublicacion > '"+date_novedades+"' or e.fechaEvento < '"+Tools.DateFormatter(Tools.GetDateDifference(-7))+"') order by fechaPublicacion desc"), usermail,true));
+                top1_list.addAll(CancionNegocio.setData(cn,cn.getListQuery("from Cancion c JOIN FETCH c.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and c.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,true,true));
+                top1_list.addAll(DiscoNegocio.setData(cn,cn.getListQuery("from Disco d JOIN FETCH d.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and d.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,false,true));
+                top1_list.addAll(AlbumNegocio.setData(cn,cn.getListQuery("from Album a JOIN FETCH a.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and a.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,false,true));
+                top1_list.addAll(PublicacionNegocio.setData(cn,cn.getListQuery("from Publicacion p JOIN FETCH p.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and p.fechaPublicacion > '"+date_novedades+"'"+" order by fechaPublicacion desc",max_result), usermail,true));
+                top1_list.addAll(EventoNegocio.setData(cn,cn.getListQuery("from Evento e JOIN FETCH e.artista ar WHERE ar.id in ("+query_artistas_seguidos+") and e.fechaEvento > '"+date_now+"' and (e.fechaPublicacion > '"+date_novedades+"' or e.fechaEvento < '"+Tools.DateFormatter(Tools.GetDateDifference(-7))+"') order by fechaPublicacion desc",max_result), usermail,true));
 
                 //--------------------------------------------------------------------
                 //NOVEDADES DE GENEROS DE ARTISTAS SEGUIDOS + SUGERENCIA DE NUEVOS ARTISTAS DE ESTOS GENEROS
