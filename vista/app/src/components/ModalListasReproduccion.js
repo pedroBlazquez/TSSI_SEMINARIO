@@ -12,7 +12,7 @@ import { agregarCola } from '../actions/reproductorActions';
 
 class ModalListasReproduccion extends Component {
   componentWillReceiveProps (nextProps) {
-    if (nextProps.modalOpen) {
+    if (!this.props.modalOpen && nextProps.modalOpen) {
       this.props.getListas();
     }
   }
