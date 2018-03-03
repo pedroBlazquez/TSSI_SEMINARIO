@@ -22,16 +22,10 @@ class Cancion extends Component {
               <img src={imgUrl} className=''/>
           </div>
           <div className='cancionInfoContainer'>
-            <div className='flex flex-space-between'>
-              <div className='topBlock'>
-                <div className='cancionTitleBlock'>
-                  <Link to={`/perfil/${cancion.artista.usuario.id}`} style={{color: 'black'}}>
-                    <h3>{cancion.artista.nombreFantasia}</h3>
-                  </Link>
-                    <h2>{cancion.nombre}</h2>
-                </div>
-              </div>
-            </div>
+            <Link to={`/perfil/${cancion.artista.usuario.id}`} style={{color: 'black'}}>
+              <h3>{cancion.artista.nombreFantasia}</h3>
+            </Link>
+            <h2>{cancion.nombre}</h2>
             <MediaButtons 
               content={cancion}
               typeContent={OBJECT_TYPES.CANCION}
