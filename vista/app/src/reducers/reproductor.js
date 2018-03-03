@@ -5,7 +5,8 @@ import {
   SET_COLA,
   AGREGAR_A_COLA,
   REMOVER_DE_COLA,
-  REPRODUCIR_EN_COLA
+  REPRODUCIR_EN_COLA,
+  LOGIN
 } from '../actions/types';
 
 const initialState = {
@@ -39,6 +40,8 @@ export default function (state = initialState, action = {}) {
         return {...state, current: anterior};
       }
       return state;
+    case LOGIN:
+      return initialState;
     default:
       return state;
   }
