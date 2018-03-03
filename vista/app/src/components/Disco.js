@@ -13,6 +13,8 @@ import BotonPlay from './BotonPlay';
 import NoImagen from '../assets/default-release.png';
 import { setCola } from '../actions/reproductorActions';
 import ListaCanciones from './ListaCanciones';
+import MediaButtons from './MediaButtons';
+import { OBJECT_TYPES } from '../utils/constants';
 
 class Disco extends Component {
   
@@ -38,14 +40,13 @@ class Disco extends Component {
                         </Link>
                         <h5>{formatFecha(disco.fechaPublicacion)}</h5>
                     </div>
-                    <Compartir id={disco.id} typeContent='Disco' shared={disco.compartido}/>
                 </div>
                 <div>
                     <div className='columnLeft'>
                         <Button onClick={this.reproducirDisco}>Reproducir disco</Button>
                     </div>
                     <div className='columnRight'>
-                        <Like id={disco.id} typeContent='Disco' likes={disco.likes} isLiked={disco.liked}/>
+                        <MediaButtons content={disco} typeContent={OBJECT_TYPES.DISCO} like share />
                     </div>
                 </div>
             </div>

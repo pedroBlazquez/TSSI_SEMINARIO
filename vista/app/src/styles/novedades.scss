@@ -40,7 +40,6 @@
 
 .addSong {
     width: 25px;
-    margin-left: 10px;
     cursor: pointer;
 }
 
@@ -100,12 +99,12 @@
 
 /*ESTILOS CANCION*/
 .cancionImagenContainer {
-    width: 28%;
     display: inline-block;
     margin-right: 10px;
 }
 .cancionImagenContainer > img {
-    width: 100%;
+    width: 120px;
+    height: 120px;
 }
 
 .cancionTitleBlock {
@@ -122,10 +121,6 @@
 
 .cancionInfoContainer .addSong {
     display: inline-block;
-}
-
-.cancionInfoContainer .topBlock {
-    margin-bottom: 60px;
 }
 
 /*ESTILOS DISCO*/
