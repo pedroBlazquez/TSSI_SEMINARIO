@@ -34,11 +34,11 @@ class ListaCanciones extends Component {
       const {canciones, play, share, like, agregar, title} = this.props;
       if (!this.props.canciones.length) return <p>{'No hay canciones para mostrar'}</p>;
       if (!this.state.mostrarCanciones) {
-        return (<p onClick={this.toggleMostrarCanciones} >{'Mostrar canciones'}</p>); 
+        return (<p style={{cursor: 'pointer'}} onClick={this.toggleMostrarCanciones} >{'Mostrar canciones'}</p>);
       }
       return(
         <div>
-          <p onClick={this.toggleMostrarCanciones}>{'Ocultar canciones'}</p>
+          <p style={{cursor: 'pointer'}} onClick={this.toggleMostrarCanciones}>{'Ocultar canciones'}</p>
           <Divider />
           <List
             size={'small'}
