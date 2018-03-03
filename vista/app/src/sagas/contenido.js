@@ -36,7 +36,7 @@ export function* altaCancion(action) {
     const cancionToSend = {
       nombre: cancion.nombre,
       genero: GENEROS.find(g => g.id.toString() === cancion.genero.toString()).value,
-      archivo: cancion.audio.file.response
+      archivo: cancion.audio
     };
 
     yield call(_post, '/canciones/', {...cancionToSend}, headers);
