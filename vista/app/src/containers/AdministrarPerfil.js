@@ -118,7 +118,7 @@ class AdministrarPerfil extends Component {
   render () {
     return (
       <PerfilWrapper>
-        <Tabs className={'full-height bg-color-white table-container'}>
+        <Tabs className={'full-height bg-color-white table-container perfilAdministrarTabs'}>
           <TabPane tab="Usuario" key="1">
             <div className={'autoalign'} style={{width: '50%'}}>
               <DatosUsuario
@@ -144,7 +144,7 @@ class AdministrarPerfil extends Component {
           </TabPane>
           {this.esArtista &&
             <TabPane tab="Artista / Banda" key="2">
-              <div className={'autoalign'} style={{width: '50%', maxHeight: 440, overflowY: 'auto', paddingRight: 10}}>
+              <div className={'autoalign'} style={{width: '50%', maxHeight: 440, paddingRight: 10}}>
                 <DatosArtista
                   onSubmit={this.onSubmit}
                   onChange={this.onDatosArtistaChange}
