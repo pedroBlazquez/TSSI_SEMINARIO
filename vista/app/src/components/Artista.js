@@ -7,6 +7,7 @@ import {formatFecha} from '../utils/utils';
 
 import Compartir from './Compartir';
 import Like from './Like';
+import AvatarUsuario from './AvatarUsuario';
 
 class Artista extends Component {
 
@@ -20,7 +21,7 @@ class Artista extends Component {
     return (
       <Card className={'margin-10p'}>
           <div className='avatarArtistaContainer'>
-              <Avatar className='avatarIcon' icon={'user'}/>
+              <AvatarUsuario usuario={artista.usuario} />
           </div>
           <div className='artistaInfoContainer'>
               <div className='topBlock flex flex-space-between'>
