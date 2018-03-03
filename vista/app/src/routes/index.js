@@ -32,6 +32,7 @@ const MainRoute = ({isLogged}) => (
       <div style={{position: 'fixed', bottom: 0, width: '100%', backgroundColor: 'grey', height: 60}}>
         <div style={{position: 'absolute', top: 20, left: 20}}>(C) Copyright MusicApp 2017</div>
         <Reproductor style={{margin: 'auto', marginTop: 10}} />
+        <a style={{position: 'absolute', top: 20, right: 20, color: 'black'}}href="http://localhost:8080/MusicAppArchivos/manualusuario.html">Ayuda</a>
       </div>
     }
     <div style={{height: 60, width: '100%'}}></div>
