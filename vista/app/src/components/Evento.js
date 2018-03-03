@@ -46,6 +46,7 @@ class Evento extends Component {
         <div className='eventoDescripcion'>
             <ul className='columnLeft'>
                 <li><strong>Evento:</strong> {evento.nombre}</li>
+                <li><strong>Lugar:</strong> {evento.direccion}</li>
                 <li><strong>Descripcion:</strong> {evento.descripcion}</li>
             </ul>
             <ul className='columnRight'>
