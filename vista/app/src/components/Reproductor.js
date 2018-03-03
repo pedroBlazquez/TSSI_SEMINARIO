@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Icon} from 'antd';
+import MenuColaReproduccion from './MenuColaReproduccion';
 
 class Reproductor extends Component {
 
@@ -18,8 +19,10 @@ class Reproductor extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    const {estado, ultimoPlay, ultimaPausa} = this.props;
-    if(prevProps.track !== this.props.track) {
+    const {estado, ultimoPlay, ultimaPausa, cola, track} = this.props;
+    if (prevProps.cola !== cola && !cola.length) {
+      this.refs.reproductor.src = '';
+    } if(prevProps.track !== track) {
       this.stopPlay();
       this.refs.reproductor.play();
     } else {
@@ -77,8 +80,15 @@ class ReproductorContainer extends Component {
         <div className={'relative'}>
           <Reproductor {...reproductor}/>
           <div className={'absolute'} style={{width: 180, left: 380, top: 0}}>
-            <div className={'ellipsis'}><strong>{artista && artista.nombreFantasia}</strong></div>
-            <div className={'ellipsis'}>{reproductor.track && reproductor.track.nombre}</div>
+            <div className={'flex'}>
+              <div>
+                <div className={'ellipsis'} style={{width: 160}}><strong>{artista && artista.nombreFantasia}</strong></div>
+                <div className={'ellipsis'} style={{width: 160}}>{reproductor.track && reproductor.track.nombre}</div>
+              </div>
+              <div className={'margin-10p'}>
+                <MenuColaReproduccion canciones={reproductor.cola} playing={reproductor.track} />
+              </div>
+            </div>
           </div>  
         </div>
       </div>

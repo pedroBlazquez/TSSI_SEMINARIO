@@ -4,6 +4,8 @@ import {
   REPRODUCIR_ANTERIOR,
   SET_COLA,
   AGREGAR_A_COLA,
+  REMOVER_DE_COLA,
+  REPRODUCIR_EN_COLA
 } from '../actions/types';
 
 const initialState = {
@@ -13,6 +15,12 @@ const initialState = {
 
 export default function (state = initialState, action = {}) {
   switch (action.type) {
+    case REPRODUCIR_EN_COLA:
+      return {...state, current: action.posicion};
+    case REMOVER_DE_COLA:
+      const newQueue = state.queue.filter((c, i) => i !== action.posicion);
+      const current = state.current > newQueue.length - 1 ? newQueue.length - 1 : state.current;
+      return {...state, queue: newQueue, current};
     case REPRODUCIR:
      return {current: 0, queue: [action.cancion]};
     case AGREGAR_A_COLA:
