@@ -74,7 +74,7 @@ class AdministrarCancionesContainer extends Component {
   }
 
   render () {
-    const {albumes, discos} = this.props;
+    const {albumes, discos, mostrar} = this.props;
     if (!discos.length) return (<div>{'Debe crear una canción antes de poder operar con discos'}</div>);
     return (
       <AdministrarContenido 
@@ -88,6 +88,7 @@ class AdministrarCancionesContainer extends Component {
           portada: this.state.portada,
           ...this.state.album
         }}
+        mostrarContenido={mostrar}
         modalTitle={this.state.editando === null ? 'Alta Album' : 'Actualizar Album'}
         contenidoProps={{
           onEliminar: this.onEliminar,
