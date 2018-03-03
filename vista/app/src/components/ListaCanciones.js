@@ -10,6 +10,7 @@ import Agregar from './AgregarCancionLista';
 import {List, Divider} from 'antd';
 import { OBJECT_TYPES } from '../utils/constants';
 import MediaButtons from './MediaButtons';
+import { Button } from 'antd/lib/radio';
 
 const ListItem = List.Item;
 
@@ -35,11 +36,11 @@ class ListaCanciones extends Component {
       const {canciones, play, share, like, agregar, title} = this.props;
       if (!this.props.canciones.length) return <p>{'No hay canciones para mostrar'}</p>;
       if (!this.state.mostrarCanciones) {
-        return (<p onClick={this.toggleMostrarCanciones} >{'Mostrar canciones'}</p>); 
+        return (<Button size={'small'} onClick={this.toggleMostrarCanciones} >{'Mostrar canciones'}</Button>); 
       }
       return(
         <div>
-          <p onClick={this.toggleMostrarCanciones}>{'Ocultar canciones'}</p>
+          <Button size={'small'} onClick={this.toggleMostrarCanciones}>{'Ocultar canciones'}</Button>
           <Divider />
           <List
             size={'small'}
