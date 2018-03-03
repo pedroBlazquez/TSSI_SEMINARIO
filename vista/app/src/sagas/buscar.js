@@ -10,7 +10,7 @@ import { formatFecha } from '../utils/utils';
 export function* buscar({parametros}) {
   try {
     const headers = config();
-    const genero = GENEROS.find(g => g.id.toString() === parametros.genero);
+    const genero = GENEROS.find(g => g.id.toString() === parametros.genero.toString());
     const fecha = formatFecha(parametros.fecha) || '';
     const body = {
       'busqueda': parametros.search,

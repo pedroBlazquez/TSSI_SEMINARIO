@@ -14,7 +14,8 @@ import {altaCancion, modCancion, bajaCancion} from '../actions/contenidoActions'
 
 const initialState = {
   editando: null,
-  cancion: null
+  cancion: null,
+  audio: ''
 };
 
 class AdministrarCancionesContainer extends Component {
@@ -62,7 +63,7 @@ class AdministrarCancionesContainer extends Component {
         ...values,
         audio,
         idCancion: editando.toString(),
-        genero: GENEROS.find(g => g.id === values.genero).value
+        genero: GENEROS.find(g => g.id.toString() === values.genero.toString()).value
       };
       this.setState(initialState);
       modificar(cancion);

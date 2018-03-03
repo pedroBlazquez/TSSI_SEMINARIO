@@ -3,7 +3,6 @@ import {Form, Button, Input, Icon} from 'antd';
 import moment from 'moment';
 
 import Upload from './UploadSingleFile';
-import ExtendedForm from './ExtendedForm';
 import FechaNacimiento from './FechaNacimiento';
 import {GenerosMusicalesDD} from './GenerosMusicales';
 import {FechaValidator, RequiredValidator, validateFile, NombreContenidoValidator} from '../utils/validators';
@@ -16,14 +15,33 @@ class FormAltaCancion extends Component {
     super(props);
 
     this.state = {
-      audio: props.audio || ''
+      audio: props.audio || '',
+      errorAudio: ''
     }
   }
 
+  handleSubmit = (e, values) => {
+    const {cancionesSeleccionadas, audio, errorAudio} = this.state;
+    const {onSubmit, form, onFormValidationFail} = this.props;
+    const {validateFields} = form;
+    e.preventDefault();
+    
+    validateFields((errors, values) => {
+      if (!errors && audio && !errorAudio) {
+        const valuesToSend = {...values, canciones: cancionesSeleccionadas, audio};
+        onSubmit(e, valuesToSend);
+      }
+      if (!audio) {
+        this.setState({errorAudio: 'Cargue un archivo por favor'});
+      }
+    });
+  }
+
+
   render () {
-    const {onSubmit, onCancel, form, canciones} = this.props;
+    const {onCancel, form, canciones} = this.props;
     return (
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <FormItem>
           {NombreContenidoValidator(canciones)
             ('Ya existe una cancion con ese nombre')
@@ -35,28 +53,37 @@ class FormAltaCancion extends Component {
         <FormItem>
           {RequiredValidator({form})('genero')(<GenerosMusicalesDD />)}
         </FormItem>
-        <FormItem>
-          {form.getFieldDecorator('audio', {rules: [{validator: validateFile(this.state.audio)}]})
-            (<Upload 
-              accept="audio/*"
-              name={'file'}
-              action={'http://localhost:8080/archivo/subirCancion'}
-              onRemove={() => {
-                this.setState({audio: ''});
-              }}
-              onChange={(info) => {
-                const fileList = info.fileList;
-                if (fileList.length) {
-                  this.setState({audio: fileList[0].response});
-                }
-              }}
-            >
-              <Button>
-                <Icon type="upload" /> 
-                {'Subir Canción'}
-              </Button>
-            </Upload>)
-          }
+        <FormItem
+          validateStatus={this.state.errorAudio ? 'error' : ''}
+          help={this.state.errorAudio}
+        >
+          <Upload 
+            accept="audio/*"
+            name={'file'}
+            beforeUpload={(file, fileList) => {
+              if(file && !file.type.includes('audio')) {
+                this.setState({errorAudio: 'El archivo no es un audio'});
+              } else {
+                this.setState({errorAudio: ''});
+              }
+            }}
+            action={'http://localhost:8080/archivo/subirCancion'}
+            preloadedFile={this.state.audio}
+            onRemove={() => {
+              this.setState({audio: ''});
+            }}
+            onChange={(info) => {
+              const fileList = info.fileList;
+              if (fileList.length && fileList[0].response) {
+                this.setState({audio: fileList[0].response});
+              }
+            }}
+          >
+            <Button>
+              <Icon type="upload" /> 
+              {'Subir Canción'}
+            </Button>
+          </Upload>
         </FormItem>
         <FormItem>
           <div className={'flex flex-space-between'}>
@@ -85,5 +112,5 @@ export default Form.create({
       genero: Form.createFormField({...props.genero})
     }
   }
-})(ExtendedForm(FormAltaCancion));
+})(FormAltaCancion);
 

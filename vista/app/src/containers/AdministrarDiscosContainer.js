@@ -64,7 +64,7 @@ class AdministrarCancionesContainer extends Component {
       const disco = {
         ...values,
         idDisco: editando.toString(),
-        genero: GENEROS.find(g => g.id === values.genero).value,
+        genero: GENEROS.find(g => g.id.toString() === values.genero.toString()).value,
         canciones: values.canciones.map(c => c.id),
         portada
       };

@@ -56,7 +56,7 @@ class ListaCanciones extends Component {
                     }
                     {agregar &&
                       <Agregar 
-                        id={cancion.id}
+                        id={cancion}
                         style={{width: 20, height: 20}}
                       />
                     }

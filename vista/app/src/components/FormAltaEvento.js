@@ -20,23 +20,23 @@ class FormAltaEvento extends Component {
     super(props);
     this.state = {
       portada: props.imagen || '',
-      errorPortada: false
+      errorPortada: ''
     };
   }
 
   handleSubmit = (e, values) => {
-    const { portada} = this.state;
+    const { portada, errorPortada} = this.state;
     const {onSubmit, form, onFormValidationFail} = this.props;
     const {validateFields} = form;
     e.preventDefault();
     
     validateFields((errors, values) => {
-      if (!errors) {
+      if (!errors && portada && !errorPortada) {
         const valuesToSend = {...values, imagen: portada};
         onSubmit(e, valuesToSend);
       }
       if (!portada) {
-        this.setState({errorPortada: true});
+        this.setState({errorPortada: 'Carge un archivo'});
       }
     });
   }
@@ -83,31 +83,36 @@ class FormAltaEvento extends Component {
         <span>Le recomendamos que la imagen sea de 550px de ancho por 200px de alto</span>
         <FormItem
           validateStatus={this.state.errorPortada ? 'error' : ''}
-          help={this.state.errorPortada ? 'Cargue un archivo' : ''}
+          help={this.state.errorPortada}
         >
-          {form.getFieldDecorator('imagen',{rules: [{validator: validateFile(this.state.portada)}]})
-            (<Upload 
-              accept="image/*"
-              name={'file'}
-              preloadedFile={this.state.portada}
-              listType={'picture'}
-              action={'http://localhost:8080/archivo/subirEventoFoto'}
-              onRemove={() => {
-                this.setState({portada: ''});
-              }}
-              onChange={(info) => {
-                const fileList = info.fileList;
-                if (fileList.length && fileList[0].response) {
-                  this.setState({portada: fileList[0].response});
-                }
-              }}
-            >
-              <Button>
-                <Icon type="upload" /> 
-                {'Subir Imagen'}
-              </Button>
-            </Upload>)
-          }
+          <Upload 
+            accept="image/*"
+            name={'file'}
+            preloadedFile={this.state.portada}
+            listType={'picture'}
+            beforeUpload={(file, fileList) => {
+              if(file && !file.type.includes('image')) {
+                this.setState({errorPortada: 'El archivo no es una imagen'});
+              } else {
+                this.setState({errorPortada: ''});
+              }
+            }}
+            action={'http://localhost:8080/archivo/subirEventoFoto'}
+            onRemove={() => {
+              this.setState({portada: ''});
+            }}
+            onChange={(info) => {
+              const fileList = info.fileList;
+              if (fileList.length && fileList[0].response) {
+                this.setState({portada: fileList[0].response});
+              }
+            }}
+          >
+            <Button>
+              <Icon type="upload" /> 
+              {'Subir Imagen'}
+            </Button>
+          </Upload>
         </FormItem>
         <FormItem>
           <div className={'flex flex-space-between'}>
