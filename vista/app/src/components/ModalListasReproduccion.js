@@ -17,8 +17,14 @@ class ModalListasReproduccion extends Component {
     }
   }
 
+  agregarCancionReproduccionActual = (cancion) => {
+    const {agregarCola, ocultarListas} = this.props;
+    agregarCola(cancion);
+    ocultarListas();
+  }
+
   render () {
-    const {modalOpen, cerrarModal, listas, cancion, agregarCola} = this.props;
+    const {modalOpen, listas, cancion} = this.props;
 
     return(
       <Modal
@@ -29,7 +35,7 @@ class ModalListasReproduccion extends Component {
       >
         <AgregarAColaDeReproduccion 
           lista={{nombre: 'Agregar a cola de reproduccion'}}
-          pushSongToList={agregarCola}
+          pushSongToList={this.agregarCancionReproduccionActual}
           cancion={cancion}
         />
         <Divider />
