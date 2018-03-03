@@ -85,7 +85,7 @@ class AdministrarEventosContainer extends Component {
   }
 
   render () {
-    const {eventos} = this.props;
+    const {eventos, mostrar} = this.props;
     return (
       <AdministrarContenido 
         FormElement={AltaEvento}
@@ -97,6 +97,7 @@ class AdministrarEventosContainer extends Component {
           eventos: mapContentName(eventos, this.state.editando),
           ...this.state.evento
         }}
+        mostrarContenido={mostrar}
         modalTitle={this.state.editando === null ? 'Alta Evento' : 'Actualizar Evento'}
         contenidoProps={{
           onEliminar: this.onEliminar,

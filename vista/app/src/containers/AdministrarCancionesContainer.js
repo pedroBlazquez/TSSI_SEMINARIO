@@ -78,7 +78,7 @@ class AdministrarCancionesContainer extends Component {
   }
 
   render () {
-    const {canciones} = this.props;
+    const {canciones, mostrar} = this.props;
     return (
       <AdministrarContenido 
         FormElement={AltaCancion}
@@ -90,6 +90,7 @@ class AdministrarCancionesContainer extends Component {
           ...this.state.cancion,
           audio: this.state.audio
         }}
+        mostrarContenido={mostrar}
         modalTitle={this.state.editando === null ? 'Alta Cancion' : 'Actualizar Canción'}
         contenidoProps={{
           onEliminar: this.onEliminar,

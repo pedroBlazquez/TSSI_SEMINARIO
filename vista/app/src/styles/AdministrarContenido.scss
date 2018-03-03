@@ -4,3 +4,15 @@
   max-height: $content-max-height;
   overflow-y: auto;
 }
+
+.administrarTabs {
+  overflow-y: scroll;
+}
+
+.administrarTabs .show {
+  display: block;
+}
+
+.administrarTabs .hide {
+  display: none;
+}
