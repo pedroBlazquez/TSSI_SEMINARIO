@@ -18,7 +18,7 @@ class Disco extends Component {
   
   reproducirDisco = () => {
     const {disco, reproducir} = this.props;
-    reproducir(disco.canciones);
+    reproducir(disco.canciones.map(c => ({...c, artista: disco.artista})));
   }
 
   render () {
@@ -50,7 +50,7 @@ class Disco extends Component {
                 </div>
             </div>
           </div>
-          <ListaCanciones canciones={disco.canciones}/>
+          <ListaCanciones canciones={disco.canciones.map(c => ({...c, artista: disco.artista}))}/>
       </Card>
     );
   }

@@ -37,7 +37,9 @@ class Reproductor extends Component {
   }
 
   stopPlay = () => {
-    this.refs.reproductor.pause();
+    if (!this.refs.reproductor.paued) {
+      this.refs.reproductor.pause();
+    }
     this.refs.reproductor.currentTime = 0;
   }
 
