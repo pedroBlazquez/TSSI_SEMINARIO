@@ -4,11 +4,12 @@ import {Link} from 'react-router-dom';
 
 import {Card, Avatar} from 'antd';
 import { formatFecha } from '../utils/utils';
+import AvatarUsuario from './AvatarUsuario';
 
 const CardTitle = ({nombreUsuario, usuario, fechaPublicacion}) => (
   <div className={'flex flex-space-between'}>
     <div>
-      <Avatar className='avatarIcon' icon={'user'}/>
+      <AvatarUsuario usuario={usuario}/>
       <div className='cardHeaderInfo'>
         <Link to={`/perfil/${usuario.id}`} style={{color: 'black'}}>
           <h2 className='novedadTitulo'>{nombreUsuario}</h2>

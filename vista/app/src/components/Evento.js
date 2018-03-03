@@ -3,14 +3,15 @@ import React, {Component} from 'react';
 import {formatFecha} from '../utils/utils';
 
 import {Link} from 'react-router-dom';
-import {Card, Avatar} from 'antd';
+import {Card} from 'antd';
 
 import Compartir from './Compartir';
+import AvatarUsuario from './AvatarUsuario';
 
 const CardTitle = ({artista, fechaPublicacion, id, compartido}) => (
   <div className={'flex flex-space-between'}>
     <div>
-      <Avatar className='avatarIcon' icon={'user'}/>
+      <AvatarUsuario usuario={artista.usuario} />
       <div className='cardHeaderInfo'>
         <Link to={`/perfil/${artista.usuario.id}`} style={{color: 'black'}}>
           <h2 className='novedadTitulo'>{artista.nombreFantasia}</h2>
