@@ -44,7 +44,7 @@ class AdministrarContenido extends Component {
     const {modalOpen} = this.state;
     const {modalTitle, contenidoProps, FormElement, formElementProps, mostrarContenido} = this.props;
     return (
-      <div className={mostrarContenido !== "undefined" ? mostrarContenido ? 'show' : "hide" : ''}>
+      <div className={mostrarContenido ? 'show' : "hide"}>
         <Contenido
           {...contenidoProps}
           onAgregar={this.toggleModal}
