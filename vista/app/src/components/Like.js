@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-import {Avatar} from 'antd';
+import {Avatar, Tooltip} from 'antd';
 
 import {sendLike} from '../actions/likeAction';
 
@@ -44,15 +44,14 @@ class Like extends Component {
     render () {
         const {showLikes} = this.props;
         return (
-            <div>
-                {showLikes && <span className='likesNumber'><strong>{this.state.likes}</strong></span>}
+            <Tooltip title={this.state.likes + " Likes"}>
                 <Avatar 
                     className='like'
                     icon={this.state.liked ? 'like' : 'like-o'} 
                     onClick={this.clickHandler}
                     size={this.props.size}
                 />
-            </div>
+            </Tooltip>
         );
     }
 }
