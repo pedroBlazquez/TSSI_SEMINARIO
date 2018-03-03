@@ -65,6 +65,8 @@ export const SET_STATUS_BUSQUEDA  = 'SET_STATUS_BUSQUEDA';
 // REPRODUCTOR
 export const REPRODUCIR           = 'REPRODUCIR';
 export const AGREGAR_A_COLA       = 'AGREGAR_A_COLA';
+export const REMOVER_DE_COLA      = 'REMOVER_DE_COLA';
+export const REPRODUCIR_EN_COLA   = 'REPRODUCIR_EN_COLA';
 export const SET_COLA             = 'SET_COLA';
 export const REPRODUCIR_SIGUIENTE = 'REPRODUCIR_SIGUIENTE';
 export const REPRODUCIR_ANTERIOR  = 'REPRODUCIR_ANTERIOR';

@@ -29,3 +29,10 @@ export const getCurrentSong = createSelector(
     return {};
   }
 );
+
+export const getColaDeReproduccion = createSelector(
+  [getReproductor],
+  reproductor => {
+    return reproductor.queue;
+  }
+);

@@ -29,7 +29,9 @@ class ListaReproduccion extends Component {
               <img src={Imagen} className={'margin-5p-right'} style={{width: 20, height: 20}}/>
               <h2>{lista.nombre}</h2>
             </div>
-              <Button onClick={this.reproducirLista}>{'Reproducir Lista'}</Button>
+              {lista.canciones && lista.canciones.length && 
+                <Button onClick={this.reproducirLista}>{'Reproducir Lista'}</Button>
+              }
         </div>
         <Divider />
         <ListaCanciones 
