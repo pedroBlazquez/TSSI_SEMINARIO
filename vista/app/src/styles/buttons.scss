@@ -42,3 +42,13 @@
     border: none;
   }
 }
+
+.red-button {
+  @extend .custom-button;
+  background-color: $red;
+  &:hover {
+    color: white;
+    background-color: $dark-gray;
+    border: none;
+  }
+}

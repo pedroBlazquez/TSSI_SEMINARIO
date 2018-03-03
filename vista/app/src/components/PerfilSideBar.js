@@ -66,14 +66,12 @@ class PerfilSideBar extends Component {
               </Button>
             }
             {esArtista && esPerfilPropio && 
-              <Button className={'green-button full-width'}>
+              <Button className={'green-button full-width margin-5p-bottom'}>
                 <NavLink to={`/perfil/${profileId}/administrar`}>{'Administrar contenido'}</NavLink>
               </Button>
             }
-          </div>
-          <div className={'absolute'} style={{bottom: 5}}>
             {esPerfilPropio && 
-              <Button className={'green-button full-width'} onClick={this.mostrarModalBajaUsuario}>
+              <Button className={'red-button full-width'} onClick={this.mostrarModalBajaUsuario}>
                 {'Eliminar Cuenta'}
               </Button>
             }
